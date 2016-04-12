@@ -11,6 +11,8 @@ namespace arelv1
         public acceuil()
         {
             InitializeComponent();
+            //var messageDialog = new Windows.UI.Popups.MessageDialog("toto");
+            //rootPage.NotifyUser("toto");
         }
 
     

@@ -21,7 +21,7 @@ using System.ComponentModel;
 
 namespace arelv1
 {
-    public class Contexte : INotifyPropertyChanged
+    public class Contexte : INotifyPropertyChanged // classe pour gerer le remplissage et la modif du message d'erreur
     {
 
         private string valeur;
@@ -60,18 +60,16 @@ namespace arelv1
 
 
 
-    /// <summary>
-    /// Une page vide peut être utilisée seule ou constituer une page de destination au sein d'un frame.
-    /// </summary>
-    /// 
-    public sealed partial class MainPage : Page
+     
+    public sealed partial class MainPage : Page //classe principale
     {
-        private static ManualResetEvent allDone = new ManualResetEvent(false);
-        private Contexte contexte;
+        private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
+        private Contexte contexte;//pour le message d'erreur
         private string password,username;
-        private string resultat;
+        private string resultat;//resultat de la requete
+        private Windows.Storage.ApplicationDataContainer localSettings =  Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
 
-
+        //fonction executé quand on appuie sur le bouton
         private void login_button(object sender, RoutedEventArgs ev)
         {
             if(connect_login(nom.Text, pass.Password))
@@ -80,6 +78,7 @@ namespace arelv1
             }            
         }
 
+        //fonction qui initialise la connection à arel
         private bool connect_login(string name,string pass)
         {
             WebRequest connexion = WebRequest.Create("http://arel.eisti.fr/oauth/token");//url
@@ -87,20 +86,23 @@ namespace arelv1
             connexion.Method = "POST";//Post ou get
             connexion.ContentType = "application/x-www-form-urlencoded";
 
-            string autorization = "win10-19:LTNsH0D0euweCehmWcn9";//identifiants
-            byte[] binaryAuthorization = System.Text.Encoding.UTF8.GetBytes(autorization);//conversion en bytes
+            string autorization = "win10-19:LTNsH0D0euweCehmWcn9";//identifiants de l'application
+            byte[] binaryAuthorization = System.Text.Encoding.UTF8.GetBytes(autorization);//conversion en tableau de la chaine
             autorization = Convert.ToBase64String(binaryAuthorization);
             autorization = "Basic " + autorization;
-            connexion.Headers["AUTHORIZATION"] = autorization;//ajout d'une ligne dans le header
+            connexion.Headers["AUTHORIZATION"] = autorization;//ajout d'une ligne dans le header pour l'authentification
 
+            //passage en variable global des identifiants de l'utilisateur
             password = pass;
             username = name;
 
             connexion.BeginGetRequestStream(new AsyncCallback(requete), connexion);//lance la connexion asynchrone
             allDone.WaitOne();//attend et reste sur la page en cours
 
-            if(resultat.IndexOf("tok") > -1)
+            if(resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
             {
+                ecrire(getToken(resultat));
+                localSettings.Values["token"] = getToken(resultat);
                 return true;
             }
             else
@@ -113,16 +115,38 @@ namespace arelv1
         }
 
 
-
+        //fonction main
         public MainPage()
         {
             
-            this.InitializeComponent();//demarage de l'interface         
+            this.InitializeComponent();//demarage de l'interface   
+            
+            //affiche un message d'erreur vide      
             contexte = new Contexte { Valeur = "" };
-            DataContext = contexte;//affichage du message
+            DataContext = contexte;
         }
 
-        private void requete(IAsyncResult asynchronousResult)//envoi la requete
+        //recupère le token a partir du resultat de la requete
+        private string getToken(string data)
+        {
+            string res = "toto";
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(data);//chargement de la variable
+
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
+            {
+               
+                if (node.Name == "access_token")//on recupere le contenu de access_token
+                {
+                    res = node.InnerText;
+                }
+            }
+
+            return res;
+        }
+
+        //envoi de la requete de connection avec les bons arguments Post
+        private void requete(IAsyncResult asynchronousResult)
         {
             
 
@@ -144,7 +168,8 @@ namespace arelv1
             request.BeginGetResponse(new AsyncCallback(reponse), request);
         }
 
-        private void reponse(IAsyncResult asynchronousResult)//recupère le resultat
+        //recupère le résultat de la requete
+        private void reponse(IAsyncResult asynchronousResult)
         {
             
 
@@ -186,7 +211,7 @@ namespace arelv1
 
 
        
-
+        //fonction pour afficher les erreurs (pourrai être modifier pour faire un pop-up à la place)
         private void ecrire(string msg)
         {
            contexte.Valeur = msg;
