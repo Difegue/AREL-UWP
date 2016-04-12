@@ -118,7 +118,7 @@ namespace arelv1
         {
             
             this.InitializeComponent();//demarage de l'interface         
-            contexte = new Contexte { Valeur = "yo" };
+            contexte = new Contexte { Valeur = "" };
             DataContext = contexte;//affichage du message
         }
 

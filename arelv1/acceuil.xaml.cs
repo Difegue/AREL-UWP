@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace arelv1
 {
-    public sealed partial class acceuil : Page
+    public sealed partial class acceuil
     {
         public acceuil()
         {

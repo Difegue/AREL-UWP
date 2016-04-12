@@ -1,4 +1,9 @@
-﻿<Page
+﻿<!--
+1 ère page de l'application : page de connection
+-->
+    
+    
+<Page
     x:Class="arelv1.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,9 +12,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Center">
+            <!--
+               zone de texte ou on afiche les erreurs
+            -->
+            <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
+        </ScrollViewer>
 
         <Grid>
+            <!--
+               tableau pour que les elements soit centrés avec 50% de la taille (peut être qu'on peut faire plus jolie)
+            -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.25*" />
                 <ColumnDefinition Width="0.5*" />
@@ -22,21 +37,26 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <TextBlock Text="User" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="0"/>
-            <TextBox x:Name="nom" Grid.Column="1" Grid.Row="1"/>
 
+            <!-- texte -->
+            <TextBlock Text="User" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="0"/>
+            <!--champs pour username -->
+            <TextBox x:Name="nom" Grid.Column="1" Grid.Row="1"/>
+            <!-- texte -->
             <TextBlock Text="Password" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="2"/>
+            <!--champs pour password -->
             <PasswordBox x:Name="pass" Grid.Column="1" Grid.Row="3"/>
+            <!--bouton de validation -->
             <Button Content="Valider" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="4"/>
 
         </Grid>
 
 
-        <ScrollViewer VerticalAlignment="Center">
+        
             
                 
-                <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
+                
             
-        </ScrollViewer>
-    </Grid>
+        
+    </StackPanel>
 </Page>
