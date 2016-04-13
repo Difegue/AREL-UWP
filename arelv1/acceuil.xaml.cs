@@ -15,6 +15,9 @@ namespace arelv1
             //rootPage.NotifyUser("toto");
         }
 
-    
+        private void HamburgerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            hamburger.IsPaneOpen = !hamburger.IsPaneOpen;
+        }
     }
 }
