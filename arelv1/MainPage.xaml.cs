@@ -69,6 +69,11 @@ namespace arelv1
         private string resultat;//resultat de la requete
         private Windows.Storage.ApplicationDataContainer localSettings =  Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
 
+
+        
+
+
+
         //fonction executé quand on appuie sur le bouton
         private void login_button(object sender, RoutedEventArgs ev)
         {
@@ -199,9 +204,13 @@ namespace arelv1
                 {
                     resultat = "acces refusé";
                 }
+                else if(erreur.IndexOf("être résolu") > -1)
+                {
+                    resultat = "Pas de connection internet";
+                }
                 else
                 {
-                    resultat = "erreur inconnu" ;
+                    resultat = "erreur inconnu...";
                 }
                 //contexte = new Contexte { Valeur = "error: " + erreur };
 
