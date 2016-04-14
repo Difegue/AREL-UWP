@@ -7,50 +7,55 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-
-
 namespace arelv1
 {
-   
-
-    public sealed partial class acceuil
+    public class Page
     {
-        
-        private Info contexte;//pour le message d'erreur
-        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
-        private Page page = new Page();
+        private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
+        private string resultat;//resultat de la requete
+        private string postData;
 
-        public acceuil()
+        public string http(string url,string contentType,string identifiants,string modeAuth,string data)
         {
-            InitializeComponent();
-            ecrire(getinfo("api/events"));
-            //ecrire(localSettings.Values["token"].ToString());
+            WebRequest connexion = WebRequest.Create(url);//url
+            allDone = new ManualResetEvent(false);//reinitialisation de l'event asynchrone
+
+            connexion.Method = "POST";//Post ou get
+            connexion.Headers["ACCEPT"] = "application/xml";
+            connexion.ContentType = contentType;
+
+            string autorization = "";
+            postData = data;
+
+            //pour les identifiants
+            if(modeAuth == "Bearer")
+            {
+               autorization = identifiants;
+               autorization = modeAuth + " " + autorization;
+            }
+            else
+            {
+                autorization = identifiants;//identifiants de l'application
+                byte[] binaryAuthorization = System.Text.Encoding.UTF8.GetBytes(autorization);//conversion en tableau de la chaine
+                autorization = Convert.ToBase64String(binaryAuthorization);
+                autorization = modeAuth + " " + autorization; 
+            }
+            connexion.Headers["AUTHORIZATION"] = autorization;
+
+            connexion.BeginGetRequestStream(new AsyncCallback(requete), connexion);//lance la connexion asynchrone
+            allDone.WaitOne();//attend et reste sur la page en cours
+            return resultat;  
+            
         }
 
-
-        private string getinfo(string url)
-        {
-            url = "https://arel.eisti.fr/api/campus/sites";
-            string contentType = "application/xml";
-            string identifiants = localSettings.Values["token"].ToString();
-            string data = "format=xml";
-
-            string resultat = page.http(url, contentType, identifiants,"Bearer", data);//on fait la requete
-            return resultat;
-        }
-        /*
         private void requete(IAsyncResult asynchronousResult)
         {
-
-
+            
             HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
 
             // End the operation
             Stream postStream = request.EndGetRequestStream(asynchronousResult);
-
-
-            //string postData = "grant_type=client_credentials&scope=read&format=xml";
-            string postData = "format=xml";
+            
             // Convert the string into a byte array.
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
 
@@ -61,7 +66,6 @@ namespace arelv1
             request.BeginGetResponse(new AsyncCallback(reponse), request);
         }
 
-        //recupère le résultat de la requete
         private void reponse(IAsyncResult asynchronousResult)
         {
 
@@ -77,12 +81,12 @@ namespace arelv1
                 Stream streamResponse = response.GetResponseStream();
                 StreamReader streamRead = new StreamReader(streamResponse);
                 string responseString = streamRead.ReadToEnd();
-
-
+                
                 resultat = responseString;
             }
             catch (Exception e)
             {
+                
                 string erreur = e.ToString();
                 if (erreur.IndexOf("400") > -1)
                 {
@@ -92,47 +96,22 @@ namespace arelv1
                 {
                     resultat = "acces refusé";
                 }
+                else if (erreur.IndexOf("403") > -1)
+                {
+                    resultat = "ressource interdite";
+                }
                 else if (erreur.IndexOf("être résolu") > -1)
                 {
                     resultat = "Pas de connection internet";
                 }
-                else if(erreur.IndexOf("403") > -1)
-                {
-                    resultat = "ressource interdite";
-                }
                 else
                 {
-                    resultat = "erreur inconnu..."+e;
+                    resultat = "erreur inconnu...";
                 }
-                //contexte = new Contexte { Valeur = "error: " + erreur };
+               
 
             }
             allDone.Set();
-        }
-        */
-
-
-
-
-
-
-
-        
-
-        private void HamburgerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            hamburger.IsPaneOpen = !hamburger.IsPaneOpen;
-        }
-
-        private void ecrire(string msg)
-        {
-            if (contexte != null)
-                contexte.Valeur = msg;
-            else
-            {
-                contexte = new Info { Valeur = msg };
-                DataContext = contexte;
-            }
         }
     }
 }

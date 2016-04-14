@@ -45,8 +45,17 @@
         <!-- le cpntenu de la page -->
         <SplitView.Content>
             <Grid Background="Black">
-                <TextBlock Text="Hamburger Demo" FontSize="54" Foreground="White"
-                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Center">
+                    <!--
+                        zone de texte ou on afiche les erreurs
+                    -->
+                    <StackPanel>
+                        <TextBlock x:Name="toto" Foreground="Red" Text="yo"/>
+                        <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
+                    </StackPanel>
+                    
+                    
+                </ScrollViewer>
             </Grid>
         </SplitView.Content>
     </SplitView>
