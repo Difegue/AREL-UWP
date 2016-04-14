@@ -10,41 +10,41 @@
                CompactPaneLength="50" OpenPaneLength="220">
         <!-- le menu -->
         <SplitView.Pane>
-            <StackPanel Background="Gray">
+            <StackPanel Background="{ThemeResource SystemControlBackgroundAccentBrush}" >
                 <!-- le bouton hamburger -->
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
-                    Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"/>
+                    Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click" Foreground="white"/>
                 <!-- le bouton n°1 -->
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="bouton_acceuil" FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
-                    Width="50" Height="50" Background="Transparent"/>
-                    <TextBlock Text="Acceuil" FontSize="18" VerticalAlignment="Center" />
+                    Width="50" Height="50" Background="Transparent" Foreground="white"/>
+                    <TextBlock Text="Acceuil" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
                 <!-- le bouton n°2 -->
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="bouton_agenda" FontFamily="Segoe MDL2 Assets" Content="&#xE8F5;"
-                    Width="50" Height="50" Background="Transparent"/>
-                    <TextBlock Text="Emploi du temps" FontSize="18" VerticalAlignment="Center" />
+                    Width="50" Height="50" Background="Transparent" Foreground="white"/>
+                    <TextBlock Text="Emploi du temps" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
                 
                 <!-- le bouton n°3 -->
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="bouton_note" FontFamily="Segoe MDL2 Assets" Content="&#xE7BE;"
-                        Width="50" Height="50" Background="Transparent"/>
-                    <TextBlock Text="Les notes" FontSize="18" VerticalAlignment="Center" />
+                        Width="50" Height="50" Background="Transparent" Foreground="white"/>
+                    <TextBlock Text="Les notes" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
                 <!-- le bouton n°4 -->
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="bouton_salles" FontFamily="Segoe MDL2 Assets" Content="&#xE211;"
-                        Width="50" Height="50" Background="Transparent"/>
-                    <TextBlock Text="Les salles" FontSize="18" VerticalAlignment="Center" />
+                        Width="50" Height="50" Background="Transparent" Foreground="white"/>
+                    <TextBlock Text="Les salles" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
             </StackPanel>
         </SplitView.Pane>
         
         <!-- le cpntenu de la page -->
         <SplitView.Content>
-            <Grid Background="Black">
+            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                 <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Center">
                     <!--
                         zone de texte ou on afiche les erreurs
