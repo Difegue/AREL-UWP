@@ -6,65 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Page.Resources>
-        
-        
-        
-        <!--
-            style pour le pivot...
-            ->centrer le titre
-            -> titre blanc sur fond systeme
-        
-        -->
-        
-        
-        <SolidColorBrush x:Key="PivotBackground" Color="#FFE46C08"/>
-
-        <Style x:Key="PivotStyle" TargetType="Pivot">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Pivot">
-                        <Grid x:Name="RootElement" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <Grid VerticalAlignment="Center" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
-                                <ContentControl x:Name="TitleContentControl" ContentTemplate="{TemplateBinding TitleTemplate}" Content="{TemplateBinding Title}" HorizontalAlignment="Center" Style="{StaticResource PivotTitleContentControlStyle}" Foreground="White"/>
-                            </Grid>
-                            <ScrollViewer x:Name="ScrollViewer" HorizontalSnapPointsAlignment="Center" HorizontalSnapPointsType="MandatorySingle" HorizontalScrollBarVisibility="Hidden" Margin="{TemplateBinding Padding}" Grid.Row="1" Template="{StaticResource ScrollViewerScrollBarlessTemplate}" VerticalSnapPointsType="None" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" VerticalContentAlignment="Stretch" ZoomMode="Disabled" >
-                                <PivotPanel x:Name="Panel" VerticalAlignment="Stretch">
-                                    <PivotHeaderPanel x:Name="Header" Width="auto">
-                                        <PivotHeaderPanel.RenderTransform>
-                                            <CompositeTransform x:Name="HeaderTranslateTransform" TranslateX="0"/>
-                                        </PivotHeaderPanel.RenderTransform>
-                                    </PivotHeaderPanel>
-                                    <ItemsPresenter x:Name="PivotItemPresenter">
-                                        <ItemsPresenter.RenderTransform>
-                                            <TranslateTransform x:Name="ItemsPresenterTranslateTransform" X="0"/>
-                                        </ItemsPresenter.RenderTransform>
-                                    </ItemsPresenter>
-                                </PivotPanel>
-                            </ScrollViewer>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Page.Resources>
-
-    
-    <!--
-    
-        la page!!!
-    
-    -->
-    
-    
+   
     <SplitView x:Name="hamburger" DisplayMode="CompactOverlay"  IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="220">
         
         
@@ -118,22 +60,22 @@
                 
                 
                 <!-- le pivot -->
-                
-                <Pivot Style="{StaticResource PivotStyle}" Title="Arel windows app" x:Name="rootPivot">
+
+                <Pivot Style="{StaticResource PivotStyle}" Title="Arel windows app" x:Name="rootPivot" Background="white">
 
 
-                    <PivotItem Header="Emploi du temps">
+                    <PivotItem Header="Emploi du temps" Foreground="black" Background="white">
                         <!--emploi du temps-->
-                        <StackPanel>
-                            <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
-                            <TextBlock Text="Content of pivot item 1."/>
+                        <StackPanel >
+                            <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}" />
+                            <TextBlock Text="Content of pivot item 1." />
                         </StackPanel>
                     </PivotItem>
-                    <PivotItem Header="Notes">
+                    <PivotItem Header="Notes" Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <!--les notes -->
                         <TextBlock Text="Content of pivot item 2."/>
                     </PivotItem>
-                    <PivotItem Header="Salles libres">
+                    <PivotItem Header="Salles libres" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
                         <!--les salles -->
                         <TextBlock Text="Content of pivot item 3."/>
                     </PivotItem>

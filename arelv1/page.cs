@@ -84,12 +84,12 @@ namespace arelv1
                 
                 resultat = responseString;
             }
-            catch (Exception e)
+            catch (WebException e)
             {
                 
                 string erreur = e.ToString();
                 if (erreur.IndexOf("400") > -1)
-                {
+                {                   
                     resultat = "identifiants incorrects";
                 }
                 else if (erreur.IndexOf("401") > -1)
@@ -98,7 +98,12 @@ namespace arelv1
                 }
                 else if (erreur.IndexOf("403") > -1)
                 {
-                    resultat = "ressource interdite";
+                    Stream streamResponse = e.Response.GetResponseStream();
+                    StreamReader streamRead = new StreamReader(streamResponse);
+                    string responseString = streamRead.ReadToEnd();
+
+
+                    resultat = "ressource interdite: "+responseString;
                 }
                 else if (erreur.IndexOf("être résolu") > -1)
                 {
