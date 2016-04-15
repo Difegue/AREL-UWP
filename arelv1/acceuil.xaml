@@ -6,57 +6,140 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <SplitView x:Name="hamburger" DisplayMode="CompactOverlay"  IsPaneOpen="False" 
-               CompactPaneLength="50" OpenPaneLength="220">
-        <!-- le menu -->
+    <Page.Resources>
+        
+        
+        
+        <!--
+            style pour le pivot...
+            ->centrer le titre
+            -> titre blanc sur fond systeme
+        
+        -->
+        
+        
+        <SolidColorBrush x:Key="PivotBackground" Color="#FFE46C08"/>
+
+        <Style x:Key="PivotStyle" TargetType="Pivot">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Pivot">
+                        <Grid x:Name="RootElement" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Grid VerticalAlignment="Center" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+                                <ContentControl x:Name="TitleContentControl" ContentTemplate="{TemplateBinding TitleTemplate}" Content="{TemplateBinding Title}" HorizontalAlignment="Center" Style="{StaticResource PivotTitleContentControlStyle}" Foreground="White"/>
+                            </Grid>
+                            <ScrollViewer x:Name="ScrollViewer" HorizontalSnapPointsAlignment="Center" HorizontalSnapPointsType="MandatorySingle" HorizontalScrollBarVisibility="Hidden" Margin="{TemplateBinding Padding}" Grid.Row="1" Template="{StaticResource ScrollViewerScrollBarlessTemplate}" VerticalSnapPointsType="None" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" VerticalContentAlignment="Stretch" ZoomMode="Disabled" >
+                                <PivotPanel x:Name="Panel" VerticalAlignment="Stretch">
+                                    <PivotHeaderPanel x:Name="Header" Width="auto">
+                                        <PivotHeaderPanel.RenderTransform>
+                                            <CompositeTransform x:Name="HeaderTranslateTransform" TranslateX="0"/>
+                                        </PivotHeaderPanel.RenderTransform>
+                                    </PivotHeaderPanel>
+                                    <ItemsPresenter x:Name="PivotItemPresenter">
+                                        <ItemsPresenter.RenderTransform>
+                                            <TranslateTransform x:Name="ItemsPresenterTranslateTransform" X="0"/>
+                                        </ItemsPresenter.RenderTransform>
+                                    </ItemsPresenter>
+                                </PivotPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    
+    <!--
+    
+        la page!!!
+    
+    -->
+    
+    
+    <SplitView x:Name="hamburger" DisplayMode="CompactOverlay"  IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="220">
+        
+        
+        <!-- le menu (hamburger) -->
+        
+        
         <SplitView.Pane>
             <StackPanel Background="{ThemeResource SystemControlBackgroundAccentBrush}" >
                 <!-- le bouton hamburger -->
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
                     Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click" Foreground="white"/>
+                
                 <!-- le bouton n°1 -->
+                
                 <StackPanel Orientation="Horizontal">
                     <Button x:Name="bouton_acceuil" FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
                     Width="50" Height="50" Background="Transparent" Foreground="white"/>
                     <TextBlock Text="Acceuil" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
+                
                 <!-- le bouton n°2 -->
+                
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="bouton_agenda" FontFamily="Segoe MDL2 Assets" Content="&#xE8F5;"
-                    Width="50" Height="50" Background="Transparent" Foreground="white"/>
-                    <TextBlock Text="Emploi du temps" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
+                    <Button Click="agendaClick" x:Name="bouton_agenda" FontFamily="Segoe MDL2 Assets" Content="&#xE8F5;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
+                    <TextBlock Text="Emploi du temps" FontSize="18" VerticalAlignment="Center" Foreground="white" />
                 </StackPanel>
                 
                 <!-- le bouton n°3 -->
+                
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="bouton_note" FontFamily="Segoe MDL2 Assets" Content="&#xE7BE;"
-                        Width="50" Height="50" Background="Transparent" Foreground="white"/>
+                    <Button Click="noteClick" x:Name="bouton_note" FontFamily="Segoe MDL2 Assets" Content="&#xE7BE;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
                     <TextBlock Text="Les notes" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
+                
                 <!-- le bouton n°4 -->
+                
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="bouton_salles" FontFamily="Segoe MDL2 Assets" Content="&#xE211;"
-                        Width="50" Height="50" Background="Transparent" Foreground="white"/>
+                    <Button Click="sallesClick" x:Name="bouton_salles" FontFamily="Segoe MDL2 Assets" Content="&#xE211;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
                     <TextBlock Text="Les salles" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
+                
             </StackPanel>
         </SplitView.Pane>
         
+        
         <!-- le cpntenu de la page -->
+        
+        
         <SplitView.Content>
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Center">
-                    <!--
-                        zone de texte ou on afiche les erreurs
-                    -->
-                    <StackPanel>
-                        <TextBlock x:Name="toto" Foreground="Red" Text="yo"/>
-                        <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
-                    </StackPanel>
-                    
-                    
-                </ScrollViewer>
+            <Grid Background="Transparent">
+                
+                
+                <!-- le pivot -->
+                
+                <Pivot Style="{StaticResource PivotStyle}" Title="Arel windows app" x:Name="rootPivot">
+
+
+                    <PivotItem Header="Emploi du temps">
+                        <!--emploi du temps-->
+                        <StackPanel>
+                            <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
+                            <TextBlock Text="Content of pivot item 1."/>
+                        </StackPanel>
+                    </PivotItem>
+                    <PivotItem Header="Notes">
+                        <!--les notes -->
+                        <TextBlock Text="Content of pivot item 2."/>
+                    </PivotItem>
+                    <PivotItem Header="Salles libres">
+                        <!--les salles -->
+                        <TextBlock Text="Content of pivot item 3."/>
+                    </PivotItem>
+                </Pivot>
             </Grid>
+
         </SplitView.Content>
     </SplitView>
 </Page>

@@ -55,5 +55,22 @@ namespace arelv1
                 DataContext = contexte;
             }
         }
+
+        private void agendaClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            rootPivot.SelectedIndex = 0;
+        }
+
+        private void noteClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            rootPivot.SelectedIndex = 1;
+        }
+
+        private void sallesClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            rootPivot.SelectedIndex = 2;
+        }
+      
+
     }
 }
