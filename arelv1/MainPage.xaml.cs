@@ -67,7 +67,7 @@ namespace arelv1
         private Info contexte;//pour le message d'erreur
         private Windows.Storage.ApplicationDataContainer localSettings =  Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
         private Page page = new Page();//objet pour faire la requete html et peut un jour d'autres choses
-
+        private bool stayConnect;
         
         
 
@@ -77,8 +77,15 @@ namespace arelv1
         {
             if(connect_login(nom.Text, pass.Password))
             {
+                if(stayConnect)
+                {
+                    localSettings.Values["user"] = nom.Text;
+                    localSettings.Values["pass"] = pass.Password;
+                }
+                
                 Frame.Navigate(typeof(acceuil));
-            }            
+            } 
+            //ecrire(localSettings.Values["token"].ToString());      
         }
 
         //fonction qui initialise la connection à arel
@@ -114,8 +121,11 @@ namespace arelv1
         public MainPage()
         {
             
-            this.InitializeComponent();//demarage de l'interface   
+            InitializeComponent();//demarage de l'interface   
+
             
+
+            stayConnect = false;
              
             
         }
@@ -150,6 +160,11 @@ namespace arelv1
                 contexte = new Info { Valeur = msg };
                 DataContext = contexte;
             }
+        }
+
+        private void stayConnectBox(object sender, RoutedEventArgs e)
+        {
+            stayConnect = !stayConnect;
         }
     }
 }

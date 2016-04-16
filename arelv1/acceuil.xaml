@@ -22,9 +22,8 @@
                 <!-- le bouton n°1 -->
                 
                 <StackPanel Orientation="Horizontal">
-                    <Button x:Name="bouton_acceuil" FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
-                    Width="50" Height="50" Background="Transparent" Foreground="white"/>
-                    <TextBlock Text="Acceuil" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
+                    <Button Click="decoClick" x:Name="bouton_deco" FontFamily="Segoe MDL2 Assets" Content="&#xE7E8;" Width="50" Height="50" Background="Transparent" Foreground="white" />
+                    <TextBlock Text="Déconnexion" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
                 
                 <!-- le bouton n°2 -->

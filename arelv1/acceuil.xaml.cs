@@ -70,7 +70,12 @@ namespace arelv1
         {
             rootPivot.SelectedIndex = 2;
         }
-      
 
+        private void decoClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            localSettings.Values["user"] = null;
+            localSettings.Values["pass"] = null;
+            Frame.Navigate(typeof(MainPage));
+        }
     }
 }

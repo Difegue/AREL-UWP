@@ -26,6 +26,10 @@ namespace arelv1
         /// Initialise l'objet d'application de singleton.  Il s'agit de la première ligne du code créé
         /// à être exécutée. Elle correspond donc à l'équivalent logique de main() ou WinMain().
         /// </summary>
+        /// 
+        Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
+        private Page page = new Page();//objet pour faire la requete html et peut un jour d'autres choses
+
         public App()
         {
             Microsoft.ApplicationInsights.WindowsAppInitializer.InitializeAsync(
@@ -43,6 +47,8 @@ namespace arelv1
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
+
+
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 this.DebugSettings.EnableFrameRateCounter = true;
@@ -52,6 +58,8 @@ namespace arelv1
 
             // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu,
             // assurez-vous juste que la fenêtre est active
+
+            
             if (rootFrame == null)
             {
                 // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
@@ -75,7 +83,14 @@ namespace arelv1
                     // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
                     // puis configurez la nouvelle page en transmettant les informations requises en tant que
                     // paramètre
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    
+                    if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null)
+                        if (connect_login(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString()))
+                           rootFrame.Navigate(typeof(acceuil), e.Arguments);
+                        else
+                          rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    else
+                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
                 // Vérifiez que la fenêtre actuelle est active
                 Window.Current.Activate();
@@ -104,6 +119,53 @@ namespace arelv1
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: enregistrez l'état de l'application et arrêtez toute activité en arrière-plan
             deferral.Complete();
+        }
+
+
+        //fonction qui initialise la connection à arel
+        private bool connect_login(string name, string pass)
+        {
+            string url = "http://arel.eisti.fr/oauth/token";
+            string contentType = "application/x-www-form-urlencoded";
+            string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
+            string data = "grant_type=password&username=" + name + "&password=" + pass + "&scope = read&format=xml";
+
+            string resultat = page.http(url, contentType, identifiants, "Basic", data);//on fait la requete
+
+
+            if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
+            {
+                //ecrire(getToken(resultat));
+                localSettings.Values["token"] = getToken(resultat);//on save le token
+                return true;
+            }
+            else
+            {
+                //ecrire(resultat);
+                return false;
+            }
+
+
+
+
+        }
+
+        private string getToken(string data)
+        {
+            string res = "toto";
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(data);//chargement de la variable
+
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
+            {
+
+                if (node.Name == "access_token")//on recupere le contenu de access_token
+                {
+                    res = node.InnerText;
+                }
+            }
+
+            return res;
         }
     }
 }

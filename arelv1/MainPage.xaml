@@ -50,13 +50,13 @@
             <Button Content="Valider" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="4"/>
 
         </Grid>
+        <CheckBox Content="Rester connecté" HorizontalAlignment="Center" Checked="stayConnectBox"/>
+           
 
 
-        
-            
-                
-                
-            
-        
+
+
+
+
     </StackPanel>
 </Page>
