@@ -105,13 +105,13 @@ namespace arelv1
 
                     resultat = "ressource interdite: "+responseString;
                 }
-                else if (erreur.IndexOf("être résolu") > -1)
+                else if (e.Status.ToString().IndexOf("ResolutionFailure") > -1)
                 {
                     resultat = "Pas de connection internet";
                 }
                 else
                 {
-                    resultat = "erreur inconnu...";
+                    resultat = "erreur inconnu...\n" + e.Status;
                 }
                
 
