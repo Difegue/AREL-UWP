@@ -109,6 +109,10 @@ namespace arelv1
                 {
                     resultat = "Pas de connection internet";
                 }
+                else if(erreur.IndexOf("500") > -1)
+                {
+                    resultat = "Erreur du serveur";
+                }
                 else
                 {
                     resultat = "erreur inconnu...\n" + e.Status;
