@@ -85,10 +85,10 @@ namespace arelv1
                     // paramètre
                     
                     if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null)
-                        if (connect_login(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString()))
+                        //if (connect_login(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString()))
                            rootFrame.Navigate(typeof(acceuil), e.Arguments);
-                        else
-                          rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                        //else
+                          //rootFrame.Navigate(typeof(acceuil), e.Arguments);
                     else
                         rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }

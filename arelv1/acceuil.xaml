@@ -60,10 +60,10 @@
                 
                 <!-- le pivot -->
 
-                <Pivot Style="{StaticResource PivotStyle}" Title="Arel windows app" x:Name="rootPivot" Background="white">
+                <Pivot Style="{StaticResource PivotStyle}" Title="Arel windows app" x:Name="rootPivot" Background="white" SelectionChanged="pivotClick">
 
 
-                    <PivotItem Header="Emploi du temps" Foreground="black" Background="white">
+                    <PivotItem Header="Emploi du temps" Foreground="black" Background="white" GotFocus="agendaClick">
                         <!--emploi du temps-->
                         <StackPanel >
                             <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}" />
