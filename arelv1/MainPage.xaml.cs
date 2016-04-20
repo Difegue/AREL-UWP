@@ -96,7 +96,7 @@ namespace arelv1
             string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
             string data = "grant_type=password&username="+name+"&password="+pass+"&scope = read&format=xml";
 
-            string resultat = page.http(url, contentType, identifiants,"Basic",data);//on fait la requete
+            string resultat = page.http(url, contentType, identifiants,"Basic",data,"POST");//on fait la requete
             
 
             if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon

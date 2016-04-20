@@ -15,12 +15,13 @@ namespace arelv1
         private string resultat;//resultat de la requete
         private string postData;
 
-        public string http(string url,string contentType,string identifiants,string modeAuth,string data)
+        public string http(string url,string contentType,string identifiants,string modeAuth,string data,string toc)
         {
             WebRequest connexion = WebRequest.Create(url);//url
             allDone = new ManualResetEvent(false);//reinitialisation de l'event asynchrone
 
-            connexion.Method = "POST";//Post ou get
+            connexion.Method = toc;//Post ou get
+            //return connexion.Method;
             connexion.Headers["ACCEPT"] = "application/xml";
             connexion.ContentType = contentType;
 
@@ -42,11 +43,26 @@ namespace arelv1
             }
             connexion.Headers["AUTHORIZATION"] = autorization;
 
-            connexion.BeginGetRequestStream(new AsyncCallback(requete), connexion);//lance la connexion asynchrone
+            if (connexion.Method == "GET")
+            {
+                //connexion.BeginGetResponse(this.ResponseCallback, state);
+                connexion.BeginGetResponse(new AsyncCallback(reponse), connexion);
+            }
+            else
+            {
+                connexion.BeginGetRequestStream(new AsyncCallback(requete), connexion);//lance la connexion asynchrone
+            }
+
+           
+
+            
+
             allDone.WaitOne();//attend et reste sur la page en cours
             return resultat;  
             
         }
+
+       
 
         private void requete(IAsyncResult asynchronousResult)
         {

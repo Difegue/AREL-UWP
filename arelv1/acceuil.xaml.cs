@@ -23,18 +23,24 @@ namespace arelv1
         public acceuil()
         {
             InitializeComponent();
-            ecrire(getinfo("api/events"));
+            if(localSettings.Values["internet"] == null)
+            {
+                localSettings.Values["planning"] = getinfo("api/planning/slots");
+                localSettings.Values["notes"] = "toto";// getinfo("api /planning/slots");
+                localSettings.Values["salles"] = getinfo("api/campus/rooms");
+            }
+            
         }
 
 
         private string getinfo(string url)
         {
-            url = "https://arel.eisti.fr/api/campus/rooms";
+            url = "https://arel.eisti.fr/"+url;
             string contentType = "application/xml";
             string identifiants = localSettings.Values["token"].ToString();
             string data = "format=xml";
 
-            string resultat = page.http(url, contentType, identifiants,"Bearer", data);//on fait la requete
+            string resultat = page.http(url, contentType, identifiants,"Bearer", data,"GET");//on fait la requete
             return resultat;
         }
 
