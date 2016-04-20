@@ -1,18 +1,89 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace arelv1
 {
     public class Page
     {
+        
         private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
-        private string resultat;//resultat de la requete
+        private string resultat;
+
+
+        //--------------------enregistrer dans un fichier... -----------------------------------------
+
+
+        private bool readsuccess;
+
+
+        void saveData(string key, string data)//ecriture normale
+        {
+            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(key, FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication()))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    writer.WriteLine(data);
+                }
+            }
+        }
+
+        string getData(string key)
+        {
+            string res;
+            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(key, FileMode.Open, IsolatedStorageFile.GetUserStoreForApplication()))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    res = reader.ReadLine();
+                }
+            }
+            return res;
+        }
+
+        bool isset(string key)
+        {
+            IsolatedStorageFile racine = IsolatedStorageFile.GetUserStoreForApplication();
+            return racine.FileExists(key);      
+        }
+
+
+        async void saveDataAsync(string key,string data)//ecriture asynchrone
+        {
+           
+            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(key, CreationCollisionOption.ReplaceExisting);
+            await FileIO.WriteTextAsync(file, data);
+           
+        }
+
+        async void getDataAsync(string key)//lecture asynchrone
+        {
+            try
+            {
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(key);
+                resultat = await FileIO.ReadTextAsync(file);
+                readsuccess = true;
+                // Data is contained in timestamp
+            }
+            catch (Exception)
+            {
+                readsuccess = false;
+                // Timestamp not found
+            }
+        }
+
+
+        //--------------------------------requete http-------------------------------------
+
+        
+        //private string resultat;//resultat de la requete
         private string postData;
 
         public string http(string url,string contentType,string identifiants,string modeAuth,string data,string toc)
