@@ -24,7 +24,7 @@ namespace arelv1
         private bool readsuccess;
 
 
-        void saveData(string key, string data)//ecriture normale
+        public void saveData(string key, string data)//ecriture normale
         {
             using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(key, FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication()))
             {
@@ -35,7 +35,7 @@ namespace arelv1
             }
         }
 
-        string getData(string key)
+        public string getData(string key)
         {
             string res;
             using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(key, FileMode.Open, IsolatedStorageFile.GetUserStoreForApplication()))
@@ -48,7 +48,7 @@ namespace arelv1
             return res;
         }
 
-        bool isset(string key)
+        public bool isset(string key)
         {
             IsolatedStorageFile racine = IsolatedStorageFile.GetUserStoreForApplication();
             return racine.FileExists(key);      

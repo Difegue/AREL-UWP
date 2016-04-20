@@ -25,11 +25,14 @@ namespace arelv1
             InitializeComponent();
             if(localSettings.Values["internet"] == null)
             {
-                localSettings.Values["planning"] = getinfo("api/planning/slots");
-                localSettings.Values["notes"] = "toto";// getinfo("api /planning/slots");
-                localSettings.Values["salles"] = getinfo("api/campus/rooms");
+                page.saveData("planning", getinfo("api/planning/slots"));
+                page.saveData("salles", getinfo("api/campus/rooms"));
+                page.saveData("notes", "toto");
+                //localSettings.Values["planning"] = getinfo("api/planning/slots");
+                //localSettings.Values["notes"] = "toto";// getinfo("api /planning/slots");
+                //localSettings.Values["salles"] = getinfo("api/campus/rooms");
             }
-            
+            //ecrire(page.getData("planning"));
         }
 
 
@@ -90,6 +93,7 @@ namespace arelv1
         {
             localSettings.Values["user"] = null;
             localSettings.Values["pass"] = null;
+            localSettings.Values["stayConnect"] = null;
             Frame.Navigate(typeof(MainPage));
         }
 

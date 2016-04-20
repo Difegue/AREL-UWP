@@ -84,7 +84,7 @@ namespace arelv1
                     // puis configurez la nouvelle page en transmettant les informations requises en tant que
                     // paramètre
                     
-                    if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null)
+                    if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null && localSettings.Values["stayConnect"] != null)
                         if (connect_login(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString()))
                            rootFrame.Navigate(typeof(acceuil), e.Arguments);
                         else

@@ -75,12 +75,15 @@ namespace arelv1
         //fonction executé quand on appuie sur le bouton
         private void login_button(object sender, RoutedEventArgs ev)
         {
+
             if(connect_login(nom.Text, pass.Password))
             {
-                if(stayConnect)
+                localSettings.Values["user"] = nom.Text;
+                localSettings.Values["pass"] = pass.Password;
+                if (stayConnect)
                 {
-                    localSettings.Values["user"] = nom.Text;
-                    localSettings.Values["pass"] = pass.Password;
+                    localSettings.Values["stayConnect"] = nom.Text;
+                    
                 }
                 
                 Frame.Navigate(typeof(acceuil));
@@ -122,9 +125,7 @@ namespace arelv1
         {
             
             InitializeComponent();//demarage de l'interface   
-
-            
-
+            localSettings.Values["internet"] = null;
             stayConnect = false;
              
             
@@ -165,6 +166,24 @@ namespace arelv1
         private void stayConnectBox(object sender, RoutedEventArgs e)
         {
             stayConnect = !stayConnect;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void internet_button(object sender, RoutedEventArgs e)
+        {
+            if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null && page.isset("planning") && page.isset("salles") && page.isset("notes"))
+            {
+                localSettings.Values["internet"] = true;
+                Frame.Navigate(typeof(acceuil));
+            }
+            else
+            {
+                ecrire("Une première connexion est requise");
+            }
         }
     }
 }

@@ -47,9 +47,11 @@
             <!--champs pour password -->
             <PasswordBox x:Name="pass" Grid.Column="1" Grid.Row="3"/>
             <!--bouton de validation -->
-            <Button Content="Valider" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="4"/>
-
+            
         </Grid>
+        <Button Content="Valider" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="4"/>
+        <Button Content="Hors connexion" Click="internet_button" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="4"/>
+
         <CheckBox Content="Rester connecté" HorizontalAlignment="Center" Checked="stayConnectBox"/>
            
 
