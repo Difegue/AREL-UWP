@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.UI;
 
 namespace arelv1
 {
@@ -16,6 +17,93 @@ namespace arelv1
         
         private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
         private string resultat;
+
+
+        //-------------------- convertisseur hexa -> rgb ---------------------------------------------
+
+        public Color HexToColor(String hexString)
+        {
+            Color actColor;
+            int r, g, b;
+            r = 0;
+            g = 0;
+            b = 0;
+            if ((hexString.StartsWith("#")) && (hexString.Length == 7))
+            {
+                r = HexToInt(hexString.Substring(1, 1))*16 + HexToInt(hexString.Substring(1, 1));
+                g = HexToInt(hexString.Substring(3, 1)) * 16 + HexToInt(hexString.Substring(4, 1));
+                b = HexToInt(hexString.Substring(5, 1)) * 16 + HexToInt(hexString.Substring(6, 1));
+                
+                actColor = Color.FromArgb(150, Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
+            }
+            else
+            {
+                actColor = Color.FromArgb(0,0,0,0);
+            }
+            return actColor;
+        }
+
+        public int HexToInt(string s)
+        {
+            int res;
+            switch(s)
+            {
+                case "1":
+                    res = 1;
+                break;
+                case "2":
+                    res = 2;
+                break;
+                case "3":
+                    res = 3;
+                    break;
+                case "4":
+                    res = 4;
+                    break;
+                case "5":
+                    res = 5;
+                    break;
+                case "6":
+                    res = 6;
+                    break;
+                case "7":
+                    res = 7;
+                    break;
+                case "8":
+                    res = 8;
+                    break;
+                case "9":
+                    res = 9;
+                    break;
+                case "a":
+                    res = 10;
+                    break;
+                case "b":
+                    res = 11;
+                    break;
+                case "c":
+                    res = 12;
+                    break;
+                case "d":
+                    res = 13;
+                    break;
+                case "e":
+                    res = 14;
+                    break;
+                case "f":
+                    res = 15;
+                    break;
+                case "0":
+                    res = 0;
+                break;
+                default:
+                    res = 0;
+                break;
+                
+            }
+            return res;
+        }
+
 
 
         //--------------------enregistrer dans un fichier... -----------------------------------------
@@ -70,12 +158,10 @@ namespace arelv1
                 StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(key);
                 resultat = await FileIO.ReadTextAsync(file);
                 readsuccess = true;
-                // Data is contained in timestamp
             }
             catch (Exception)
             {
                 readsuccess = false;
-                // Timestamp not found
             }
         }
 

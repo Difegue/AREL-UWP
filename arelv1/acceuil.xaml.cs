@@ -19,7 +19,6 @@ namespace arelv1
     {
         
         private Info contexte;//pour le message d'erreur
-        private plann planning;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
         private Page page = new Page();
 
@@ -35,7 +34,6 @@ namespace arelv1
             }
                writePlanning(page.getData("planning"));
             UpdateLayout();
-            
         }
 
         private void writePlanning(string xml)
@@ -66,7 +64,7 @@ namespace arelv1
                     Grid.SetRow(macase, j);
                 }
             }
-           
+
             /*
             List<string> l = new List<string> { };
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
@@ -78,8 +76,56 @@ namespace arelv1
             }
             planning = new plann { Prenoms = l};
             DataContext = planning;*/
+            ajoutCours("nfo", "2016-04-27T08:45:00.000+0000", "2016-04-27T09:45:00.000+0000", "Mathematiques CPI 2", "#00b0f0", 26);
         }
 
+        private void ajoutCours(string prof,string heureDebut,string heureFin,string matière,string couleur,int premierJour)
+        {
+            DateTime dt = Convert.ToDateTime(heureDebut);
+            DateTime dt2 = Convert.ToDateTime(heureFin);
+
+            int col = dt.Day - premierJour;
+            int ligneDeb = ((dt.Hour - 10)*4)+1;
+            int ligneFin = ((dt2.Hour - 10)*4);
+            ecrire(ligneDeb.ToString()+" - "+ ligneFin.ToString());
+
+            TextBlock matBlock = new TextBlock();
+            matBlock.Text = matière;
+            matBlock.FontSize = 13;
+            matBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+            TextBlock profBlock = new TextBlock();
+            profBlock.Text = prof;
+            profBlock.FontSize = 13;
+            profBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+            
+
+
+            for (int i=ligneDeb;i<=ligneFin;i++)
+            {
+                StackPanel macase = new StackPanel();
+
+                if(i == ligneDeb)
+                {
+                    macase.Children.Add(matBlock);
+                }
+
+                if (i == ligneDeb + 1)
+                {
+                    macase.Children.Add(profBlock);
+                }
+
+
+                macase.Background = new SolidColorBrush(page.HexToColor(couleur));
+                
+                grid.Children.Add(macase);
+                Grid.SetColumn(macase, col);
+                Grid.SetRow(macase, i);
+            }
+
+        }
+        
         private string getinfo(string url)
         {
             url = "https://arel.eisti.fr/"+url;
