@@ -21,6 +21,50 @@ using System.ComponentModel;
 
 namespace arelv1
 {
+    public class plann : INotifyPropertyChanged
+    {
+        private List<string> prenoms;
+
+        public List<string> Prenoms
+        {
+
+            get { return prenoms; }
+
+            set { NotifyPropertyChanged(ref prenoms, value); }
+
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+
+        public void NotifyPropertyChanged(string nomPropriete)
+
+        {
+
+            if (PropertyChanged != null)
+
+                PropertyChanged(this, new PropertyChangedEventArgs(nomPropriete));
+
+        }
+
+
+        private bool NotifyPropertyChanged<T>(ref T variable, T valeur, [System.Runtime.CompilerServices.CallerMemberName] string nomPropriete = null)
+
+        {
+
+            if (object.Equals(variable, valeur)) return false;
+
+
+            variable = valeur;
+
+            NotifyPropertyChanged(nomPropriete);
+
+            return true;
+
+        }
+    }
+
     public class Info : INotifyPropertyChanged // classe pour gerer le remplissage et la modif du message d'erreur
     {
 

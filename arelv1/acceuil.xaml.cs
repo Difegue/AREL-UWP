@@ -53,11 +53,21 @@ namespace arelv1
                 for (int i = 1; i < 6; i++)
                 {
                     StackPanel macase = new StackPanel();
-                    macase.BorderThickness = new Thickness(1);
+                    /*
+                     * mettre en subrillance les heures 'on verra plus tard...
                     if (j == (4 * jj))
+                    {
                         macase.BorderBrush = new SolidColorBrush(Colors.SeaGreen);
+                        macase.BorderThickness = new Thickness(1,0,1,1);
+                    }                        
                     else
+                    {
+                        macase.BorderThickness = new Thickness(1);
                         macase.BorderBrush = new SolidColorBrush(Colors.LightBlue);
+                    }
+                    */
+                    macase.BorderThickness = new Thickness(1);
+                    macase.BorderBrush = new SolidColorBrush(Colors.LightBlue);
 
                     grid.Children.Add(macase);
                     Grid.SetColumn(macase, i);
@@ -87,6 +97,10 @@ namespace arelv1
             int col = dt.Day - premierJour;
             int ligneDeb = ((dt.Hour - 10)*4)+1;
             int ligneFin = ((dt2.Hour - 10)*4);
+
+            ligneDeb += (dt.Minute/15);
+            ligneFin += (dt2.Minute / 15);
+
             ecrire(ligneDeb.ToString()+" - "+ ligneFin.ToString());
 
             TextBlock matBlock = new TextBlock();
