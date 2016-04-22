@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace arelv1
@@ -17,6 +19,7 @@ namespace arelv1
     {
         
         private Info contexte;//pour le message d'erreur
+        private plann planning;
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
         private Page page = new Page();
 
@@ -28,13 +31,54 @@ namespace arelv1
                 page.saveData("planning", getinfo("api/planning/slots"));
                 page.saveData("salles", getinfo("api/campus/rooms"));
                 page.saveData("notes", "toto");
-                //localSettings.Values["planning"] = getinfo("api/planning/slots");
-                //localSettings.Values["notes"] = "toto";// getinfo("api /planning/slots");
-                //localSettings.Values["salles"] = getinfo("api/campus/rooms");
+                
             }
-            //ecrire(page.getData("planning"));
+               writePlanning(page.getData("planning"));
+            UpdateLayout();
+            
         }
 
+        private void writePlanning(string xml)
+        {
+            
+            for (int j = 1; j < 41; j=j+1)                
+            {
+                TextBlock heure = new TextBlock();
+                heure.FontSize = 13;
+                int jj = (j / 4);
+                if(j == (4*jj))
+                    heure.Text = (8+jj).ToString() + "h ";
+                grid.Children.Add(heure);
+                Grid.SetColumn(heure, 0);
+                Grid.SetRow(heure, j);
+
+                for (int i = 1; i < 6; i++)
+                {
+                    StackPanel macase = new StackPanel();
+                    macase.BorderThickness = new Thickness(1);
+                    if (j == (4 * jj))
+                        macase.BorderBrush = new SolidColorBrush(Colors.SeaGreen);
+                    else
+                        macase.BorderBrush = new SolidColorBrush(Colors.LightBlue);
+
+                    grid.Children.Add(macase);
+                    Grid.SetColumn(macase, i);
+                    Grid.SetRow(macase, j);
+                }
+            }
+           
+            /*
+            List<string> l = new List<string> { };
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
+            {
+                l.Add(node.Name);
+            }
+            planning = new plann { Prenoms = l};
+            DataContext = planning;*/
+        }
 
         private string getinfo(string url)
         {
@@ -67,6 +111,7 @@ namespace arelv1
 
         private void agendaClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            
             rootPivot.SelectedIndex = 0;
             bouton_agenda.Foreground = new SolidColorBrush(Colors.Black);
             bouton_note.Foreground = new SolidColorBrush(Colors.White);
@@ -75,6 +120,7 @@ namespace arelv1
 
         private void noteClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            
             rootPivot.SelectedIndex = 1;
             bouton_agenda.Foreground = new SolidColorBrush(Colors.White);
             bouton_note.Foreground = new SolidColorBrush(Colors.Black);
@@ -114,6 +160,29 @@ namespace arelv1
                     break;
 
 
+            }
+        }
+
+        private void calcTaille(object sender, SizeChangedEventArgs e)
+        {
+            double width = ActualWidth;
+            if(width < 510)
+            {
+                width = width - 120;
+                c1.Width = new GridLength(width);
+                c2.Width = new GridLength(width);
+                c3.Width = new GridLength(width);
+                c4.Width = new GridLength(width);
+                c5.Width = new GridLength(width);
+            }
+            else
+            {
+                width = (width -120)/ 5;
+                c1.Width = new GridLength(width);
+                c2.Width = new GridLength(width);
+                c3.Width = new GridLength(width);
+                c4.Width = new GridLength(width);
+                c5.Width = new GridLength(width);
             }
         }
     }

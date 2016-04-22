@@ -5,78 +5,150 @@
     xmlns:local="using:arelv1"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-   
+    mc:Ignorable="d"
+    SizeChanged="calcTaille">
+
     <SplitView x:Name="hamburger" DisplayMode="CompactOverlay"  IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="220">
-        
-        
+
+
         <!-- le menu (hamburger) -->
-        
-        
+
+
         <SplitView.Pane>
             <StackPanel Background="{ThemeResource SystemControlBackgroundAccentBrush}" >
                 <!-- le bouton hamburger -->
                 <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
                     Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click" Foreground="white"/>
-                
+
                 <!-- le bouton n°1 -->
-                
+
                 <StackPanel Orientation="Horizontal">
                     <Button Click="decoClick" x:Name="bouton_deco" FontFamily="Segoe MDL2 Assets" Content="&#xE7E8;" Width="50" Height="50" Background="Transparent" Foreground="white" />
                     <TextBlock Text="Déconnexion" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
-                
+
                 <!-- le bouton n°2 -->
-                
+
                 <StackPanel Orientation="Horizontal">
                     <Button Click="agendaClick" x:Name="bouton_agenda" FontFamily="Segoe MDL2 Assets" Content="&#xE8F5;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
                     <TextBlock Text="Emploi du temps" FontSize="18" VerticalAlignment="Center" Foreground="white" />
                 </StackPanel>
-                
+
                 <!-- le bouton n°3 -->
-                
+
                 <StackPanel Orientation="Horizontal">
                     <Button Click="noteClick" x:Name="bouton_note" FontFamily="Segoe MDL2 Assets" Content="&#xE7BE;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
                     <TextBlock Text="Les notes" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
-                
+
                 <!-- le bouton n°4 -->
-                
+
                 <StackPanel Orientation="Horizontal">
                     <Button Click="sallesClick" x:Name="bouton_salles" FontFamily="Segoe MDL2 Assets" Content="&#xE211;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
                     <TextBlock Text="Les salles" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
                 </StackPanel>
-                
+
             </StackPanel>
         </SplitView.Pane>
-        
-        
+
+
         <!-- le cpntenu de la page -->
-        
-        
+
+
         <SplitView.Content>
             <Grid Background="Transparent">
-                
-                
+
+
                 <!-- le pivot -->
 
                 <Pivot Style="{StaticResource PivotStyle}" Title="Arel windows app" x:Name="rootPivot" Background="white" SelectionChanged="pivotClick">
 
 
-                    <PivotItem Header="Emploi du temps" Foreground="black" Background="white" GotFocus="agendaClick">
+                    <PivotItem x:Name="pivot1" Header="Emploi du temps" Foreground="black" Background="white" GotFocus="agendaClick" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible">
                         <!--emploi du temps-->
-                        <StackPanel >
-                            <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}" />
-                            <TextBlock Text="Content of pivot item 1." />
-                        </StackPanel>
+                        
+                            
+                        
+                        <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                            <Grid x:Name="grid"  Margin="3">
+                                <Grid.ColumnDefinitions >
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition  Width="*" x:Name="c1"/>
+                                    <ColumnDefinition  Width="*" x:Name="c2"/>
+                                    <ColumnDefinition  Width="*" x:Name="c3"/>
+                                    <ColumnDefinition  Width="*" x:Name="c4"/>
+                                    <ColumnDefinition  Width="*" x:Name="c5"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+
+                                    <RowDefinition Height="30" />
+                                    
+                                </Grid.RowDefinitions>
+                                <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
+                                <TextBlock Text="Lundi" Grid.Column="1" Grid.Row="0" Margin="5" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Mardi" Grid.Column="2" Grid.Row="0" Margin="5" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Mercredi" Grid.Column="3" Grid.Row="0" Margin="5" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Jeudi" Grid.Column="4" Grid.Row="0" Margin="5" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Vendredi" Grid.Column="5" Grid.Row="0" Margin="5" HorizontalAlignment="Center"/>
+
+                            </Grid>
+                        </ScrollViewer>
+                        <!--<ListBox ItemsSource="{Binding Prenoms}" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                        -->
+
                     </PivotItem>
                     <PivotItem Header="Notes" Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <!--les notes -->
-                        <TextBlock Text="Content of pivot item 2."/>
+                        
+                        
                     </PivotItem>
                     <PivotItem Header="Salles libres" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
                         <!--les salles -->
-                        <TextBlock Text="Content of pivot item 3."/>
+                        <TextBlock Text="Content of pivot item 3." x:Name="titi"/>
                     </PivotItem>
                 </Pivot>
             </Grid>
