@@ -32,11 +32,80 @@ namespace arelv1
                 page.saveData("notes", "toto");
                 
             }
-               writePlanning(page.getData("planning"));
+
+            DrawPlanning();
+            writePlanning(page.getData("planning"),2);
+            
             UpdateLayout();
         }
 
-        private void writePlanning(string xml)
+        private void writePlanning(string xml,int semaine)
+        {
+
+            string prof = "";
+            string salle = "";
+            string matiere = "";
+            string debut = "";
+            string fin = "";
+            string couleur ="";
+            string week = "";
+            string week1 = "";
+            string week2 = "";
+            int lundi;
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
+            {
+                if(node.Name == "week")
+                {
+                    week = node.InnerText;
+                    week1 = week.Substring(0, 2);
+                    week2 = week.Substring(5, 2);
+                }
+            }
+
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
+            {
+                foreach (System.Xml.XmlNode node02 in node)
+                {
+                    //ecrire(node02.Name);
+                    if(node02.Name == "teacherLogin")
+                    {
+                        //ecrire(node02.Name);
+                        prof = node02.InnerText;
+                    }
+                       
+                    if (node02.Name == "label")
+                        matiere = node02.InnerText;
+                    if (node02.Name == "departmentColor")
+                        couleur = node02.InnerText;
+                    if (node02.Name == "beginDate")
+                        debut = node02.InnerText;
+                    if (node02.Name == "endDate")
+                        fin = node02.InnerText;
+                    if(node02.Name == "roomLabel")
+                        salle = node02.InnerText;
+                }
+                if (semaine == 1)
+                    lundi = page.weekToDate(Convert.ToInt32(week1), 2016, "lundi").Day;
+                else
+                    lundi = page.weekToDate(Convert.ToInt32(week2), 2016, "lundi").Day;
+
+                if (prof != "" && matiere != "" && debut != "" &&  fin != "" && couleur != "" && salle != "")
+                    ajoutCours(prof, debut, fin, matiere, couleur, lundi,salle);
+
+                //l.Add(node.Name);
+                //page.weekToDate(17, 2016, "lundi").Day.ToString();
+            }
+
+
+
+        }
+
+
+
+        private void DrawPlanning()
         {
             
             for (int j = 1; j < 41; j=j+1)                
@@ -75,67 +144,68 @@ namespace arelv1
                 }
             }
 
-            /*
-            List<string> l = new List<string> { };
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(xml);//chargement de la variable
+            
+         }
 
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
-            {
-                l.Add(node.Name);
-            }
-            planning = new plann { Prenoms = l};
-            DataContext = planning;*/
-            ajoutCours("nfo", "2016-04-27T08:45:00.000+0000", "2016-04-27T09:45:00.000+0000", "Mathematiques CPI 2", "#00b0f0", 26);
-        }
-
-        private void ajoutCours(string prof,string heureDebut,string heureFin,string matière,string couleur,int premierJour)
+        private void ajoutCours(string prof,string heureDebut,string heureFin,string matière,string couleur,int premierJour,string salle)
         {
             DateTime dt = Convert.ToDateTime(heureDebut);
             DateTime dt2 = Convert.ToDateTime(heureFin);
 
-            int col = dt.Day - premierJour;
-            int ligneDeb = ((dt.Hour - 10)*4)+1;
-            int ligneFin = ((dt2.Hour - 10)*4);
-
-            ligneDeb += (dt.Minute/15);
-            ligneFin += (dt2.Minute / 15);
-
-            ecrire(ligneDeb.ToString()+" - "+ ligneFin.ToString());
-
-            TextBlock matBlock = new TextBlock();
-            matBlock.Text = matière;
-            matBlock.FontSize = 13;
-            matBlock.HorizontalAlignment = HorizontalAlignment.Center;
-
-            TextBlock profBlock = new TextBlock();
-            profBlock.Text = prof;
-            profBlock.FontSize = 13;
-            profBlock.HorizontalAlignment = HorizontalAlignment.Center;
-
-            
-
-
-            for (int i=ligneDeb;i<=ligneFin;i++)
+            int col = dt.Day - premierJour + 1;
+            int ligneDeb = ((dt.Hour - 8)*4)+1;
+            int ligneFin = ((dt2.Hour - 8)*4);
+            if (ligneDeb > 0 && col < 6)
             {
-                StackPanel macase = new StackPanel();
+                ligneDeb += (dt.Minute / 15);
+                ligneFin += (dt2.Minute / 15);
 
-                if(i == ligneDeb)
+                //ecrire(ligneDeb.ToString()+" - "+ ligneFin.ToString());
+
+                TextBlock matBlock = new TextBlock();
+                matBlock.Text = matière;
+                matBlock.FontSize = 13;
+                matBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+                TextBlock profBlock = new TextBlock();
+                profBlock.Text = prof;
+                profBlock.FontSize = 13;
+                profBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+                TextBlock salleBlock = new TextBlock();
+                salleBlock.Text = salle;
+                salleBlock.FontSize = 13;
+                salleBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+
+                for (int i = ligneDeb; i <= ligneFin; i++)
                 {
-                    macase.Children.Add(matBlock);
+                    StackPanel macase = new StackPanel();
+
+                    if (i == ligneDeb)
+                    {
+                        macase.Children.Add(matBlock);
+                    }
+
+                    if (i == ligneDeb+1)
+                    {
+                        macase.Children.Add(profBlock);
+                    }
+
+                    if (i == ligneDeb + 2)
+                    {
+                        macase.Children.Add(salleBlock);
+                    }
+
+
+
+
+                    macase.Background = new SolidColorBrush(page.HexToColor(couleur));
+
+                    grid.Children.Add(macase);
+                    Grid.SetColumn(macase, col);
+                    Grid.SetRow(macase, i);
                 }
-
-                if (i == ligneDeb + 1)
-                {
-                    macase.Children.Add(profBlock);
-                }
-
-
-                macase.Background = new SolidColorBrush(page.HexToColor(couleur));
-                
-                grid.Children.Add(macase);
-                Grid.SetColumn(macase, col);
-                Grid.SetRow(macase, i);
             }
 
         }

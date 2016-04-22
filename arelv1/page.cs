@@ -18,6 +18,43 @@ namespace arelv1
         private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
         private string resultat;
 
+        //-------------------- convertisseur n° semaine en date --------------------------------------
+
+        public DateTime weekToDate(int week,int year, string day)
+        {
+            //Jour int ISO
+            Dictionary<string, int> dicDays = new Dictionary<string, int>()
+            {
+                {"lundi", 1 },
+                {"mardi", 2 },
+                {"mercredi", 3},
+                {"jeudi", 4 },
+                {"vendredi", 5 },
+                {"samedi", 6 },
+                {"dimanche", 7 }
+            };
+
+            
+            
+
+            DateTime value = new DateTime(year, 1, 1).AddDays(7 * week);
+
+            int daysToAdd = dicDays[day.ToLower()];
+
+            // On contrôle si l'année commence après jeudi si oui on décale d'une semaine.
+            if ((int)new DateTime(value.Year, 1, 1).DayOfWeek < 5)
+            {
+                daysToAdd -= (int)value.DayOfWeek + 7;
+            }
+            else
+            {
+                daysToAdd -= (int)value.DayOfWeek;
+            }
+
+            return value.AddDays(daysToAdd);
+        }
+
+
 
         //-------------------- convertisseur hexa -> rgb ---------------------------------------------
 
