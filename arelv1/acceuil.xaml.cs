@@ -41,7 +41,7 @@ namespace arelv1
 
         private void writePlanning(string xml,int semaine)
         {
-
+           
             string prof = "";
             string salle = "";
             string matiere = "";
@@ -88,15 +88,18 @@ namespace arelv1
                         salle = node02.InnerText;
                 }
                 if (semaine == 1)
+                {
+                    numeroSemaine.Text = "semaine " + week1;
                     lundi = page.weekToDate(Convert.ToInt32(week1), 2016, "lundi").Day;
+                }
                 else
+                {
+                    numeroSemaine.Text = "semaine " + week2;
                     lundi = page.weekToDate(Convert.ToInt32(week2), 2016, "lundi").Day;
-
+                }
                 if (prof != "" && matiere != "" && debut != "" &&  fin != "" && couleur != "" && salle != "")
                     ajoutCours(prof, debut, fin, matiere, couleur, lundi,salle);
-
-                //l.Add(node.Name);
-                //page.weekToDate(17, 2016, "lundi").Day.ToString();
+                
             }
 
 
@@ -107,7 +110,14 @@ namespace arelv1
 
         private void DrawPlanning()
         {
-            
+
+            entete("Lundi", 1, grid);
+            entete("Mardi", 2, grid);
+            entete("Mercredi", 3, grid);
+            entete("Jeudi", 4, grid);
+            entete("Vendredi", 5, grid);
+
+
             for (int j = 1; j < 41; j=j+1)                
             {
                 TextBlock heure = new TextBlock();
@@ -116,25 +126,14 @@ namespace arelv1
                 if(j == (4*jj))
                     heure.Text = (8+jj).ToString() + "h ";
                 grid.Children.Add(heure);
+                
                 Grid.SetColumn(heure, 0);
                 Grid.SetRow(heure, j);
 
                 for (int i = 1; i < 6; i++)
                 {
                     StackPanel macase = new StackPanel();
-                    /*
-                     * mettre en subrillance les heures 'on verra plus tard...
-                    if (j == (4 * jj))
-                    {
-                        macase.BorderBrush = new SolidColorBrush(Colors.SeaGreen);
-                        macase.BorderThickness = new Thickness(1,0,1,1);
-                    }                        
-                    else
-                    {
-                        macase.BorderThickness = new Thickness(1);
-                        macase.BorderBrush = new SolidColorBrush(Colors.LightBlue);
-                    }
-                    */
+                    
                     macase.BorderThickness = new Thickness(1);
                     macase.BorderBrush = new SolidColorBrush(Colors.LightBlue);
 
@@ -146,6 +145,16 @@ namespace arelv1
 
             
          }
+
+        private void entete(string name,int col,Grid grid)
+        {
+            TextBlock texte = new TextBlock();
+            texte.HorizontalAlignment = HorizontalAlignment.Center;
+            texte.Text = name;
+            grid.Children.Add(texte);
+            Grid.SetColumn(texte, col);
+            Grid.SetRow(texte, 0);
+        }
 
         private void ajoutCours(string prof,string heureDebut,string heureFin,string matière,string couleur,int premierJour,string salle)
         {
@@ -314,6 +323,21 @@ namespace arelv1
                 c4.Width = new GridLength(width);
                 c5.Width = new GridLength(width);
             }
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            grid.Children.Clear();
+            DrawPlanning();
+            writePlanning(page.getData("planning"), 1);
+        }
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            grid.Children.Clear();
+            DrawPlanning();
+            writePlanning(page.getData("planning"), 2);
         }
     }
 }
