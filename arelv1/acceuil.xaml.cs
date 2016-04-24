@@ -304,10 +304,10 @@ namespace arelv1
 
         private void calcTaille(object sender, SizeChangedEventArgs e)
         {
-            double width = ActualWidth;
-            if(width < 510)
+            double width = button_week.ActualWidth;
+            if(width < 450)
             {
-                width = width - 120;
+                width = width-50;
                 c1.Width = new GridLength(width);
                 c2.Width = new GridLength(width);
                 c3.Width = new GridLength(width);
@@ -316,7 +316,7 @@ namespace arelv1
             }
             else
             {
-                width = (width -120)/ 5;
+                width = (width -50)/ 5;
                 c1.Width = new GridLength(width);
                 c2.Width = new GridLength(width);
                 c3.Width = new GridLength(width);
