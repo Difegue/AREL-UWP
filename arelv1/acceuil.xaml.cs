@@ -163,7 +163,7 @@ namespace arelv1
 
             int col = dt.Day - premierJour + 1;
             if (col < 0)
-                col = dt.Day + 1;
+                col = col + DateTime.DaysInMonth(dt.Year, dt.Month-1);
             int ligneDeb = ((dt.Hour - 8)*4)+1;
             int ligneFin = ((dt2.Hour - 8)*4);
             if (ligneDeb > 0 && col < 6)
