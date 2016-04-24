@@ -34,7 +34,7 @@ namespace arelv1
             }
 
             DrawPlanning();
-            writePlanning(page.getData("planning"),2);
+            writePlanning(page.getData("planning"),1);
             
             UpdateLayout();
         }
@@ -162,6 +162,8 @@ namespace arelv1
             DateTime dt2 = Convert.ToDateTime(heureFin);
 
             int col = dt.Day - premierJour + 1;
+            if (col < 0)
+                col = dt.Day + 1;
             int ligneDeb = ((dt.Hour - 8)*4)+1;
             int ligneFin = ((dt2.Hour - 8)*4);
             if (ligneDeb > 0 && col < 6)
