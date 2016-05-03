@@ -17,7 +17,7 @@
 
             <StackPanel>
                 <Grid>
-                    <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-100" FontWeight="SemiLight" Margin="09,0,0,15" Foreground="#FF323232">Disponibilité des Salles</TextBlock>
+                    <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-70" FontWeight="SemiLight" Margin="09,0,0,15" Foreground="#FF323232">Disponibilité des Salles</TextBlock>
 
                     <ComboBox x:Name="campusSelection"  Height="40" Width="125"  Margin="0,7,19,0"
                      ItemsSource="{x:Bind campusList}" SelectionChanged="writeSalle" SelectedItem="{x:Bind SelectedComboBoxOption}" HorizontalAlignment="Right" />
