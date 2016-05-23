@@ -18,6 +18,9 @@ namespace arelv1
         private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
         private string resultat;
 
+        //-------------------- Retourne la date du lundi precedent ---------------------------------------
+
+
         //-------------------- convertisseur n° semaine en date --------------------------------------
 
         public DateTime weekToDate(int week,int year, string day)

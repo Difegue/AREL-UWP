@@ -27,16 +27,152 @@ namespace arelv1
             InitializeComponent();
             if(localSettings.Values["internet"] == null)
             {
-                page.saveData("planning", getinfo("api/planning/slots"));
-                page.saveData("salles", getinfo("api/campus/rooms"));
-                page.saveData("notes", "toto");
-                
-            }
+                DateTime now = DateTime.Now;
+                int an = now.Year;
+                int mois = now.Month;
+                int jour = now.Day;
+                DayOfWeek joursemaine = now.DayOfWeek;
 
+
+                Dictionary<string, int> dicDays = new Dictionary<string, int>()
+                {
+                    {"monday", 0 },
+                    {"tuesday", 1 },
+                    {"wednesday", 2},
+                    {"thursday", 3 },
+                    {"friday", 4 },
+                    {"saturday", 5 },
+                    {"sunday", 6 }
+                 };
+
+                
+
+
+                
+                int daysToAdd = dicDays[joursemaine.ToString().ToLower()];
+
+                jour = jour - daysToAdd;
+                if(jour < 0)
+                {
+                    jour = jour + DateTime.DaysInMonth(an, mois - 1);
+                    mois--;
+
+                }
+
+
+
+                page.saveData("planning", getinfo("api/planning/slots?start="+an+"-"+mois+ "-"+jour));
+                page.saveData("salles", getinfo("api/campus/rooms?siteId=1990"));
+
+                page.saveData("user",getinfo("api/me"));
+                page.saveData("note", getinfo("api/marks/"+getIdUser(page.getData("user"))+"/export?id="+ getIdUser(page.getData("user"))));
+                //ecrire(getinfo("api/campus/romms", "&id=1990"));
+
+
+            }
+            
+            
             DrawPlanning();
             writePlanning(page.getData("planning"),1);
-            
+            writeSalle(page.getData("salles"));
+            //ecrire(page.getData("note"));
             UpdateLayout();
+        }
+
+        private void writeSalle(string xml)
+        {
+            //List<StackPanel> salles = new List<StackPanel>();
+            //List<String> salles = new List<String>();
+            string aff;
+            string libre;
+            int i = 0;
+            TextBlock nomBlock;
+            TextBlock libreBlock;
+            StackPanel macase;
+            SolidColorBrush color;
+
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+
+            //salles.Add("nom de salle".PadRight(15, '.') + "libre?".PadLeft(15,'.'));
+            foreach (System.Xml.XmlNode room in doc.GetElementsByTagName("room"))
+            {
+                aff = "";
+                libre = "";
+                color = new SolidColorBrush(Colors.Red);
+                foreach (System.Xml.XmlNode label in room)
+                {
+                    if(label.Name == "label")
+                    {
+                        aff = label.InnerText + ":";
+                    }
+                    if (label.Name == "bookable")
+                    {
+                        if(label.InnerText == "true")
+                        {
+                            libre = " ok";
+                            color = new SolidColorBrush(Colors.Green);
+                        }
+                        else
+                        {
+                            libre = " non";
+                            color = new SolidColorBrush(Colors.Red);
+                        }
+                        
+                    }
+                }
+                RowDefinition Row = new RowDefinition();
+                Row.Height = new GridLength(35);
+                salles.RowDefinitions.Add(Row);
+                
+                nomBlock = new TextBlock();
+                libreBlock = new TextBlock();
+                macase = new StackPanel();
+
+                nomBlock.Text = aff;
+                nomBlock.Foreground = new SolidColorBrush(Colors.SaddleBrown);
+                nomBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+                libreBlock.Text = libre;
+                libreBlock.Foreground = color;
+                libreBlock.HorizontalAlignment = HorizontalAlignment.Center;
+
+                salles.Children.Add(nomBlock);
+                Grid.SetColumn(nomBlock, 0);
+                Grid.SetRow(nomBlock, i);
+
+                salles.Children.Add(libreBlock);
+                Grid.SetColumn(libreBlock, 1);
+                Grid.SetRow(libreBlock, i);
+
+
+                i++;
+
+                //macase.Children.Add(nomBlock);
+                //macase.Children.Add(libreBlock);
+                //macase.HorizontalAlignment = HorizontalAlignment.Center;
+
+                //salles.Add(macase);
+
+                //salles.Add(aff.PadRight(30 - aff.Length, '.') + libre);
+                //salles.Add (String.Format("{0, 5} {1, 10}", aff, libre));*/
+            }
+
+        }
+
+        private string getIdUser(string xml)
+        {
+            string userid = "0";
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
+            {
+                if (node.Name == "id")
+                {
+                    userid = node.InnerText;
+                }
+            }
+            return userid;
         }
 
         private void writePlanning(string xml,int semaine)
@@ -51,7 +187,7 @@ namespace arelv1
             string week = "";
             string week1 = "";
             string week2 = "";
-            int lundi;
+            DateTime lundi;
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
             doc.LoadXml(xml);//chargement de la variable
 
@@ -90,12 +226,12 @@ namespace arelv1
                 if (semaine == 1)
                 {
                     numeroSemaine.Text = "semaine " + week1;
-                    lundi = page.weekToDate(Convert.ToInt32(week1), 2016, "lundi").Day;
+                    lundi = page.weekToDate(Convert.ToInt32(week1), 2016, "lundi");
                 }
                 else
                 {
                     numeroSemaine.Text = "semaine " + week2;
-                    lundi = page.weekToDate(Convert.ToInt32(week2), 2016, "lundi").Day;
+                    lundi = page.weekToDate(Convert.ToInt32(week2), 2016, "lundi");
                 }
                 if (prof != "" && matiere != "" && debut != "" &&  fin != "" && couleur != "" && salle != "")
                     ajoutCours(prof, debut, fin, matiere, couleur, lundi,salle);
@@ -156,13 +292,15 @@ namespace arelv1
             Grid.SetRow(texte, 0);
         }
 
-        private void ajoutCours(string prof,string heureDebut,string heureFin,string matière,string couleur,int premierJour,string salle)
+        private void ajoutCours(string prof,string heureDebut,string heureFin,string matière,string couleur,DateTime premierJour,string salle)
         {
+            DateTime now = DateTime.Now;
+            
             DateTime dt = Convert.ToDateTime(heureDebut);
             DateTime dt2 = Convert.ToDateTime(heureFin);
 
-            int col = dt.Day - premierJour + 1;
-            if (col < 0)
+            int col = dt.Day - premierJour.Day + 1;
+            if (col < 0 && now.Month == premierJour.Month)
                 col = col + DateTime.DaysInMonth(dt.Year, dt.Month-1);
             int ligneDeb = ((dt.Hour - 8)*4)+1;
             int ligneFin = ((dt2.Hour - 8)*4);
@@ -307,6 +445,7 @@ namespace arelv1
         private void calcTaille(object sender, SizeChangedEventArgs e)
         {
             double width = button_week.ActualWidth;
+           
             if(width < 450)
             {
                 width = width-50;

@@ -149,12 +149,20 @@
                     </PivotItem>
                     <PivotItem Header="Notes" Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
                         <!--les notes -->
-                        <Button x:Name="toot" Click="sallesClick" FontFamily="Segoe MDL2 Assets" Content="&#59179;" Height="35" Width="35" FontSize="20" Foreground="Black"  Grid.Column="0" Grid.Row="0"/>
-
+                        
+                        <TextBox x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
                     </PivotItem>
                     <PivotItem Header="Salles libres" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
                         <!--les salles -->
-                        <TextBlock Text="Content of pivot item 3." x:Name="titi"/>
+                        <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                            <Grid x:Name="salles">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                            </Grid>
+                        </ScrollViewer>
                     </PivotItem>
                 </Pivot>
             </Grid>

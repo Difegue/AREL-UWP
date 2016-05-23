@@ -120,13 +120,13 @@ namespace arelv1
         private void login_button(object sender, RoutedEventArgs ev)
         {
 
-            if(connect_login(nom.Text, pass.Password))
+            if(connect_login(nom.Text.ToLower(), pass.Password))
             {
-                localSettings.Values["user"] = nom.Text;
+                localSettings.Values["user"] = nom.Text.ToLower();
                 localSettings.Values["pass"] = pass.Password;
                 if (stayConnect)
                 {
-                    localSettings.Values["stayConnect"] = nom.Text;
+                    localSettings.Values["stayConnect"] = true;
                     
                 }
                 
