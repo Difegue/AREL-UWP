@@ -168,7 +168,7 @@ namespace arelv1
         public MainPage()
         {
             
-            InitializeComponent();//demarage de l'interface   
+            InitializeComponent(); //demarage de l'interface   
             localSettings.Values["internet"] = null;
             stayConnect = false;
              

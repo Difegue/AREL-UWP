@@ -12,161 +12,206 @@
 
 
         <!-- le menu (hamburger) -->
-
-
         <SplitView.Pane>
-            <StackPanel Background="{ThemeResource SystemControlBackgroundAccentBrush}" >
-                <!-- le bouton hamburger -->
-                <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
-                    Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click" Foreground="white"/>
 
-                <!-- le bouton n°1 -->
+            <Grid>
 
-                <StackPanel Orientation="Horizontal">
-                    <Button Click="decoClick" x:Name="bouton_deco" FontFamily="Segoe MDL2 Assets" Content="&#xE7E8;" Width="50" Height="50" Background="Transparent" Foreground="white" />
-                    <TextBlock Text="Déconnexion" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44" />
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+
+                <Button x:Name="HamburgerButton" Grid.Row="0" Style="{StaticResource MenuItemButtonStyle}" Tag="&#xE700;" Click="HamburgerButton_Click" />
+
+                <StackPanel x:Name="NavigationMenu" Orientation="Vertical" Grid.Row="1" >
+                    <RadioButton x:Name="AgendaBouton"
+                       GroupName="Group1"
+                       Style="{StaticResource NavigationButtonStyle}"
+                       Tag="&#xE8F5;"
+                       Checked="agendaClick"
+                       Content="Planning"
+                       />
+
+                    <RadioButton x:Name="NotesBouton"
+                       GroupName="Group1"
+                       Style="{StaticResource NavigationButtonStyle}"
+                       Tag="&#xE7BE;"
+                       Checked="noteClick"
+                       Content="Notes"
+                       />
+
+                    <RadioButton x:Name="SallesBouton"
+                       GroupName="Group1"
+                       Style="{StaticResource NavigationButtonStyle}"
+                       Tag="&#xE211;"
+                       Checked="sallesClick"
+                       Content="Salles Libres"
+                       />
+
                 </StackPanel>
 
-                <!-- le bouton n°2 -->
+                <StackPanel Grid.Row="2">
 
-                <StackPanel Orientation="Horizontal">
-                    <Button Click="agendaClick" x:Name="bouton_agenda" FontFamily="Segoe MDL2 Assets" Content="&#xE8F5;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
-                    <TextBlock Text="Emploi du temps" FontSize="18" VerticalAlignment="Center" Foreground="white" />
+                    <Grid Margin="0,0,0,5">
+
+                        <Ellipse Width="25" Height="25" HorizontalAlignment="Left" Margin="13,0,0,0">
+                            <Ellipse.Fill>
+                                <SolidColorBrush Color="#FF2E2E2E" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <TextBlock x:Name="initialeUser" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="21,0,0,2">U</TextBlock>
+                        <TextBlock x:Name="nomUser" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="56,0,0,0">Utilisateur Anonyme</TextBlock>
+                    </Grid>
+                    
+                    
+                    
+                    
+
+                    <RadioButton x:Name="DecoBouton"
+                       GroupName="Group1"
+                       Style="{StaticResource NavigationButtonStyle}"
+                       Tag="&#xE7E8;"
+                       Checked="decoClick"
+                       Content="Déconnexion"
+                       />
+                    
                 </StackPanel>
 
-                <!-- le bouton n°3 -->
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Click="noteClick" x:Name="bouton_note" FontFamily="Segoe MDL2 Assets" Content="&#xE7BE;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
-                    <TextBlock Text="Les notes" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
-                </StackPanel>
-
-                <!-- le bouton n°4 -->
-
-                <StackPanel Orientation="Horizontal">
-                    <Button Click="sallesClick" x:Name="bouton_salles" FontFamily="Segoe MDL2 Assets" Content="&#xE211;" Width="50" Height="50" Background="Transparent" Foreground="white"/>
-                    <TextBlock Text="Les salles" FontSize="18" VerticalAlignment="Center" Foreground="white"/>
-                </StackPanel>
-
-            </StackPanel>
+            </Grid>
+       
         </SplitView.Pane>
 
 
-        <!-- le cpntenu de la page -->
-
-
+        <!-- le contenu de la page -->
         <SplitView.Content>
-            <Grid Background="Transparent">
 
+            <Grid Background="White">
 
-                <!-- le pivot -->
+                <!--emploi du temps-->
+                <ScrollViewer x:Name="Planning" Visibility="Visible">
 
-                <Pivot Style="{StaticResource PivotStyle}"  x:Name="rootPivot" Background="white" SelectionChanged="pivotClick">
-
-
-                    <PivotItem x:Name="pivot1" Header="Emploi du temps" Foreground="black" Background="white" GotFocus="agendaClick" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible">
-                        <!--emploi du temps-->
-                        <ScrollViewer>
-                        <StackPanel>
-                            <Grid Height="35" x:Name="button_week">
-                                <Button  Click="BackButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59179;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
-                                <TextBlock x:Name="numeroSemaine" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <Button  Click="NextButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59178;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right"/>
-                            </Grid>
-                            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
-
-
-                                    <Grid x:Name="grid"  Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible" BorderThickness="0" >
-
-                                        <Grid.ColumnDefinitions >
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition  Width="*" x:Name="c1"/>
-                                            <ColumnDefinition  Width="*" x:Name="c2"/>
-                                            <ColumnDefinition  Width="*" x:Name="c3"/>
-                                            <ColumnDefinition  Width="*" x:Name="c4"/>
-                                            <ColumnDefinition  Width="*" x:Name="c5"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="15" />
-
-                                            <RowDefinition Height="15" />
-                                            <RowDefinition Height="30" />
-
-                                        </Grid.RowDefinitions>
-
-
-
-                                    </Grid>
-                            
-                            </ScrollViewer>
-                        </StackPanel>
-                        <!--<ListBox ItemsSource="{Binding Prenoms}" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
-                        -->
-                        </ScrollViewer>
-                    </PivotItem>
-                    <PivotItem Header="Notes" Foreground="{ThemeResource DefaultTextForegroundThemeBrush}">
-                        <!--les notes -->
+                    <StackPanel>
                         
-                        <TextBox x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
-                    </PivotItem>
-                    <PivotItem Header="Salles libres" Foreground="{ThemeResource ApplicationForegroundThemeBrush}">
-                        <!--les salles -->
-                        <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                            <Grid x:Name="salles">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
+                        <TextBlock FontSize="24" HorizontalAlignment="Center">Emploi du Temps</TextBlock>
+                        
+                        <Grid Height="35" x:Name="button_week">
+                            <Button  Click="BackButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59179;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="15,0,0,0"/>
+                            <TextBlock x:Name="numeroSemaine" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <Button  Click="NextButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59178;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+                        </Grid>
+                        <ScrollViewer>
+
+
+                            <Grid x:Name="grid"  Margin="3" BorderThickness="2,0" >
+
+                                <Grid.ColumnDefinitions >
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition  Width="*" x:Name="c1"/>
+                                    <ColumnDefinition  Width="*" x:Name="c2"/>
+                                    <ColumnDefinition  Width="*" x:Name="c3"/>
+                                    <ColumnDefinition  Width="*" x:Name="c4"/>
+                                    <ColumnDefinition  Width="*" x:Name="c5"/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="15" />
+
+                                    <RowDefinition Height="15" />
+                                    <RowDefinition Height="30" />
+
+                                </Grid.RowDefinitions>
+
+
 
                             </Grid>
-                        </ScrollViewer>
-                    </PivotItem>
-                </Pivot>
-            </Grid>
 
+                        </ScrollViewer>
+                    </StackPanel>
+                    <!--<ListBox ItemsSource="{Binding Prenoms}" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                        -->
+                </ScrollViewer>
+
+                <!-- Les salles-->
+                <ScrollViewer x:Name="Salles" Visibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                    
+                    <StackPanel>
+                        <TextBlock FontSize="24" HorizontalAlignment="Center">Salles Disponibles</TextBlock>
+                    
+                        <Grid x:Name="salles">
+                        
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+                
+                <!--Les notes-->
+                <ScrollViewer x:Name="Notes" Visibility="Collapsed" >
+
+                    <StackPanel>
+                        <TextBlock FontSize="24" HorizontalAlignment="Center">Notes</TextBlock>
+
+                        <Grid x:Name="notes">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                        </Grid>
+                    </StackPanel>
+
+                </ScrollViewer>
+
+
+            </Grid>
+            
         </SplitView.Content>
     </SplitView>
 </Page>

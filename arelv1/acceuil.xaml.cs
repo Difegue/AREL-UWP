@@ -18,13 +18,14 @@ namespace arelv1
     public sealed partial class acceuil
     {
         
-        private Info contexte;//pour le message d'erreur
-        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
+        private Info contexte; //pour le message d'erreur
+        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings; //recuperation d'un tableau pour stocker nos données
         private Page page = new Page();
 
         public acceuil()
         {
             InitializeComponent();
+
             if(localSettings.Values["internet"] == null)
             {
                 DateTime now = DateTime.Now;
@@ -44,10 +45,6 @@ namespace arelv1
                     {"saturday", 5 },
                     {"sunday", 6 }
                  };
-
-                
-
-
                 
                 int daysToAdd = dicDays[joursemaine.ToString().ToLower()];
 
@@ -75,7 +72,14 @@ namespace arelv1
             DrawPlanning();
             writePlanning(page.getData("planning"),1);
             writeSalle(page.getData("salles"));
-            //ecrire(page.getData("note"));
+            //string notes = page.getData("note");
+
+            //Récup du nom de l'utilisateur pour affichage
+            string userName = getUserFullName(page.getData("user"));
+            initialeUser.Text = userName.Substring(0,1);
+            nomUser.Text = userName;
+
+            AgendaBouton.IsChecked = true; //Petit trick pour montrer qu'on est sur l'EDT de base
             UpdateLayout();
         }
 
@@ -175,6 +179,26 @@ namespace arelv1
             return userid;
         }
 
+        private string getUserFullName(string xml)
+        {
+            string ret = "User Anonyme";
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
+            {
+                if (node.Name == "firstName")
+                {
+                    ret = node.InnerText;
+                }
+
+                if (node.Name == "lastName")
+                {
+                    ret += " " + node.InnerText;
+                }
+            }
+            return ret;
+        }
+
         private void writePlanning(string xml,int semaine)
         {
            
@@ -270,8 +294,8 @@ namespace arelv1
                 {
                     StackPanel macase = new StackPanel();
                     
-                    macase.BorderThickness = new Thickness(1);
-                    macase.BorderBrush = new SolidColorBrush(Colors.LightBlue);
+                    macase.BorderThickness = new Thickness(2,0,0,0);
+                    macase.BorderBrush = new SolidColorBrush(Colors.Black);
 
                     grid.Children.Add(macase);
                     Grid.SetColumn(macase, i);
@@ -390,28 +414,23 @@ namespace arelv1
 
         private void agendaClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            
-            rootPivot.SelectedIndex = 0;
-            bouton_agenda.Foreground = new SolidColorBrush(Colors.Black);
-            bouton_note.Foreground = new SolidColorBrush(Colors.White);
-            bouton_salles.Foreground = new SolidColorBrush(Colors.White);
+            Planning.Visibility = Visibility.Visible;
+            Salles.Visibility = Visibility.Collapsed;
+            Notes.Visibility = Visibility.Collapsed;
         }
 
         private void noteClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            
-            rootPivot.SelectedIndex = 1;
-            bouton_agenda.Foreground = new SolidColorBrush(Colors.White);
-            bouton_note.Foreground = new SolidColorBrush(Colors.Black);
-            bouton_salles.Foreground = new SolidColorBrush(Colors.White);
+            Planning.Visibility = Visibility.Collapsed;
+            Salles.Visibility = Visibility.Collapsed;
+            Notes.Visibility = Visibility.Visible;
         }
 
         private void sallesClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            rootPivot.SelectedIndex = 2;
-            bouton_agenda.Foreground = new SolidColorBrush(Colors.White);
-            bouton_note.Foreground = new SolidColorBrush(Colors.White);
-            bouton_salles.Foreground = new SolidColorBrush(Colors.Black);
+            Planning.Visibility = Visibility.Collapsed;
+            Salles.Visibility = Visibility.Visible;
+            Notes.Visibility = Visibility.Collapsed;
         }
 
         private void decoClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -420,26 +439,6 @@ namespace arelv1
             localSettings.Values["pass"] = null;
             localSettings.Values["stayConnect"] = null;
             Frame.Navigate(typeof(MainPage));
-        }
-
-       
-
-        private void pivotClick(object sender, Windows.UI.Xaml.Controls.SelectionChangedEventArgs e)
-        {
-            switch (rootPivot.SelectedIndex)
-            {
-                case 0:
-                    agendaClick(sender, e);
-                    break;
-                case 1:
-                    noteClick(sender, e);
-                    break;
-                case 2:
-                    sallesClick(sender, e);
-                    break;
-
-
-            }
         }
 
         private void calcTaille(object sender, SizeChangedEventArgs e)
