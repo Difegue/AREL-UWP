@@ -61,7 +61,7 @@
 
                 <!-- le pivot -->
 
-                <Pivot Style="{StaticResource PivotStyle}" Title="Arel windows app" x:Name="rootPivot" Background="white" SelectionChanged="pivotClick">
+                <Pivot Style="{StaticResource PivotStyle}"  x:Name="rootPivot" Background="white" SelectionChanged="pivotClick">
 
 
                     <PivotItem x:Name="pivot1" Header="Emploi du temps" Foreground="black" Background="white" GotFocus="agendaClick" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible">
@@ -76,7 +76,7 @@
                             <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
 
 
-                                    <Grid x:Name="grid"  Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                                    <Grid x:Name="grid"  Margin="3" ScrollViewer.HorizontalScrollBarVisibility="Visible" BorderThickness="0" >
 
                                         <Grid.ColumnDefinitions >
                                             <ColumnDefinition Width="auto"/>
