@@ -22,43 +22,18 @@ namespace arelv1
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings; //recuperation d'un tableau pour stocker nos données
         private Page page = new Page();
 
+        private DateTime now = DateTime.Now; //Temps enregistré pour l'affichage du planning
+
         public acceuil()
         {
             InitializeComponent();
 
+            
             if(localSettings.Values["internet"] == null)
             {
-                DateTime now = DateTime.Now;
-                int an = now.Year;
-                int mois = now.Month;
-                int jour = now.Day;
-                DayOfWeek joursemaine = now.DayOfWeek;
 
-
-                Dictionary<string, int> dicDays = new Dictionary<string, int>()
-                {
-                    {"monday", 0 },
-                    {"tuesday", 1 },
-                    {"wednesday", 2},
-                    {"thursday", 3 },
-                    {"friday", 4 },
-                    {"saturday", 5 },
-                    {"sunday", 6 }
-                 };
-                
-                int daysToAdd = dicDays[joursemaine.ToString().ToLower()];
-
-                jour = jour - daysToAdd;
-                if(jour < 0)
-                {
-                    jour = jour + DateTime.DaysInMonth(an, mois - 1);
-                    mois--;
-
-                }
-
-
-
-                page.saveData("planning", getinfo("api/planning/slots?start="+an+"-"+mois+ "-"+jour));
+                updatePlanning(0);
+               
                 page.saveData("salles", getinfo("api/campus/rooms?siteId=1990"));
 
                 page.saveData("user",getinfo("api/me"));
@@ -70,7 +45,7 @@ namespace arelv1
             
             
             DrawPlanning();
-            writePlanning(page.getData("planning"),1);
+            writePlanning(page.getData("planning"));
             writeSalle(page.getData("salles"));
             //string notes = page.getData("note");
 
@@ -82,6 +57,8 @@ namespace arelv1
             AgendaBouton.IsChecked = true; //Petit trick pour montrer qu'on est sur l'EDT de base
             UpdateLayout();
         }
+
+       
 
         private void writeSalle(string xml)
         {
@@ -199,7 +176,7 @@ namespace arelv1
             return ret;
         }
 
-        private void writePlanning(string xml,int semaine)
+        private void writePlanning(string xml)
         {
            
             string prof = "";
@@ -221,9 +198,12 @@ namespace arelv1
                 {
                     week = node.InnerText;
                     week1 = week.Substring(0, 2);
-                    week2 = week.Substring(5, 2);
                 }
             }
+
+            numeroSemaine.Text = "semaine " + week1;
+            lundi = page.weekToDate(Convert.ToInt32(week1), 2016, "lundi");
+
 
             foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
             {
@@ -247,16 +227,7 @@ namespace arelv1
                     if(node02.Name == "roomLabel")
                         salle = node02.InnerText;
                 }
-                if (semaine == 1)
-                {
-                    numeroSemaine.Text = "semaine " + week1;
-                    lundi = page.weekToDate(Convert.ToInt32(week1), 2016, "lundi");
-                }
-                else
-                {
-                    numeroSemaine.Text = "semaine " + week2;
-                    lundi = page.weekToDate(Convert.ToInt32(week2), 2016, "lundi");
-                }
+                
                 if (prof != "" && matiere != "" && debut != "" &&  fin != "" && couleur != "" && salle != "")
                     ajoutCours(prof, debut, fin, matiere, couleur, lundi,salle);
                 
@@ -465,19 +436,53 @@ namespace arelv1
             }
         }
 
+        private void updatePlanning(int daysExtra)
+        {
+            now = now.AddDays(daysExtra);
+
+            int an = now.Year;
+            int mois = now.Month;
+            int jour = now.Day;
+            DayOfWeek joursemaine = now.DayOfWeek;
+
+            Dictionary<string, int> dicDays = new Dictionary<string, int>()
+                {
+                    {"monday", 0 },
+                    {"tuesday", 1 },
+                    {"wednesday", 2},
+                    {"thursday", 3 },
+                    {"friday", 4 },
+                    {"saturday", 5 },
+                    {"sunday", 6 }
+                 };
+
+            int daysToAdd = dicDays[joursemaine.ToString().ToLower()];
+
+            jour = jour - daysToAdd;
+            if (jour < 0)
+            {
+                jour = jour + DateTime.DaysInMonth(an, mois - 1);
+                mois--;
+
+            }
+
+            page.saveData("planning", getinfo("api/planning/slots?start=" + an + "-" + mois + "-" + jour));
+        }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            
+            //Get new info
+            updatePlanning(-7);
             grid.Children.Clear();
             DrawPlanning();
-            writePlanning(page.getData("planning"), 1);
+            writePlanning(page.getData("planning"));
         }
         private void NextButton_Click(object sender, RoutedEventArgs e)
         {
-
+            updatePlanning(7);
             grid.Children.Clear();
             DrawPlanning();
-            writePlanning(page.getData("planning"), 2);
+            writePlanning(page.getData("planning"));
         }
     }
 }
