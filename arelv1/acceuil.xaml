@@ -6,77 +6,59 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    SizeChanged="calcTaille">
+    >
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
 
     <SplitView x:Name="hamburger" DisplayMode="CompactOverlay"  IsPaneOpen="False" CompactPaneLength="50" OpenPaneLength="220">
 
-
-        <!-- le menu (hamburger) -->
         <SplitView.Pane>
 
-            <Grid>
+            <Grid Background="{StaticResource SystemControlBackgroundAccentBrush}">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="44" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
+                <StackPanel Grid.Row="0" Margin="0,0,0,20" >
+                    <!-- hamburger -->
+                    <Grid>
+                        <RadioButton Click="HamburgerButton_Click" Foreground="White" Tag="&#xE700;" Style="{StaticResource NavRadioButtonStyle}"/>
+                        <TextBlock x:Name="nomUser" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0" Foreground="White">Utilisateur Anonyme</TextBlock>
+                    </Grid>
 
-                <Button x:Name="HamburgerButton" Grid.Row="0" Style="{StaticResource MenuItemButtonStyle}" Tag="&#xE700;" Click="HamburgerButton_Click" />
+                    
+                </StackPanel>
 
                 <StackPanel x:Name="NavigationMenu" Orientation="Vertical" Grid.Row="1" >
-                    <RadioButton x:Name="AgendaBouton"
-                       GroupName="Group1"
-                       Style="{StaticResource NavigationButtonStyle}"
-                       Tag="&#xE8F5;"
-                       Checked="agendaClick"
-                       Content="Planning"
-                       />
 
-                    <RadioButton x:Name="NotesBouton"
-                       GroupName="Group1"
-                       Style="{StaticResource NavigationButtonStyle}"
-                       Tag="&#xE7BE;"
-                       Checked="noteClick"
-                       Content="Notes"
-                       />
+                    <RadioButton x:Name="AgendaBouton" GroupName="Group1" Checked="agendaClick" Content="Planning"  Foreground="White" Tag="&#xE8F5;" 
+                                 Style="{StaticResource NavRadioButtonStyle}" />
 
-                    <RadioButton x:Name="SallesBouton"
-                       GroupName="Group1"
-                       Style="{StaticResource NavigationButtonStyle}"
-                       Tag="&#xE211;"
-                       Checked="sallesClick"
-                       Content="Salles Libres"
-                       />
+                    <RadioButton x:Name="NotesBouton" GroupName="Group1" Checked="noteClick" Content="Notes"  Foreground="White" Tag="&#xE7BE;"
+                                 Style="{StaticResource NavRadioButtonStyle}" />
+
+                    <RadioButton x:Name="SallesBouton" GroupName="Group1" Checked="sallesClick" Content="Salles Libres" Foreground="White" Tag="&#xE211;"
+                            Style="{StaticResource NavRadioButtonStyle}" />
 
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
 
-                    <Grid Margin="0,0,0,5">
-
-                        <Ellipse Width="25" Height="25" HorizontalAlignment="Left" Margin="13,0,0,0">
-                            <Ellipse.Fill>
-                                <SolidColorBrush Color="#FF2E2E2E" />
-                            </Ellipse.Fill>
-                        </Ellipse>
-                        <TextBlock x:Name="initialeUser" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="21,0,0,2">U</TextBlock>
-                        <TextBlock x:Name="nomUser" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="56,0,0,0">Utilisateur Anonyme</TextBlock>
-                    </Grid>
-                    
-                    
-                    
                     
 
-                    <RadioButton x:Name="DecoBouton"
-                       GroupName="Group1"
-                       Style="{StaticResource NavigationButtonStyle}"
-                       Tag="&#xE7E8;"
-                       Checked="decoClick"
-                       Content="Déconnexion"
-                       />
-                    
+
+                    <RadioButton x:Name="DecoBouton" GroupName="Group1" Checked="decoClick" Content="Déconnexion" Foreground="White" Tag="&#xE7E8;"
+                            Style="{StaticResource NavRadioButtonStyle}" />
                 </StackPanel>
 
             </Grid>
@@ -87,131 +69,12 @@
         <!-- le contenu de la page -->
         <SplitView.Content>
 
-            <Grid Background="White">
-
-                <!--emploi du temps-->
-                <ScrollViewer x:Name="Planning" Visibility="Visible">
-
-                    <StackPanel>
-                        
-                        <TextBlock FontSize="24" HorizontalAlignment="Center">Emploi du Temps</TextBlock>
-                        
-                        <Grid Height="35" x:Name="button_week">
-                            <Button  Click="BackButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59179;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="15,0,0,0"/>
-                            <TextBlock x:Name="numeroSemaine" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            <Button  Click="NextButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59178;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,15,0"/>
-                        </Grid>
-                        <ScrollViewer>
-
-
-                            <Grid x:Name="grid"  Margin="3" BorderThickness="2,0" >
-
-                                <Grid.ColumnDefinitions >
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition  Width="*" x:Name="c1"/>
-                                    <ColumnDefinition  Width="*" x:Name="c2"/>
-                                    <ColumnDefinition  Width="*" x:Name="c3"/>
-                                    <ColumnDefinition  Width="*" x:Name="c4"/>
-                                    <ColumnDefinition  Width="*" x:Name="c5"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="15" />
-
-                                    <RowDefinition Height="15" />
-                                    <RowDefinition Height="30" />
-
-                                </Grid.RowDefinitions>
-
-
-
-                            </Grid>
-
-                        </ScrollViewer>
-                    </StackPanel>
-                    <!--<ListBox ItemsSource="{Binding Prenoms}" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
-                        -->
-                </ScrollViewer>
-
-                <!-- Les salles-->
-                <ScrollViewer x:Name="Salles" Visibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <Grid>
+                <Frame x:Name="hamburgerContent" >
                     
-                    <StackPanel>
-                        <TextBlock FontSize="24" HorizontalAlignment="Center">Salles Disponibles</TextBlock>
-                    
-                        <Grid x:Name="salles">
-                        
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                        </Grid>
-                    </StackPanel>
-                </ScrollViewer>
-                
-                <!--Les notes-->
-                <ScrollViewer x:Name="Notes" Visibility="Collapsed" >
-
-                    <StackPanel>
-                        <TextBlock FontSize="24" HorizontalAlignment="Center">Notes</TextBlock>
-
-                        <Grid x:Name="notes">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                        </Grid>
-                    </StackPanel>
-
-                </ScrollViewer>
-
-
+                </Frame>
             </Grid>
-            
+
         </SplitView.Content>
     </SplitView>
 </Page>

@@ -1,0 +1,94 @@
+﻿<Page
+    x:Class="arelv1.Pages.Planning"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:arelv1.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <!--emploi du temps-->
+    <ScrollViewer x:Name="PlanningView" Visibility="Visible" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <StackPanel>
+
+            <TextBlock FontSize="24" HorizontalAlignment="Center">Emploi du Temps</TextBlock>
+
+            <Grid Height="35" x:Name="button_week">
+                <Button  Click="BackButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59179;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="15,0,0,0"/>
+                <TextBlock x:Name="numeroSemaine" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button  Click="NextButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59178;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+            </Grid>
+            <ScrollViewer>
+
+                <Grid x:Name="grid"  Margin="3" BorderThickness="2,0" >
+
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition  Width="*" x:Name="c1"/>
+                        <ColumnDefinition  Width="*" x:Name="c2"/>
+                        <ColumnDefinition  Width="*" x:Name="c3"/>
+                        <ColumnDefinition  Width="*" x:Name="c4"/>
+                        <ColumnDefinition  Width="*" x:Name="c5"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="30" />
+
+                    </Grid.RowDefinitions>
+
+
+
+                </Grid>
+
+            </ScrollViewer>
+        </StackPanel>
+        <!--<ListBox ItemsSource="{Binding Prenoms}" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+                        -->
+    </ScrollViewer>
+</Page>

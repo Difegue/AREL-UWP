@@ -12,14 +12,30 @@ using Windows.UI;
 
 namespace arelv1
 {
-    public class Page
+    //Classe générique pour traiter avec l'API d'Arel.
+    public class ArelApi
     {
         
         private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
+        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings; 
         private string resultat;
 
-        //-------------------- Retourne la date du lundi precedent ---------------------------------------
+        public string getInfo(string url)
+        {
+            url = "https://arel.eisti.fr/" + url;
+            string contentType = "application/xml";
+            string identifiants = localSettings.Values["token"].ToString();
+            string data = "format=xml";
 
+            string resultat = http(url, contentType, identifiants, "Bearer", data, "GET");//on fait la requete
+            return resultat;
+        }
+
+        //Check if we're connected to Arel
+        public bool isOnline()
+        {
+            return (localSettings.Values["internet"] == null);
+        }
 
         //-------------------- convertisseur n° semaine en date --------------------------------------
 

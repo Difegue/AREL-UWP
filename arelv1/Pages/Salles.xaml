@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="arelv1.Pages.Salles"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:arelv1.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+    <!-- Les salles-->
+    <ScrollViewer x:Name="SalleView" ScrollViewer.VerticalScrollBarVisibility="Visible" Background="White">
+
+        <StackPanel>
+            <TextBlock FontSize="24" HorizontalAlignment="Center">Salles Disponibles</TextBlock>
+
+            <Grid x:Name="salles">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+    </Grid>
+</Page>

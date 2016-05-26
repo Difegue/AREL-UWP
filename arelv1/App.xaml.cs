@@ -28,7 +28,7 @@ namespace arelv1
         /// </summary>
         /// 
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
-        private Page page = new Page();//objet pour faire la requete html et peut un jour d'autres choses
+        private ArelApi API = new ArelApi(); //objet pour traiter les requêtes HTML avec Arel
 
         public App()
         {
@@ -130,7 +130,7 @@ namespace arelv1
             string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
             string data = "grant_type=password&username=" + name + "&password=" + pass + "&scope = read&format=xml";
 
-            string resultat = page.http(url, contentType, identifiants, "Basic", data,"POST");//on fait la requete
+            string resultat = API.http(url, contentType, identifiants, "Basic", data,"POST");//on fait la requete
 
 
             if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
