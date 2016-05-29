@@ -217,7 +217,7 @@ namespace arelv1
 
         }
 
-        private void internet_button(object sender, RoutedEventArgs e)
+        private void anonLogin_button(object sender, RoutedEventArgs e)
         {
             if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null && API.isset("planning") && API.isset("salles") && API.isset("notes"))
             {

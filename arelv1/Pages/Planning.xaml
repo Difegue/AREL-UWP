@@ -12,12 +12,14 @@
 
         <StackPanel>
 
-            <TextBlock FontSize="24" HorizontalAlignment="Center">Emploi du Temps</TextBlock>
+            <TextBlock x:Name="numeroSemaine" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-100" FontWeight="SemiLight" Margin="19,0,0,0" Foreground="#FF323232">
+        		<Run Text="Emploi du Temps - Semaine X"/>
+            </TextBlock>
 
             <Grid Height="35" x:Name="button_week">
-                <Button  Click="BackButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59179;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="15,0,0,0"/>
-                <TextBlock x:Name="numeroSemaine" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <Button  Click="NextButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#59178;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+                <Button Click="BackButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="15,0,0,0"/>
+
+                <Button Click="NextButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#xE72A;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,15,0"/>
             </Grid>
             <ScrollViewer>
 

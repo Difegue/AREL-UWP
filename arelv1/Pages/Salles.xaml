@@ -7,22 +7,43 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <local:DispoToIcon x:Key="DisponibleConverter"/>
+    </UserControl.Resources>
+
     <Grid>
-    <!-- Les salles-->
-    <ScrollViewer x:Name="SalleView" ScrollViewer.VerticalScrollBarVisibility="Visible" Background="White">
+        <!-- Les salles-->
+        <ScrollViewer x:Name="SalleView" ScrollViewer.VerticalScrollBarVisibility="Visible" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <StackPanel>
-            <TextBlock FontSize="24" HorizontalAlignment="Center">Salles Disponibles</TextBlock>
+            <StackPanel>
+                <Grid>
+                    <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-100" FontWeight="SemiLight" Margin="19,0,0,15" Foreground="#FF323232">Disponibilité des Salles</TextBlock>
 
-            <Grid x:Name="salles">
+                    <ComboBox x:Name="campusSelection"  Height="40" Width="125"  Margin="0,7,19,0"
+                     ItemsSource="{x:Bind campusList}" SelectionChanged="writeSalle" SelectedItem="{x:Bind SelectedComboBoxOption}" HorizontalAlignment="Right" />
+                </Grid>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+                <GridView ItemsSource="{x:Bind salleList}" >
+                    <GridView.ItemTemplate >
+                        <DataTemplate x:DataType="local:Salle">
+                            <StackPanel Orientation="Horizontal" Margin="6" Width="200" Background="#FFF9F9F9">
+                                <SymbolIcon Symbol="{x:Bind dispo, Converter={StaticResource DisponibleConverter}}" Margin="3,0,12,0" 
+                                            Foreground="{x:Bind dispo, Converter={StaticResource DisponibleConverter}}" />
+                                <StackPanel>
+                                    <TextBlock Text="{x:Bind nom}" FontWeight="Bold" />
+                                    <TextBlock Text="{x:Bind desc}" FontStyle="Italic" />
+                                    <Grid>
+                                        <TextBlock Text="Capacité:" FontSize="12"/>
+                                        <TextBlock Text="{x:Bind cap}" Margin="50,0,0,0" FontSize="12"/>
+                                    </Grid>
 
-            </Grid>
-        </StackPanel>
-    </ScrollViewer>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

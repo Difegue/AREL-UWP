@@ -207,7 +207,7 @@ namespace arelv1.Pages
                 }
             }
 
-            numeroSemaine.Text = "Semaine " + week1;
+            numeroSemaine.Text = "Emploi du Temps - Semaine " + week1;
             lundi = API.weekToDate(Convert.ToInt32(week1), 2016, "lundi");
 
 

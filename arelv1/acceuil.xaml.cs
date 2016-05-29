@@ -30,9 +30,9 @@ namespace arelv1
 
             if(API.isOnline())
             {
-                API.saveData("salles", API.getInfo("api/campus/rooms?siteId=1990"));
+                
                 API.saveData("user", API.getInfo("api/me"));
-                API.saveData("note", API.getInfo("api/marks/"+getIdUser(API.getData("user"))+"/export?id="+ getIdUser(API.getData("user"))));
+                //API.saveData("note", API.getInfo("api/marks/"+getIdUser(API.getData("user"))+"/export?id="+ getIdUser(API.getData("user"))));
                 //ecrire(getinfo("api/campus/romms", "&id=1990"));
             }
             

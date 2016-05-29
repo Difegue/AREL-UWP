@@ -58,7 +58,7 @@ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
                                 <ColumnDefinition Width="48"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock FontSize="20" Height="25" Text="{TemplateBinding Tag}" FontFamily="Segoe MDL2 Assets" Margin="5,8,5,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock FontSize="25" Height="35" Text="{TemplateBinding Tag}" FontFamily="Segoe MDL2 Assets" Margin="5,15,5,5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" TextWrapping="Wrap" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Grid>
                     </Border>
