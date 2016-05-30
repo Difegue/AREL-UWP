@@ -3,7 +3,7 @@
   <Identity Name="bb5f7131-4cd6-4b8e-bffa-2b89fd853834" Publisher="CN=Tjiho" Version="1.0.0.0" />
   <mp:PhoneIdentity PhoneProductId="bb5f7131-4cd6-4b8e-bffa-2b89fd853834" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>arelv1</DisplayName>
+    <DisplayName>Arel</DisplayName>
     <PublisherDisplayName>Tjiho</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -27,5 +27,6 @@
   </Applications>
   <Capabilities>
     <Capability Name="internetClient" />
+    <uap:Capability Name="appointments" />
   </Capabilities>
 </Package>

@@ -12,83 +12,120 @@
 
         <StackPanel>
 
-            <TextBlock x:Name="numeroSemaine" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-100" FontWeight="SemiLight" Margin="19,0,0,0" Foreground="#FF323232">
-        		<Run Text="Emploi du Temps - Semaine X"/>
-            </TextBlock>
 
-            <Grid Height="35" x:Name="button_week">
-                <Button Click="BackButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#xE72B;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="15,0,0,0"/>
 
-                <Button Click="NextButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#xE72A;" Height="35" Width="40" FontSize="20" Background="Transparent" Foreground="Black"  Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+            <Grid Height="50" x:Name="button_week">
+
+                <TextBlock x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-100" FontWeight="SemiLight" Margin="10,0,0,0" Foreground="#FF323232" TextWrapping="Wrap">
+        		<Run Text="Emploi du Temps AREL - Jour X"/>
+                </TextBlock>
+
             </Grid>
-            <ScrollViewer>
 
-                <Grid x:Name="grid"  Margin="3" BorderThickness="2,0" >
+            <Grid BorderThickness="0" BorderBrush="Black" >
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition MaxWidth="310"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-                    <Grid.ColumnDefinitions >
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition  Width="*" x:Name="c1"/>
-                        <ColumnDefinition  Width="*" x:Name="c2"/>
-                        <ColumnDefinition  Width="*" x:Name="c3"/>
-                        <ColumnDefinition  Width="*" x:Name="c4"/>
-                        <ColumnDefinition  Width="*" x:Name="c5"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
+                <StackPanel Grid.Column="0">
+                    <Grid >
 
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
+                        <SymbolIcon Symbol="CalendarDay" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                            <SymbolIcon.RenderTransform>
+                                <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                            </SymbolIcon.RenderTransform>
+                        </SymbolIcon>
+                        <TextBlock  FontSize="30" HorizontalAlignment="Left" CharacterSpacing="-100" FontWeight="SemiLight" Margin="40,8,0,20" Foreground="#FF323232" TextWrapping="Wrap">
+        		<Run Text="Vos cours de la journée ..."/>
+                        </TextBlock>
+                    </Grid>
 
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
+                    <ScrollViewer>
+                        <Grid x:Name="grid"  Margin="0,3,3,18" BorderThickness="2,0">
+                            <Grid.ColumnDefinitions >
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition  MinWidth="150" MaxWidth="270" x:Name="c1"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
 
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
 
-                        <RowDefinition Height="15" />
-                        <RowDefinition Height="30" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
 
-                    </Grid.RowDefinitions>
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="15" />
 
+                                <RowDefinition Height="15" />
+                                <RowDefinition Height="30" />
 
+                            </Grid.RowDefinitions>
+                        </Grid>
+                    </ScrollViewer>
+                </StackPanel>
 
-                </Grid>
+                <StackPanel Grid.Column="1" BorderBrush="Black" BorderThickness="2,0,0,0" Margin="0,0,10,0">
+                    <Grid>
+                        <SymbolIcon Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                            <SymbolIcon.RenderTransform>
+                                <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                            </SymbolIcon.RenderTransform>
+                        </SymbolIcon>
+                        <TextBlock  FontSize="30" HorizontalAlignment="Left" CharacterSpacing="-100" FontWeight="SemiLight" Margin="50,8,0,0" Foreground="#FF323232" TextWrapping="Wrap">
+        		<Run Text="Marre d'ouvrir l'appli tous les jours ?"/>
+                        </TextBlock>
+                    </Grid>
 
-            </ScrollViewer>
+                    <TextBlock Margin="20,15,0,0" FontSize="15" TextWrapping="Wrap">Vous pouvez utiliser cette application pour synchroniser votre Calendrier Windows 10 avec votre planning AREL.</TextBlock>
+                    <TextBlock  Margin="20,0,0,0" FontSize="15" TextWrapping="Wrap">La synchronisation peut être effectuée automatiquement ou manuellement.</TextBlock>
+
+                    <Grid>
+                        <Button Margin="20,15,0,0" x:Name="SyncNow" Click="ManualSync">Synchoniser</Button>
+                        <ProgressRing x:Name="SpinnerSync" Margin="130,15,0,0" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <ToggleSwitch Margin="20,15,0,0" x:Name="BackgroundSyncSwitch" Header="Activer la synchronisation automatique" Toggled="AutoSync"/>
+                    
+                    <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Une première synchronisation sera effectuée à l'activation de la synchro automatique.</TextBlock>
+                    <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >L'application Calendrier s'ouvrira automatiquement lorsqu'elle sera terminée.</TextBlock>
+                </StackPanel>
+            </Grid>
         </StackPanel>
         <!--<ListBox ItemsSource="{Binding Prenoms}" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
                         -->

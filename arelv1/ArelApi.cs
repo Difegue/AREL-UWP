@@ -31,6 +31,44 @@ namespace arelv1
             return resultat;
         }
 
+        private string getIdUser(string xml)
+        {
+            string userid = "0";
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
+            {
+                if (node.Name == "id")
+                {
+                    userid = node.InnerText;
+                }
+            }
+            return userid;
+        }
+
+        public string getUserFullName(string xml)
+        {
+            string fn = "User";
+            string ln = "Anonyme";
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
+            {
+                if (node.Name.ToLower() == "firstname")
+                {
+                    fn = node.InnerText;
+                }
+
+                if (node.Name.ToLower() == "lastname")
+                {
+                    ln = node.InnerText;
+                }
+            }
+            return fn + " " + ln;
+        }
+
+
+
         //Check if we're connected to Arel
         public bool isOnline()
         {
@@ -73,100 +111,7 @@ namespace arelv1
             return value.AddDays(daysToAdd);
         }
 
-
-
-        //-------------------- convertisseur hexa -> rgb ---------------------------------------------
-
-        public Color HexToColor(String hexString)
-        {
-            Color actColor;
-            int r, g, b;
-            r = 0;
-            g = 0;
-            b = 0;
-            if ((hexString.StartsWith("#")) && (hexString.Length == 7))
-            {
-                r = HexToInt(hexString.Substring(1, 1))*16 + HexToInt(hexString.Substring(1, 1));
-                g = HexToInt(hexString.Substring(3, 1)) * 16 + HexToInt(hexString.Substring(4, 1));
-                b = HexToInt(hexString.Substring(5, 1)) * 16 + HexToInt(hexString.Substring(6, 1));
-                
-                actColor = Color.FromArgb(150, Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
-            }
-            else
-            {
-                actColor = Color.FromArgb(0,0,0,0);
-            }
-            return actColor;
-        }
-
-        public int HexToInt(string s)
-        {
-            int res;
-            switch(s)
-            {
-                case "1":
-                    res = 1;
-                break;
-                case "2":
-                    res = 2;
-                break;
-                case "3":
-                    res = 3;
-                    break;
-                case "4":
-                    res = 4;
-                    break;
-                case "5":
-                    res = 5;
-                    break;
-                case "6":
-                    res = 6;
-                    break;
-                case "7":
-                    res = 7;
-                    break;
-                case "8":
-                    res = 8;
-                    break;
-                case "9":
-                    res = 9;
-                    break;
-                case "a":
-                    res = 10;
-                    break;
-                case "b":
-                    res = 11;
-                    break;
-                case "c":
-                    res = 12;
-                    break;
-                case "d":
-                    res = 13;
-                    break;
-                case "e":
-                    res = 14;
-                    break;
-                case "f":
-                    res = 15;
-                    break;
-                case "0":
-                    res = 0;
-                break;
-                default:
-                    res = 0;
-                break;
-                
-            }
-            return res;
-        }
-
-
-
         //--------------------enregistrer dans un fichier... -----------------------------------------
-
-
-        private bool readsuccess;
-
 
         public void saveData(string key, string data)//ecriture normale
         {
@@ -207,18 +152,11 @@ namespace arelv1
            
         }
 
-        async void getDataAsync(string key)//lecture asynchrone
+        async void getDataAsync(string key) //lecture asynchrone
         {
-            try
-            {
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(key);
-                resultat = await FileIO.ReadTextAsync(file);
-                readsuccess = true;
-            }
-            catch (Exception)
-            {
-                readsuccess = false;
-            }
+            
+            StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(key);
+            resultat = await FileIO.ReadTextAsync(file);
         }
 
 
@@ -265,10 +203,6 @@ namespace arelv1
             {
                 connexion.BeginGetRequestStream(new AsyncCallback(requete), connexion);//lance la connexion asynchrone
             }
-
-           
-
-            
 
             allDone.WaitOne();//attend et reste sur la page en cours
             return resultat;  

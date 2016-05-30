@@ -39,59 +39,13 @@ namespace arelv1
             //string notes = API.getData("note");
 
             //Récup du nom de l'utilisateur pour affichage
-            string userName = getUserFullName(API.getData("user"));
+            string userName = API.getUserFullName(API.getData("user"));
             nomUser.Text = userName;
 
             AgendaBouton.IsChecked = true; //Petit trick pour commencer sur l'EDT de base
             UpdateLayout();
         }
 
-       
-
-        
-
-        private string getIdUser(string xml)
-        {
-            string userid = "0";
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(xml);//chargement de la variable
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
-            {
-                if (node.Name == "id")
-                {
-                    userid = node.InnerText;
-                }
-            }
-            return userid;
-        }
-
-        private string getUserFullName(string xml)
-        {
-            string ret = "User Anonyme";
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(xml);//chargement de la variable
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
-            {
-                if (node.Name == "firstName")
-                {
-                    ret = node.InnerText;
-                }
-
-                if (node.Name == "lastName")
-                {
-                    ret += " " + node.InnerText;
-                }
-            }
-            return ret;
-        }
-
-        
-
-        
-        
-        
-
-        
 
         private void HamburgerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
