@@ -42,11 +42,15 @@
                     <RadioButton x:Name="AgendaBouton" GroupName="Group1" Checked="agendaClick" Content="Planning"  Foreground="White" Tag="&#xE8F5;" 
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
+                    <RadioButton x:Name="SallesBouton" GroupName="Group1" Checked="sallesClick" Content="Salles Libres" Foreground="White" Tag="&#xE211;"
+                            Style="{StaticResource NavRadioButtonStyle}" />
+
                     <RadioButton x:Name="NotesBouton" GroupName="Group1" Checked="noteClick" Content="Notes"  Foreground="White" Tag="&#xE7BE;"
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
-                    <RadioButton x:Name="SallesBouton" GroupName="Group1" Checked="sallesClick" Content="Salles Libres" Foreground="White" Tag="&#xE211;"
-                            Style="{StaticResource NavRadioButtonStyle}" />
+                    <RadioButton x:Name="AbsencesBouton" GroupName="Group1" Checked="noteClick" Content="Absences"  Foreground="White" Tag="&#xE181;"
+                                 Style="{StaticResource NavRadioButtonStyle}" />
+
 
                 </StackPanel>
 

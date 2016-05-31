@@ -12,15 +12,15 @@
     <ScrollViewer x:Name="NotesView" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
         <StackPanel>
-            <TextBlock FontSize="24" HorizontalAlignment="Center">Notes</TextBlock>
+            <TextBlock FontSize="34" HorizontalAlignment="Center" VerticalAlignment="Center">Pas implémenté mdr</TextBlock>
 
-            <Grid x:Name="notes">
+            <!--<Grid x:Name="notes">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-            </Grid>
+            </Grid>-->
         </StackPanel>
 
     </ScrollViewer>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Appointments;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -23,6 +24,9 @@ namespace arelv1.Pages
         //Temps enregistré pour l'affichage du planning
         private DateTime now = DateTime.Now;
         private ArelApi API = new ArelApi();
+        private bool taskRegistered = false;
+        private bool firstLaunch = false;
+        private string taskName;
 
         public Planning()
         {
@@ -35,8 +39,23 @@ namespace arelv1.Pages
 
             DrawPlanning();
             writePlanning(API.getData("planning"));
-
             UpdateLayout();
+
+            //Etat de la tâche de synch du planning pour cet utilisateur
+            taskName = "ARELSyncPlanningTask";
+            
+            foreach (var task in BackgroundTaskRegistration.AllTasks)
+            {
+                if (task.Value.Name == taskName)
+                {
+                    taskRegistered = true;
+                    firstLaunch = true; //Pour permettre au premier appel de toggled - qui vient dès le démarrage de l'appli vu qu'on met isOn = true si y'a déjà un background event - de passer sans désactiver le call et foutre le bordel, on met ce bool en vérif
+                    break;
+                }
+            }
+
+            API.saveData("backgroundTask", taskRegistered.ToString());
+            BackgroundSyncSwitch.IsOn = taskRegistered;
 
         }
 
@@ -103,6 +122,61 @@ namespace arelv1.Pages
             }
 
         }
+
+        private async void ManualSync(object sender, RoutedEventArgs e)
+        {
+            //On montre un spinner pour l'amusement
+            SpinnerSync.IsActive = true;
+
+            //update manuelle: On chope les cours des 2 dernières + des 2 prochaines semaines
+            await updateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.getUserFullName(API.getData("user")));
+
+            //On montre le calendrier
+            await Windows.ApplicationModel.Appointments.AppointmentManager.ShowTimeFrameAsync(DateTime.Now, new TimeSpan(125, 0, 0));
+            SpinnerSync.IsActive = false;
+        }
+
+        private void AutoSync(object sender, RoutedEventArgs e)
+        {
+            if (firstLaunch)
+                firstLaunch = false;
+            else
+                if (taskRegistered)
+                {
+                    API.saveData("backgroundTask", "false");
+                    taskRegistered = false;
+                }
+                else
+                {
+                    //On vétifie si la tâche n'est pas déjà enregistrée
+                    foreach (var task in BackgroundTaskRegistration.AllTasks)
+                    {
+                        if (task.Value.Name == taskName)
+                        {
+                            taskRegistered = true;
+                            return;
+                        }
+                    }
+
+                    var builder = new BackgroundTaskBuilder();
+                    TimeTrigger hourlyTrigger = new TimeTrigger(120, false); //On rafraîchit le planning toutes les 2 heures.
+
+                    builder.Name = taskName;
+                    builder.TaskEntryPoint = "ARELPlanningBackgroundTask";
+                    builder.SetTrigger(hourlyTrigger);
+
+                    builder.Register();
+                    API.saveData("backgroundTask", "true");
+                    taskRegistered = true;
+
+                    ManualSync(sender,e);
+                }
+        }
+
+
+        /*
+         * Les fonctions ci-dessous concernent le dessin de l'EDT sur le panel de gauche
+         */
 
         //Crée un joli string avec la date + un offset de jour
         private string getDayStr(DateTime dt, int daysToAdd)
@@ -390,22 +464,5 @@ namespace arelv1.Pages
             return res;
         }
 
-        private async void ManualSync(object sender, RoutedEventArgs e)
-        {
-            //On montre un spinner pour l'amusement
-            SpinnerSync.IsActive = true;
-
-            //update manuelle: On chope les cours des 2 dernières + des 2 prochaines semaines
-            await updateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.getUserFullName(API.getData("user")));
-
-            //On montre le calendrier
-            await Windows.ApplicationModel.Appointments.AppointmentManager.ShowTimeFrameAsync(DateTime.Now, new TimeSpan(125, 0, 0));
-            SpinnerSync.IsActive = false;
-        }
-
-        private void AutoSync(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

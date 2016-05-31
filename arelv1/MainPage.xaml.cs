@@ -113,88 +113,39 @@ namespace arelv1
         private ArelApi API = new ArelApi();//objet pour faire la requete html et peut un jour d'autres choses
         private bool stayConnect;
         
-        
 
-
-        //fonction executé quand on appuie sur le bouton
+        //fonction executée quand on appuie sur le bouton
         private void login_button(object sender, RoutedEventArgs ev)
         {
 
-            if(connect_login(nom.Text.ToLower(), pass.Password))
+            if(API.connect_login(nom.Text.ToLower(), pass.Password))
             {
+                //C'est vraiment une idée de merde de stocker les credentials en dur comme ça,
+                //Tout casse si l'user change son password. 
+                //Après sur la doc y'a rien sur comment renouveler les jetons d'authentification proprement du coup on laisse comme ça 
                 localSettings.Values["user"] = nom.Text.ToLower();
                 localSettings.Values["pass"] = pass.Password;
+
                 if (stayConnect)
-                {
                     localSettings.Values["stayConnect"] = true;
-                    
-                }
                 
                 Frame.Navigate(typeof(acceuil));
-            } 
-            //ecrire(localSettings.Values["token"].ToString());      
-        }
-
-        //fonction qui initialise la connection à arel
-        private bool connect_login(string name,string pass)
-        {
-            string url = "http://arel.eisti.fr/oauth/token";
-            string contentType = "application/x-www-form-urlencoded";
-            string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
-            string data = "grant_type=password&username="+name+"&password="+pass+"&scope = read&format=xml";
-
-            string resultat = API.http(url, contentType, identifiants,"Basic",data,"POST");//on fait la requete
-            
-
-            if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
-            {
-                ecrire(getToken(resultat));
-                localSettings.Values["token"] = getToken(resultat);//on save le token
-                return true;
             }
             else
             {
-                ecrire(resultat);
-                return false;
-            }
-
-
-
-
+                //L'objet API logge l'erreur de connexion si il en arrive une.
+                ecrire("Erreur de connexion: "+API.getData("erreurLogin"));
+            }  
         }
-
 
         //fonction main
         public MainPage()
         {
-            
             InitializeComponent(); //demarage de l'interface   
             localSettings.Values["internet"] = null;
             stayConnect = false;
-             
-            
         }
 
-        //recupère le token a partir du resultat de la requete
-        private string getToken(string data)
-        {
-            string res = "toto";
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(data);//chargement de la variable
-
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
-            {
-               
-                if (node.Name == "access_token")//on recupere le contenu de access_token
-                {
-                    res = node.InnerText;
-                }
-            }
-
-            return res;
-        }
-
-       
         //fonction pour afficher les erreurs (pourrai être modifier pour faire un pop-up à la place)
         private void ecrire(string msg)
         {
@@ -210,11 +161,6 @@ namespace arelv1
         private void stayConnectBox(object sender, RoutedEventArgs e)
         {
             stayConnect = !stayConnect;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void anonLogin_button(object sender, RoutedEventArgs e)

@@ -20,6 +20,48 @@ namespace arelv1
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings; 
         private string resultat;
 
+        //fonction qui initialise la connection à arel et stocke un token d'accès
+        public bool connect_login(string name, string pass)
+        {
+            string url = "http://arel.eisti.fr/oauth/token";
+            string contentType = "application/x-www-form-urlencoded";
+            string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
+            string data = "grant_type=password&username=" + name + "&password=" + pass + "&scope = read&format=xml";
+
+            string resultat = http(url, contentType, identifiants, "Basic", data, "POST");//on fait la requete
+
+            if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
+            {
+                localSettings.Values["token"] = getToken(resultat);//on save le token
+                return true;
+            }
+            else
+            {
+                
+                saveData("erreurLogin", resultat);
+                return false;
+            }
+        }
+
+        //recupère le token a partir du resultat de la requete
+        private string getToken(string data)
+        {
+            string res = "toto";
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(data);//chargement de la variable
+
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
+            {
+
+                if (node.Name == "access_token")//on recupere le contenu de access_token
+                {
+                    res = node.InnerText;
+                }
+            }
+
+            return res;
+        }
+
         public string getInfo(string url)
         {
             url = "https://arel.eisti.fr/" + url;
@@ -31,7 +73,8 @@ namespace arelv1
             return resultat;
         }
 
-        private string getIdUser(string xml)
+        //Récupère l'ID de l'utlisateur avec le XML de getUserInfo.
+        public string getIdUser(string xml)
         {
             string userid = "0";
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
@@ -46,6 +89,7 @@ namespace arelv1
             return userid;
         }
 
+        //Récupère le nom complet de l'utilisateur avec le XML de getUserInfo.
         public string getUserFullName(string xml)
         {
             string fn = "User";
@@ -69,10 +113,20 @@ namespace arelv1
 
 
 
-        //Check if we're connected to Arel
+        //Check if our connection to the Arel API is still in good standing (token hasn't expired or website isn't down)
         public bool isOnline()
         {
-            return (localSettings.Values["internet"] == null);
+            try
+            {
+                System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+                doc.LoadXml(getInfo("/api/me")); //On essaie de charger un call bidon
+                return true;
+            }
+            catch (System.Xml.XmlException e)
+            {
+                return false;
+            } 
+
         }
 
         //-------------------- convertisseur n° semaine en date --------------------------------------
@@ -253,11 +307,11 @@ namespace arelv1
                 string erreur = e.ToString();
                 if (erreur.IndexOf("400") > -1)
                 {                   
-                    resultat = "identifiants incorrects";
+                    resultat = "Identifiants incorrects";
                 }
                 else if (erreur.IndexOf("401") > -1)
                 {
-                    resultat = "acces refusé";
+                    resultat = "Accès refusé";
                 }
                 else if (erreur.IndexOf("403") > -1)
                 {
@@ -266,7 +320,7 @@ namespace arelv1
                     string responseString = streamRead.ReadToEnd();
 
 
-                    resultat = "ressource interdite: "+responseString;
+                    resultat = "Ressource interdite: "+responseString;
                 }
                 else if (e.Status.ToString().IndexOf("ResolutionFailure") > -1)
                 {
@@ -278,7 +332,7 @@ namespace arelv1
                 }
                 else
                 {
-                    resultat = "erreur inconnu...\n" + e.Status;
+                    resultat = "Erreur Inconnue.\n" + e.Status;
                 }
                
 

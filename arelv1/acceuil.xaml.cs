@@ -30,10 +30,8 @@ namespace arelv1
 
             if(API.isOnline())
             {
-                
+                //màj des données de l'utilisateur
                 API.saveData("user", API.getInfo("api/me"));
-                //API.saveData("note", API.getInfo("api/marks/"+getIdUser(API.getData("user"))+"/export?id="+ getIdUser(API.getData("user"))));
-                //ecrire(getinfo("api/campus/romms", "&id=1990"));
             }
             
             //string notes = API.getData("note");

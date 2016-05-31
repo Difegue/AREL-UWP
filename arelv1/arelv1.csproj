@@ -111,6 +111,7 @@
     <Compile Include="Pages\Salles.xaml.cs">
       <DependentUpon>Salles.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ARELPlanningBackgroundTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

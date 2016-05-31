@@ -120,7 +120,7 @@
                         <Button Margin="20,15,0,0" x:Name="SyncNow" Click="ManualSync">Synchroniser</Button>
                         <ProgressRing x:Name="SpinnerSync" Margin="130,15,0,0" HorizontalAlignment="Left"/>
                     </Grid>
-                    <ToggleSwitch Margin="20,15,0,0" x:Name="BackgroundSyncSwitch" Header="Activer la synchronisation automatique" Toggled="AutoSync"/>
+                    <ToggleSwitch Margin="20,15,0,0" x:Name="BackgroundSyncSwitch" Header="Activer la synchronisation automatique" Toggled="AutoSync" />
                     
                     <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Une première synchronisation sera effectuée à l'activation de la synchro automatique.</TextBlock>
                     <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >L'application Calendrier s'ouvrira automatiquement lorsqu'elle sera terminée.</TextBlock>
