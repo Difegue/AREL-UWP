@@ -14,10 +14,10 @@
 
 
 
-            <Grid Height="50" x:Name="button_week">
+            <Grid x:Name="button_week">
 
-                <TextBlock x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-70" FontWeight="SemiLight" Margin="10,0,0,0" Foreground="#FF323232" TextWrapping="Wrap">
-        		<Run Text="Emploi du Temps AREL - Jour X"/>
+                <TextBlock x:Name="dateJour" FontSize="40" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,0,0,10" Foreground="#FF323232" TextWrapping="Wrap">
+        		Emploi du Temps AREL - Jour X
                 </TextBlock>
 
             </Grid>
