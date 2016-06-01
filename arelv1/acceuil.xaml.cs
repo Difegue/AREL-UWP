@@ -20,9 +20,9 @@ namespace arelv1
         
         private Info contexte; //pour le message d'erreur
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings; //recuperation d'un tableau pour stocker nos données
-        private ArelApi API = new ArelApi();
+        private ArelAPI.Connector API = new ArelAPI.Connector();
 
-        
+
 
         public acceuil()
         {

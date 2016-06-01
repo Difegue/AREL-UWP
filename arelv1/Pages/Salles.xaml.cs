@@ -25,7 +25,7 @@ namespace arelv1.Pages
         private ObservableCollection<Campus> campusList= new ObservableCollection<Campus>();
         private ObservableCollection<Salle> salleList = new ObservableCollection<Salle>();
 
-        private ArelApi API = new ArelApi();
+        private ArelAPI.Connector API = new ArelAPI.Connector();
         private Campus SelectedComboBoxOption;
 
         public Salles()
@@ -88,8 +88,8 @@ namespace arelv1.Pages
                 string tbl = room.ChildNodes[3].InnerText;
                 string cap = room.ChildNodes[2].InnerText;
 
-                if (nom !="???")
-                salleList.Add(new Salle(nom, desc, bookable, tbl, cap));
+                if (nom !="???" && nom!="DAUPHINE" && nom!="ENSEA" && nom!="GEM") 
+                    salleList.Add(new Salle(nom, desc, bookable, tbl, cap));
 
             }
 

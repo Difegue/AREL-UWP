@@ -23,7 +23,7 @@ namespace arelv1.Pages
     {
         //Temps enregistré pour l'affichage du planning
         private DateTime now = DateTime.Now;
-        private ArelApi API = new ArelApi();
+        private ArelAPI.Connector API = new ArelAPI.Connector();
         private bool taskRegistered = false;
         private bool firstLaunch = false;
         private string taskName;
@@ -59,69 +59,7 @@ namespace arelv1.Pages
 
         }
 
-        //Met à jour un calendrier Windows custom avec les données de planning de l'API Arel.
-        //On peut par la suite ouvrir l'appli calendrier Windows sur ce cal. custom.
-        public static async Task updateWindowsCalendar(string start, string end, string calendarName)
-        {
-            string apiUrl = "api/planning/slots?start=" + start + "&end=" + end;
-
-            ArelApi API = new ArelApi();
-            string planningXML = API.getInfo(apiUrl);
-
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(planningXML);//chargement de la variable
-            //On a le XML, on ouvre le calendrier custom
-
-            // 1. get access to appointmentstore 
-            var appointmentStore = await AppointmentManager.RequestStoreAsync(AppointmentStoreAccessType.AppCalendarsReadWrite);
-
-            // 2. get calendar 
-
-            AppointmentCalendar calendar
-                = (await appointmentStore.FindAppointmentCalendarsAsync())
-                         .FirstOrDefault(c => c.DisplayName == calendarName);
-
-            if (calendar == null)
-                calendar = await appointmentStore.CreateAppointmentCalendarAsync(calendarName);
-
-            //Et c'est parti pour la boucle de la folie
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
-            {
-                // 3. create new Appointment 
-                var appo = new Windows.ApplicationModel.Appointments.Appointment();
-
-                DateTime startDate = DateTime.Parse(node.ChildNodes[0].InnerText);
-                DateTime endDate = DateTime.Parse(node.ChildNodes[1].InnerText);
-
-                // appointment properties 
-                appo.AllDay = false;
-                appo.Location = node.ChildNodes[6].InnerText;
-                appo.StartTime = startDate;
-                appo.Duration = new TimeSpan(0, (int)(endDate - startDate).TotalMinutes, 0);
-
-                //Récup nom complet prof
-                string idProf = node.ChildNodes[3].InnerText;
-                string xmlj = API.getInfo("/api/users/" + idProf);
-                string profName = API.getUserFullName(xmlj);
-                appo.Organizer = new Windows.ApplicationModel.Appointments.AppointmentOrganizer();
-                appo.Organizer.DisplayName = profName;
-
-                appo.Subject = node.ChildNodes[11].InnerText + profName;
-
-                //Est-ce que cet appointment exact existe déjà 
-                //On regarde les appointments sur ce créneau
-
-                Appointment apCheck = (await calendar.FindAppointmentsAsync(appo.StartTime, appo.Duration)).FirstOrDefault(a => a.Subject == appo.Subject);
-                //Si il en existe un sur ce créneau, on l'efface avant d'ajouter le nouveau
-
-                if (apCheck != null)
-                    await calendar.DeleteAppointmentAsync(apCheck.LocalId);
-
-                await calendar.SaveAppointmentAsync(appo);
-
-            }
-
-        }
+        
 
         private async void ManualSync(object sender, RoutedEventArgs e)
         {
@@ -129,7 +67,7 @@ namespace arelv1.Pages
             SpinnerSync.IsActive = true;
 
             //update manuelle: On chope les cours des 2 dernières + des 2 prochaines semaines
-            await updateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.getUserFullName(API.getData("user")));
+            API.updateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.getUserFullName(API.getData("user")));
 
             //On montre le calendrier
             await Windows.ApplicationModel.Appointments.AppointmentManager.ShowTimeFrameAsync(DateTime.Now, new TimeSpan(125, 0, 0));
@@ -162,7 +100,7 @@ namespace arelv1.Pages
                     TimeTrigger hourlyTrigger = new TimeTrigger(120, false); //On rafraîchit le planning toutes les 2 heures.
 
                     builder.Name = taskName;
-                    builder.TaskEntryPoint = "ARELPlanningBackgroundTask";
+                    builder.TaskEntryPoint = "SyncTask.ARELPlanningBackgroundTask";
                     builder.SetTrigger(hourlyTrigger);
 
                     builder.Register();
@@ -318,7 +256,7 @@ namespace arelv1.Pages
                 }
             }
 
-            lundi = API.weekToDate(Convert.ToInt32(week1), 2016, "lundi");
+            lundi = weekToDate(Convert.ToInt32(week1), 2016, "lundi");
 
 
             foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
@@ -378,6 +316,43 @@ namespace arelv1.Pages
             }
 
         }
+
+        //-------------------- convertisseur n° semaine en date --------------------------------------
+
+        public DateTime weekToDate(int week, int year, string day)
+        {
+            //Jour int ISO
+            Dictionary<string, int> dicDays = new Dictionary<string, int>()
+            {
+                {"lundi", 1 },
+                {"mardi", 2 },
+                {"mercredi", 3},
+                {"jeudi", 4 },
+                {"vendredi", 5 },
+                {"samedi", 6 },
+                {"dimanche", 7 }
+            };
+
+
+
+
+            DateTime value = new DateTime(year, 1, 1).AddDays(7 * week);
+
+            int daysToAdd = dicDays[day.ToLower()];
+
+            // On contrôle si l'année commence après jeudi si oui on décale d'une semaine.
+            if ((int)new DateTime(value.Year, 1, 1).DayOfWeek < 5)
+            {
+                daysToAdd -= (int)value.DayOfWeek + 7;
+            }
+            else
+            {
+                daysToAdd -= (int)value.DayOfWeek;
+            }
+
+            return value.AddDays(daysToAdd);
+        }
+
 
         //-------------------- convertisseur hexa -> rgb ---------------------------------------------
 

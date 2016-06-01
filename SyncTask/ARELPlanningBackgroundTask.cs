@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 
-namespace arelv1
+
+namespace SyncTask
 {
     public sealed class ARELPlanningBackgroundTask : IBackgroundTask
     {
@@ -19,13 +20,13 @@ namespace arelv1
         {
             Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
             BackgroundTaskDeferral _deferral = taskInstance.GetDeferral();
-            ArelApi API = new ArelApi();
+            ArelAPI.Connector API = new ArelAPI.Connector();
 
             if (!API.isOnline()) //Si le token n'est plus valide, on en recrée un avec le login/pass qu'on a (encore une fois, idée de merde)
-                API.connect_login(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString());
+                API.connect(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString());
 
             //On appelle la fonction de màj du calendrier windows qui est dans Planning.xaml.cs
-            await Pages.Planning.updateWindowsCalendar(DateTime.Now.ToString("yyyy-MM-dd"), 
+            API.updateWindowsCalendar(DateTime.Now.ToString("yyyy-MM-dd"), 
                                                 DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"),
                                                 API.getUserFullName(API.getData("user")));
 
@@ -37,7 +38,7 @@ namespace arelv1
                 TimeTrigger hourlyTrigger = new TimeTrigger(120, false); //On rafraîchit le planning toutes les 2 heures.
 
                 builder.Name = "ARELSyncPlanningTask";
-                builder.TaskEntryPoint = "ARELPlanningBackgroundTask";
+                builder.TaskEntryPoint = "SyncTask.ARELPlanningBackgroundTask";
                 builder.SetTrigger(hourlyTrigger);
 
                 builder.Register();

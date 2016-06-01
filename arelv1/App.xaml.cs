@@ -28,7 +28,7 @@ namespace arelv1
         /// </summary>
         /// 
         Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
-        private ArelApi API = new ArelApi(); //objet pour traiter les requêtes HTML avec Arel
+        private ArelAPI.Connector API = new ArelAPI.Connector(); //objet pour traiter les requêtes HTML avec Arel
 
         public App()
         {
@@ -85,7 +85,7 @@ namespace arelv1
                     // paramètre
                     
                     if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null && localSettings.Values["stayConnect"] != null)
-                        if (connect_login(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString()))
+                        if (API.connect(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString()))
                            rootFrame.Navigate(typeof(acceuil), e.Arguments);
                         else
                           rootFrame.Navigate(typeof(acceuil), e.Arguments);
@@ -121,34 +121,6 @@ namespace arelv1
             deferral.Complete();
         }
 
-
-        //fonction qui initialise la connection à arel
-        private bool connect_login(string name, string pass)
-        {
-            string url = "http://arel.eisti.fr/oauth/token";
-            string contentType = "application/x-www-form-urlencoded";
-            string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
-            string data = "grant_type=password&username=" + name + "&password=" + pass + "&scope = read&format=xml";
-
-            string resultat = API.http(url, contentType, identifiants, "Basic", data,"POST");//on fait la requete
-
-
-            if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
-            {
-                //ecrire(getToken(resultat));
-                localSettings.Values["token"] = getToken(resultat);//on save le token
-                return true;
-            }
-            else
-            {
-                //ecrire(resultat);
-                return false;
-            }
-
-
-
-
-        }
 
         private string getToken(string data)
         {

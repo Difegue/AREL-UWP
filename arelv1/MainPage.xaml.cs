@@ -110,7 +110,7 @@ namespace arelv1
        
         private Info contexte;//pour le message d'erreur
         private Windows.Storage.ApplicationDataContainer localSettings =  Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
-        private ArelApi API = new ArelApi();//objet pour faire la requete html et peut un jour d'autres choses
+        private ArelAPI.Connector API = new ArelAPI.Connector();//objet pour faire la requete html et peut un jour d'autres choses
         private bool stayConnect;
         
 
@@ -118,7 +118,7 @@ namespace arelv1
         private void login_button(object sender, RoutedEventArgs ev)
         {
 
-            if(API.connect_login(nom.Text.ToLower(), pass.Password))
+            if(API.connect(nom.Text.ToLower(), pass.Password))
             {
                 //C'est vraiment une idée de merde de stocker les credentials en dur comme ça,
                 //Tout casse si l'user change son password. 

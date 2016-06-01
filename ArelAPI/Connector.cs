@@ -7,13 +7,14 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Appointments;
 using Windows.Storage;
 using Windows.UI;
 
-namespace arelv1
+namespace ArelAPI
 {
     //Classe générique pour traiter avec l'API d'Arel.
-    public class ArelApi
+    public sealed class Connector
     {
         
         private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
@@ -21,7 +22,7 @@ namespace arelv1
         private string resultat;
 
         //fonction qui initialise la connection à arel et stocke un token d'accès
-        public bool connect_login(string name, string pass)
+        public bool connect(string name, string pass)
         {
             string url = "http://arel.eisti.fr/oauth/token";
             string contentType = "application/x-www-form-urlencoded";
@@ -51,13 +52,8 @@ namespace arelv1
             doc.LoadXml(data);//chargement de la variable
 
             foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
-            {
-
                 if (node.Name == "access_token")//on recupere le contenu de access_token
-                {
                     res = node.InnerText;
-                }
-            }
 
             return res;
         }
@@ -99,14 +95,10 @@ namespace arelv1
             foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
             {
                 if (node.Name.ToLower() == "firstname")
-                {
                     fn = node.InnerText;
-                }
-
+                
                 if (node.Name.ToLower() == "lastname")
-                {
                     ln = node.InnerText;
-                }
             }
             return fn + " " + ln;
         }
@@ -129,40 +121,67 @@ namespace arelv1
 
         }
 
-        //-------------------- convertisseur n° semaine en date --------------------------------------
-
-        public DateTime weekToDate(int week,int year, string day)
+        //Met à jour un calendrier Windows custom avec les données de planning de l'API Arel.
+        //On peut par la suite ouvrir l'appli calendrier Windows sur ce cal. custom.
+        public async void updateWindowsCalendar(string start, string end, string calendarName)
         {
-            //Jour int ISO
-            Dictionary<string, int> dicDays = new Dictionary<string, int>()
+            string apiUrl = "api/planning/slots?start=" + start + "&end=" + end;
+
+            string planningXML = getInfo(apiUrl);
+
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(planningXML);//chargement de la variable
+            //On a le XML, on ouvre le calendrier custom
+
+            // 1. get access to appointmentstore 
+            var appointmentStore = await AppointmentManager.RequestStoreAsync(AppointmentStoreAccessType.AppCalendarsReadWrite);
+
+            // 2. get calendar 
+
+            AppointmentCalendar calendar
+                = (await appointmentStore.FindAppointmentCalendarsAsync())
+                         .FirstOrDefault(c => c.DisplayName == calendarName);
+
+            if (calendar == null)
+                calendar = await appointmentStore.CreateAppointmentCalendarAsync(calendarName);
+
+            //Et c'est parti pour la boucle de la folie
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
             {
-                {"lundi", 1 },
-                {"mardi", 2 },
-                {"mercredi", 3},
-                {"jeudi", 4 },
-                {"vendredi", 5 },
-                {"samedi", 6 },
-                {"dimanche", 7 }
-            };
+                // 3. create new Appointment 
+                var appo = new Windows.ApplicationModel.Appointments.Appointment();
 
-            
-            
+                DateTime startDate = DateTime.Parse(node.ChildNodes[0].InnerText);
+                DateTime endDate = DateTime.Parse(node.ChildNodes[1].InnerText);
 
-            DateTime value = new DateTime(year, 1, 1).AddDays(7 * week);
+                // appointment properties 
+                appo.AllDay = false;
+                appo.Location = node.ChildNodes[6].InnerText;
+                appo.StartTime = startDate;
+                appo.Duration = new TimeSpan(0, (int)(endDate - startDate).TotalMinutes, 0);
 
-            int daysToAdd = dicDays[day.ToLower()];
+                //Récup nom complet prof
+                string idProf = node.ChildNodes[3].InnerText;
+                string xmlj = getInfo("/api/users/" + idProf);
+                string profName = getUserFullName(xmlj);
+                appo.Organizer = new Windows.ApplicationModel.Appointments.AppointmentOrganizer();
+                appo.Organizer.DisplayName = profName;
 
-            // On contrôle si l'année commence après jeudi si oui on décale d'une semaine.
-            if ((int)new DateTime(value.Year, 1, 1).DayOfWeek < 5)
-            {
-                daysToAdd -= (int)value.DayOfWeek + 7;
+                appo.Subject = node.ChildNodes[11].InnerText + profName;
+
+                //Est-ce que cet appointment exact existe déjà 
+                //On regarde les appointments sur ce créneau
+
+                Appointment apCheck = (await calendar.FindAppointmentsAsync(appo.StartTime, appo.Duration)).FirstOrDefault(a => a.Subject == appo.Subject);
+                //Si il en existe un sur ce créneau, on l'efface avant d'ajouter le nouveau
+
+                if (apCheck != null)
+                    await calendar.DeleteAppointmentAsync(apCheck.LocalId);
+
+                await calendar.SaveAppointmentAsync(appo);
+
             }
-            else
-            {
-                daysToAdd -= (int)value.DayOfWeek;
-            }
 
-            return value.AddDays(daysToAdd);
         }
 
         //--------------------enregistrer dans un fichier... -----------------------------------------
@@ -200,15 +219,12 @@ namespace arelv1
 
         async void saveDataAsync(string key,string data)//ecriture asynchrone
         {
-           
             StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(key, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteTextAsync(file, data);
-           
         }
 
         async void getDataAsync(string key) //lecture asynchrone
         {
-            
             StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(key);
             resultat = await FileIO.ReadTextAsync(file);
         }

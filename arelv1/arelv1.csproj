@@ -101,7 +101,6 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ArelApi.cs" />
     <Compile Include="Pages\Planning.xaml.cs">
       <DependentUpon>Planning.xaml</DependentUpon>
     </Compile>
@@ -111,7 +110,6 @@
     <Compile Include="Pages\Salles.xaml.cs">
       <DependentUpon>Salles.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ARELPlanningBackgroundTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +232,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ArelAPI\ArelAPI.csproj">
+      <Project>{5ac67664-9878-4dd8-badb-93394a8ec662}</Project>
+      <Name>ArelAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SyncTask\SyncTask.csproj">
+      <Project>{807bf6b0-e849-4b4f-93c9-5d3b301f8454}</Project>
+      <Name>SyncTask</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
