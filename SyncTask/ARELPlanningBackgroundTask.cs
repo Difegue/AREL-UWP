@@ -31,7 +31,7 @@ namespace SyncTask
                                                 API.getUserFullName(API.getData("user")));
 
             //On re-enregistre la tâche si le paramètre est présent
-            if (API.getData("backgroundTask")=="true")
+            if (bool.Parse(API.getData("backgroundTask")))
             {
 
                 var builder = new BackgroundTaskBuilder();

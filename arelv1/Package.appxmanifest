@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="bb5f7131-4cd6-4b8e-bffa-2b89fd853834" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Arel</DisplayName>
-    <PublisherDisplayName>Tjiho</PublisherDisplayName>
+    <PublisherDisplayName>Tjiho / dfug</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -15,13 +15,13 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="arelv1.App">
-      <uap:VisualElements DisplayName="AREL" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="version minimale d'Arel dans une application windows 10" BackgroundColor="transparent">
+      <uap:VisualElements DisplayName="AREL" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="version minimale d'Arel dans une application windows 10" BackgroundColor="#2F4050">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="wide310x150Logo" />
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#2F4050" />
       </uap:VisualElements>
       <Extensions>
         <Extension Category="windows.backgroundTasks" EntryPoint="SyncTask.ARELPlanningBackgroundTask">
