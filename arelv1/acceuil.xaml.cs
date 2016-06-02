@@ -82,6 +82,13 @@ namespace arelv1
             UpdateLayout();
         }
 
+        private void aboutClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            hamburger.IsPaneOpen = false;
+            hamburgerContent.Navigate(typeof(Pages.About));
+            UpdateLayout();
+        }
+
         private void decoClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             localSettings.Values["user"] = null;

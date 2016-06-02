@@ -6,5 +6,5 @@ Une application cross-devices Windows 10 utilisant l'api d'AREL pour :
 - Afficher les notes si un jour l'API permet aux élèves de voir leurs propres notes  
 - Afficher ses absences si un jour l'API le permet aussi... On est pas des sorciers.  
 
-![emploi du temps](screen01.jpg)  
-![salles libres](screen02.jpg)
+![emploi du temps](screen01.png)  
+![salles libres](screen02.png)

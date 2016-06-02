@@ -35,7 +35,7 @@ namespace arelv1.Pages
             dateJour.Text = "Emploi du Temps AREL - " + getDayStr(now, 0);
 
             if (API.isOnline())
-                updatePlanning(0);
+                updatePlanning(0); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
 
             DrawPlanning();
             writePlanning(API.getData("planning"));
@@ -102,6 +102,7 @@ namespace arelv1.Pages
                     builder.Name = taskName;
                     builder.TaskEntryPoint = "SyncTask.ARELPlanningBackgroundTask";
                     builder.SetTrigger(hourlyTrigger);
+                    builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
 
                     builder.Register();
                     API.saveData("backgroundTask", "true");

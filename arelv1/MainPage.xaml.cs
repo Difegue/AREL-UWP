@@ -122,7 +122,7 @@ namespace arelv1
             {
                 //C'est vraiment une idée de merde de stocker les credentials en dur comme ça,
                 //Tout casse si l'user change son password. 
-                //Après sur la doc y'a rien sur comment renouveler les jetons d'authentification proprement du coup on laisse comme ça 
+                //Après sur la doc y'a rien sur comment renouveler les jetons d'authentification proprement du coup y'a pas trop le choix...
                 localSettings.Values["user"] = nom.Text.ToLower();
                 localSettings.Values["pass"] = pass.Password;
 
@@ -163,17 +163,5 @@ namespace arelv1
             stayConnect = !stayConnect;
         }
 
-        private void anonLogin_button(object sender, RoutedEventArgs e)
-        {
-            if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null && API.isset("planning") && API.isset("salles") && API.isset("notes"))
-            {
-                localSettings.Values["internet"] = true;
-                Frame.Navigate(typeof(acceuil));
-            }
-            else
-            {
-                ecrire("Une première connexion est requise");
-            }
-        }
     }
 }

@@ -40,6 +40,7 @@ namespace SyncTask
                 builder.Name = "ARELSyncPlanningTask";
                 builder.TaskEntryPoint = "SyncTask.ARELPlanningBackgroundTask";
                 builder.SetTrigger(hourlyTrigger);
+                builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
 
                 builder.Register();
 

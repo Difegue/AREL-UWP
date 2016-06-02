@@ -69,10 +69,9 @@
             <!--bouton de validation -->
 
 
-            <Button Content="Se Connecter" Click="login_button" HorizontalAlignment="Center" Margin="-170,5,0,5" Grid.Row="5" Grid.Column="1" Width="160"/>
-            <Button Content="Utilisateur Anonyme" Click="anonLogin_button" HorizontalAlignment="Center" Margin="170,5,0,5" Grid.Column="1" Grid.Row="5" Width="160" />
+            <Button Content="Se Connecter" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Row="5" Grid.Column="1" Width="160"/>
 
-            
+
         </Grid>
             <CheckBox Content="Rester connecté" HorizontalAlignment="Center" Checked="stayConnectBox" />
 
@@ -80,11 +79,6 @@
             <!-- zone de texte ou on afiche les erreurs -->
             <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
         </ScrollViewer>
-
-
-
-
-
 
 
     </StackPanel>

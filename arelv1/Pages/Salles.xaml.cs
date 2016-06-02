@@ -32,22 +32,53 @@ namespace arelv1.Pages
         {
             this.InitializeComponent();
 
-            //API.saveData("salles", 
+            getSalles(null,null);
 
-            //On récupère d'abord la liste des campus dispo
-            string campusXML = API.getInfo("api/campus/sites");
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(campusXML);//chargement de la variable
+        }
 
-            //Structure de l'xml renvoyé par l'API: Liste de sites ayant chacun un attribut "id" et un innerText correspondand au nom du campus
-            foreach (System.Xml.XmlNode site in doc.FirstChild.ChildNodes)
+        private void getSalles(object sender, RoutedEventArgs e)
+        {
+            string campusXML;
+
+            //On récupère d'abord la liste des campus dispo, fraîche de l'API 
+            if (API.isOnline())
             {
-                campusList.Add(new Campus(site.Attributes[0].Value, site.InnerText));
+                salleGrid.Visibility = Visibility.Visible;
+                NoInternetSplash.Visibility = Visibility.Collapsed;
+
+                campusXML = API.getInfo("api/campus/sites");
+                API.saveData("campuses", campusXML);
+
+                System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+                doc.LoadXml(campusXML);//chargement de la variable
+
+                //Structure de l'xml renvoyé par l'API: Liste de sites ayant chacun un attribut "id" et un innerText correspondand au nom du campus
+                foreach (System.Xml.XmlNode site in doc.FirstChild.ChildNodes)
+                {
+                    campusList.Add(new Campus(site.Attributes[0].Value, site.InnerText));
+                }
+
+                //On met le premier campus de la liste en valeur par défaut, sauf si l'utilisateur a une préférence
+                SelectedComboBoxOption = null;
+                if (API.isset("favCampus"))
+                {
+                    string idFav = API.getData("favCampus");
+                    foreach (Campus c in campusList)
+                        if (c.getId() == idFav)
+                            SelectedComboBoxOption = c;
+                }
+
+                if (SelectedComboBoxOption == null)
+                    SelectedComboBoxOption = campusList[0];
+
+                UpdateLayout();
+                
             }
-            //On met le premier campus de la liste en valeur par défaut 
-            SelectedComboBoxOption = campusList[0];
-
-
+            else //Aucun intérêt à voir les salles dispos si on a pas internet pour avoir des datas à jour, on affiche le splash d'erreur
+            {
+                salleGrid.Visibility = Visibility.Collapsed;
+                NoInternetSplash.Visibility = Visibility.Visible;
+            }
         }
 
         private void writeSalle(object sender, SelectionChangedEventArgs e)
@@ -55,8 +86,10 @@ namespace arelv1.Pages
             //On vide la liste des salles qu'on a 
             salleList.Clear();
 
-            //On récupère le campus sélectionné
+            //On récupère le campus sélectionné et on le sauvegarde en tant que pref. de l'utilisateur
             Campus c = (Campus)campusSelection.SelectedItem;
+
+            API.saveData("favCampus", c.getId());
             //On récupère les salles du campus sélectionné
             String xmlSalles = API.getInfo("api/campus/rooms?siteId="+c.getId());
 
