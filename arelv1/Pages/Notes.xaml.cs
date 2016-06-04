@@ -17,14 +17,256 @@ using Windows.UI.Xaml.Navigation;
 
 namespace arelv1.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
+
     public sealed partial class Notes : Page
     {
+        private ArelAPI.Connector API = new ArelAPI.Connector();
+        //Utilisé pour le tri initial
+        private Dictionary<string, Module> modules = new Dictionary<string, Module>();
+        //Utilisé pour le data binding XAML après
+        private Semestre ueSem1 = new Semestre();
+        private Semestre ueSem2 = new Semestre();
+
         public Notes()
         {
             this.InitializeComponent();
+            initPage();
+
+        }
+
+        private void initPage()
+        {
+            if (API.isOnline())
+            {
+                string notesXml = API.getInfo("/api/me/marks");
+                API.saveData("notes", notesXml);
+                buildNotes(notesXml);
+            }
+            else if (API.isset("notes"))
+            {
+                string notesXml = API.getData("notes");
+                buildNotes(notesXml);
+            }
+            else
+            {
+                semestresPivot.Visibility = Visibility.Collapsed;
+                NoInternetSplash.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void initPage(object sender, RoutedEventArgs e)
+        {
+            initPage();
+        }
+
+        private void buildNotes(string notesXml)
+        {
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(notesXml);//chargement de la variable
+
+            //Structure de l'xml renvoyé par l'API: Liste de sites ayant chacun un attribut "id" et un innerText correspondand au nom du campus
+            foreach (System.Xml.XmlNode note in doc.FirstChild.ChildNodes)
+            {
+                /*
+                 * Structure standard d'un élément Note dans le retour de l'API :
+                 * <marks>
+                 *  <id>
+                 *      <studentArelId>17779</studentArelId>
+                 *      <programmeId>6488</programmeId>
+                 *      <semestreId>262</semestreId>
+                 *      <moduleId>18</moduleId>
+                 *      <ueId>823</ueId>
+                 *      <epreuveId>3890</epreuveId>
+                 *  </id>
+                 *  <label>Analyse Financiere</label>
+                 *  <moduleName>ING2</moduleName>
+                 *  <mark>0.0</mark>
+                 *  <coefficient>1.0</coefficient>
+                 *  <testName>Examen 1ère session</testName>
+                 *  <typeEpreuve>Examen</typeEpreuve>
+                 * </marks>
+                 */
+                Note n = new Note();
+                n.id = Int32.Parse(note.ChildNodes[0].ChildNodes[5].InnerText);
+                n.labelNote = note.ChildNodes[5].InnerText;
+                n.value = float.Parse(note.ChildNodes[3].InnerText, System.Globalization.CultureInfo.InvariantCulture);
+                n.coef = float.Parse(note.ChildNodes[4].InnerText, System.Globalization.CultureInfo.InvariantCulture);
+
+                string moduleId = note.ChildNodes[0].ChildNodes[3].InnerText;
+                string semestreId = note.ChildNodes[0].ChildNodes[2].InnerText;
+                Module m = null;
+
+                //Est-ce qu'on a déjà croisé ce module ?
+                //On utilise moduleId+semestreId en clé pour ne pas qu'un module concatène les notes des 2 semestres à la fois 
+                if (modules.ContainsKey(moduleId+semestreId))
+                {
+                    m = (Module)modules[moduleId + semestreId];
+                    modules.Remove(moduleId + semestreId);
+                }
+                else
+                {
+                    //On crée le module
+                    m = new Module();
+                    m.id = moduleId;
+                    m.labelModule = note.ChildNodes[1].InnerText;
+                    m.notes = new List<Note>();
+                    m.idSemestre = semestreId;
+                    m.idUE = note.ChildNodes[0].ChildNodes[4].InnerText;
+                }
+
+                //On ajoute la note au module avant de le restocker dans le dictionnaire
+                m.notes.Add(n);
+                modules.Add(moduleId + semestreId, m);
+
+            }
+
+            //On a récupéré tous les modules, chacun ayant toutes les notes le concernant
+            //On sépare maintenant par UE et par Semestre. Y'aurait sûrement moyen de faire ça en LINQ mais je m'y connais pas assez haha mdr
+            //Chaque dictionnaire de semestre contient une clé par UE. Cette clé contient la liste des modules de l'UE.
+            foreach (String key in modules.Keys)
+            {
+                Module m = modules[key];
+
+                if (ueSem1.id == null) //Premier arrivé premier servi
+                    ueSem1.id = m.idSemestre;
+
+                if (m.idSemestre == ueSem1.id)
+                    //On ajoute dans le semestre 1, semestre 2 sinon
+                    AddModuleToUE(m, ueSem1);
+                else
+                {
+                    AddModuleToUE(m, ueSem2);
+                    ueSem2.id = m.idSemestre;
+                }
+
+            }
+
+            //Comparer les IDSemestre des deux dicos pour voir lequel est le vrai semestre 1 (IDSem1 < IDSem2)
+            //Sauf si un des 2 est null auquel cas seul l'autre est Semestre 1
+            if (ueSem1.id == null || ueSem2.id == null)
+            {
+                if (ueSem1.id == null)
+                    ueSem1 = ueSem2;
+
+                if (ueSem2.id == null)
+                    ueSem2 = ueSem1;
+
+                //On vire le pivot du semestre 2
+                semestresPivot.Items.Remove(semestresPivot.Items.Single(p => ((PivotItem)p).Header.ToString() == "Semestre 2"));
+
+                //Si le semestre 1 est vide aussi, il n'y a juste pas de notes -> On affiche le splashscreen associé.
+                if (ueSem1.id == null)
+                {
+                    semestresPivot.Visibility = Visibility.Collapsed;
+                    NoNoteSplash.Visibility = Visibility.Visible;
+                }
+
+            }
+            else
+            if (Int32.Parse(ueSem2.id) < Int32.Parse(ueSem1.id)) //Si les semestres étaient inversés, on les remet à l'endroit.
+            {
+                Semestre tmp = ueSem1;
+                ueSem1 = ueSem2;
+                ueSem2 = tmp;
+            }
+
+            ueSem1.sortUEs();
+            ueSem2.sortUEs();
+            //Fiou, enfin fini. Le XAML s'occupe de construire la vue des notes via data binding.
+        }
+
+
+        private void AddModuleToUE(Module m, Semestre s)
+        {
+            UE u = s.getUE(m.idUE);
+
+            //On regarde si on a déjà cet UE 
+            if (u == null)
+                u = new UE(m.idUE);
+
+            u.modules.Add(m);
+            s.listUE.Add(u);
+        }
+
+        
+    }
+
+
+    //Classes imitant la structure du retour de l'API pour un data binding facile
+    public class Note
+    {
+        public string labelNote; 
+        public float value; 
+        public float coef;
+        public int id;
+
+    }
+
+    public class Module
+    {
+        public string labelModule;
+        public string id;
+        public string idUE;
+        public string idSemestre;
+        public List<Note> notes;
+
+        //La moyenne du putain de module. Inutilisable, vu qu'on ne peut pas faire la différence entre rattrapages et notes normales.
+        public float calcMoyenne() 
+        {
+            float totalNum = 0;
+            float totalDen = 1;
+
+            foreach (Note n in notes)
+            {
+                totalNum += n.value * n.coef;
+                totalDen += n.coef;
+            }
+
+            return totalNum / totalDen;
         }
     }
+
+    public class UE
+    {
+        public string id;
+        public string labelUE;
+        public List<Module> modules;
+
+        public UE(string idu)
+        {
+            id = idu;
+            labelUE = "UE n°" + id;
+            modules = new List<Module>();
+        }
+    }
+
+    public class Semestre
+    {
+        public string id;
+        public List<UE> listUE;
+     
+        public Semestre()
+        {
+            listUE = new List<UE>();
+            id = null;
+        }
+
+        //Récupère un UE de la liste avant de l'éffacer.
+        public UE getUE(string id)
+        {
+            UE item = listUE.FirstOrDefault(u => u.id == id);
+            listUE.Remove(item);
+
+            return item;
+
+        }
+
+        //Trie les UEs par id croissant
+        public void sortUEs()
+        {
+           listUE = listUE.OrderBy(ue => ue.id).ToList();
+        }
+           
+    }
+
 }

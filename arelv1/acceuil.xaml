@@ -59,8 +59,8 @@
 
                 <StackPanel Grid.Row="2">
 
-                    
-                    <RadioButton Margin="0,0,0,0" x:Name="AboutBouton" GroupName="Group1" Checked="aboutClick" Content="A Propos..." Foreground="White" Tag="&#xE97F;"
+
+                    <RadioButton Margin="0,0,0,0" x:Name="AboutBouton" GroupName="Group1" Checked="aboutClick" Content="À Propos..." Foreground="White" Tag="&#xE97F;"
                             Style="{StaticResource NavRadioButtonStyle}" />
 
 

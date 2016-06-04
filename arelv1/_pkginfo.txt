@@ -1,1 +1,1 @@
-C:\Users\Vincent\Desktop\ArelW10\arelv1\AppPackages\arelv1_0.5.2.0\arelv1_0.5.2.0_x86_x64_arm.appxbundle
+C:\Users\Vincent\Desktop\ArelW10\arelv1\AppPackages\arelv1_0.7.3.0\arelv1_0.7.3.0_x86_x64_arm.appxbundle

@@ -18,7 +18,7 @@
 
                 <TextBlock FontSize="30" HorizontalAlignment="Left" CharacterSpacing="-30" 
         	    Margin="10,5,0,10" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    Version 0.5  
+        	    Version 0.7  
             </TextBlock>
 
 
@@ -26,31 +26,37 @@
 
             <TextBlock FontSize="20" TextWrapping="Wrap" Margin="10,0,0,0">
                <Hyperlink NavigateUri="http://gitlab.etude.eisti.fr/alvesduart/w10-Arel" 
-                >Code Source</Hyperlink> <LineBreak/>Un fat merci à Tom Darboux le palois pour avoir commencé l'appli sisi rpz 
-                <Hyperlink NavigateUri="https://www.youtube.com/watch?v=BSJS6mgqV64">DEVELOPERS</Hyperlink>﻿<LineBreak/>
+                >Code Source sur le Gitlab de l'EISTI</Hyperlink> <LineBreak/>Un fat merci à Tom Darboux le palois pour avoir commencé l'appli sisi rpz 
+                <LineBreak/>
             </TextBlock>
 
-            <TextBlock FontSize="12" TextWrapping="Wrap" Margin="10,0,0,0" >
-                Police Utilisée : Montserrat.<LineBreak/><LineBreak/>
-                LICENCE PUBLIQUE RIEN À BRANLER<LineBreak/>
+            <TextBlock FontSize="12" TextWrapping="Wrap" Margin="10,0,0,0">
+                 LICENCE PUBLIQUE RIEN À BRANLER<LineBreak/>
                       Version 1, Mars 2009<LineBreak/>
-<LineBreak/>
- Copyright (C) 2009 Sam Hocevar<LineBreak/>
-  14 rue de Plaisance, 75014 Paris, France<LineBreak/>
- <LineBreak/>
- La copie et la distribution de copies exactes de cette licence sont<LineBreak/>
- autorisées, et toute modification est permise à condition de changer<LineBreak/>
- le nom de la licence. <LineBreak/>
-<LineBreak/>
-         CONDITIONS DE COPIE, DISTRIBUTON ET MODIFICATION<LineBreak/>
-               DE LA LICENCE PUBLIQUE RIEN À BRANLER<LineBreak/>
-<LineBreak/>
-  0. Faites ce que vous voulez, j’en ai RIEN À BRANLER. <LineBreak/>
+                <LineBreak/>
+                 Copyright (C) 2009 Sam Hocevar<LineBreak/>
+                  14 rue de Plaisance, 75014 Paris, France<LineBreak/>
+                 <LineBreak/>
+                 La copie et la distribution de copies exactes de cette licence sont<LineBreak/>
+                 autorisées, et toute modification est permise à condition de changer<LineBreak/>
+                 le nom de la licence. <LineBreak/>
+                <LineBreak/>
+                         CONDITIONS DE COPIE, DISTRIBUTON ET MODIFICATION<LineBreak/>
+                               DE LA LICENCE PUBLIQUE RIEN À BRANLER<LineBreak/>
+                <LineBreak/>
+                  0. Faites ce que vous voulez, j’en ai RIEN À BRANLER. <LineBreak/><LineBreak/>
+            </TextBlock>
+
+            <TextBlock HorizontalAlignment="Center">
                 
+                <Hyperlink NavigateUri="https://www.youtube.com/watch?v=BSJS6mgqV64" FontWeight="Bold">DEVELOPERS</Hyperlink>﻿
+                
+
             </TextBlock>
 
             <Viewbox x:Name="logo" Width="265" Height="265" HorizontalAlignment="Center" 
-                RenderTransformOrigin="0.5, 0.5">
+                RenderTransformOrigin="0.5, 0.5" PointerPressed="speedUp" PointerEntered="cursorHand" PointerExited="cursorArrow">
+                
                 <Viewbox.RenderTransform>
                     <RotateTransform Angle="0"/>
                 </Viewbox.RenderTransform>

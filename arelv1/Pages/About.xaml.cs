@@ -22,6 +22,7 @@ namespace arelv1.Pages
     /// </summary>
     public sealed partial class About : Page { 
         public int angle = 0;
+        private int mult = 1;
 
         public About()
         {
@@ -32,16 +33,32 @@ namespace arelv1.Pages
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 30);
             dispatcherTimer.Start();
 
-
         }
 
         void dispatcherTimer_Tick(object sender, object e)
         {
-            angle++;
+            angle += mult;
             RotateTransform rt = new RotateTransform();
             rt.Angle = angle;
 
             logo.RenderTransform = rt;
+        }
+
+        private void speedUp(object sender, PointerRoutedEventArgs e)
+        {
+            mult++;
+        }
+
+        private void cursorHand(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor =
+                new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Hand, 1);
+        }
+
+        private void cursorArrow(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor =
+                new Windows.UI.Core.CoreCursor(Windows.UI.Core.CoreCursorType.Arrow, 1);
         }
     }
     
