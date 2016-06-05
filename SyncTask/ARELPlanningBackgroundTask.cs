@@ -22,8 +22,8 @@ namespace SyncTask
             BackgroundTaskDeferral _deferral = taskInstance.GetDeferral();
             ArelAPI.Connector API = new ArelAPI.Connector();
 
-            if (!API.isOnline()) //Si le token n'est plus valide, on en recrée un avec le login/pass qu'on a (encore une fois, idée de merde)
-                API.connect(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString());
+            if (!API.isOnline()) //Si le token n'est plus valide, on le rafraîchit avec le refreshToken
+                API.renewAccessToken();
 
             //On appelle la fonction de màj du calendrier windows qui est dans Planning.xaml.cs
             API.updateWindowsCalendar(DateTime.Now.ToString("yyyy-MM-dd"), 

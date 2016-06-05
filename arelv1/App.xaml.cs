@@ -27,7 +27,7 @@ namespace arelv1
         /// à être exécutée. Elle correspond donc à l'équivalent logique de main() ou WinMain().
         /// </summary>
         /// 
-        Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
+        Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;//recuperation d'un tableau pour stocker nos données
         private ArelAPI.Connector API = new ArelAPI.Connector(); //objet pour traiter les requêtes HTML avec Arel
 
         public App()
@@ -83,14 +83,17 @@ namespace arelv1
                     // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
                     // puis configurez la nouvelle page en transmettant les informations requises en tant que
                     // paramètre
-                    
-                    if (localSettings.Values["user"] != null && localSettings.Values["pass"] != null && localSettings.Values["stayConnect"] != null)
-                        if (API.connect(localSettings.Values["user"].ToString(), localSettings.Values["pass"].ToString()))
-                           rootFrame.Navigate(typeof(acceuil), e.Arguments);
-                        else
-                          rootFrame.Navigate(typeof(acceuil), e.Arguments);
+
+                    if (localSettings.Values["token"] != null && localSettings.Values["refresh"] != null && localSettings.Values["stayConnect"] != null)
+                    {
+                        if (!API.isOnline()) //On récupère un nouveau jeton d'accès pour cette session si l'ancien est mort
+                            API.renewAccessToken(); 
+                        rootFrame.Navigate(typeof(acceuil), e.Arguments);
+                    }
                     else
+                    {
                         rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    }
                 }
                 // Vérifiez que la fenêtre actuelle est active
                 Window.Current.Activate();
@@ -121,23 +124,5 @@ namespace arelv1
             deferral.Complete();
         }
 
-
-        private string getToken(string data)
-        {
-            string res = "toto";
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(data);//chargement de la variable
-
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
-            {
-
-                if (node.Name == "access_token")//on recupere le contenu de access_token
-                {
-                    res = node.InnerText;
-                }
-            }
-
-            return res;
-        }
     }
 }

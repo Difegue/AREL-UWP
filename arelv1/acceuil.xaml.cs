@@ -33,8 +33,6 @@ namespace arelv1
                 //màj des données de l'utilisateur
                 API.saveData("user", API.getInfo("api/me"));
             }
-            
-            //string notes = API.getData("note");
 
             //Récup du nom de l'utilisateur pour affichage
             string userName = API.getUserFullName(API.getData("user"));
@@ -82,6 +80,13 @@ namespace arelv1
             UpdateLayout();
         }
 
+        private void absenceClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            hamburger.IsPaneOpen = false;
+            hamburgerContent.Navigate(typeof(Pages.Absences));
+            UpdateLayout();
+        }
+
         private void aboutClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             hamburger.IsPaneOpen = false;
@@ -91,9 +96,10 @@ namespace arelv1
 
         private void decoClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            localSettings.Values["user"] = null;
-            localSettings.Values["pass"] = null;
+            localSettings.Values["token"] = null;
+            localSettings.Values["refresh"] = null;
             localSettings.Values["stayConnect"] = null;
+            API.clearData();
             Frame.Navigate(typeof(MainPage));
         }
 

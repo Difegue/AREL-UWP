@@ -21,7 +21,7 @@ namespace ArelAPI
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings; 
         private string resultat;
 
-        //fonction qui initialise la connection à arel et stocke un token d'accès
+        //fonction qui initialise la connection à arel et stocke jeton d'accès / jeton de refresh
         public bool connect(string name, string pass)
         {
             string url = "http://arel.eisti.fr/oauth/token";
@@ -33,26 +33,53 @@ namespace ArelAPI
 
             if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
             {
-                localSettings.Values["token"] = getToken(resultat);//on save le token
+                localSettings.Values["token"] = getToken(resultat, "access_token");//on save le token
+                localSettings.Values["refresh"] = getToken(resultat, "refresh_token"); //idem pour le refresh
                 return true;
             }
             else
-            {
-                
+            {            
                 saveData("erreurLogin", resultat);
                 return false;
             }
         }
 
+        //gros C/C des familles mdr - permet de récupérer un nouveau jeton d'accès par la puissance des endpoints non documentés
+        public bool renewAccessToken()
+        {
+            if (!localSettings.Values.ContainsKey("refresh")) //Si il n'y a pas de refresh token enregistré, on renvoie false direct.
+                return false; //Même si normalement cet usecase n'arrive jamais, mieux vaut être safe.
+
+            string url = "http://arel.eisti.fr/oauth/token";
+            string contentType = "application/x-www-form-urlencoded";
+            string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
+            string data = "grant_type=refresh_token&refresh_token=" + localSettings.Values["refresh"] + "&format=xml";
+
+            string resultat = http(url, contentType, identifiants, "Basic", data, "POST");//on fait la requete
+
+            if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
+            {
+                localSettings.Values["token"] = getToken(resultat, "access_token");//on save le token
+                localSettings.Values["refresh"] = getToken(resultat, "refresh_token"); //idem pour le refresh même si normalement il ne change pas
+                return true;
+            }
+            else
+            {
+                saveData("erreurRefresh", resultat);
+                return false;
+            }
+
+        }
+
         //recupère le token a partir du resultat de la requete
-        private string getToken(string data)
+        private string getToken(string data, string type)
         {
             string res = "toto";
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
             doc.LoadXml(data);//chargement de la variable
 
             foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
-                if (node.Name == "access_token")//on recupere le contenu de access_token
+                if (node.Name == type)//on recupere le contenu de access_token
                     res = node.InnerText;
 
             return res;
@@ -111,10 +138,11 @@ namespace ArelAPI
             try
             {
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-                doc.LoadXml(getInfo("/api/me")); //On essaie de charger un call bidon
+                string data = getInfo("/api/me");
+                doc.LoadXml(data); //On essaie de charger un call bidon, si on obtient un XML correct (et pas "Accès Refusé") on est OK
                 return true;
             }
-            catch (System.Xml.XmlException e)
+            catch (System.Xml.XmlException e) //Une exception sera lancée si notre jeton est invalide
             {
                 return false;
             } 
@@ -216,6 +244,10 @@ namespace ArelAPI
             return racine.FileExists(key);      
         }
 
+        public void clearData()
+        {
+            IsolatedStorageFile.GetUserStoreForApplication().Dispose();
+        }
 
         async void saveDataAsync(string key,string data)//ecriture asynchrone
         {

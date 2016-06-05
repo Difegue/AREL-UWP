@@ -113,6 +113,9 @@
     <Compile Include="Pages\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Absences.xaml.cs">
+      <DependentUpon>Absences.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Planning.xaml.cs">
       <DependentUpon>Planning.xaml</DependentUpon>
     </Compile>
@@ -230,6 +233,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Absences.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

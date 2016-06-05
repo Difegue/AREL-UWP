@@ -51,7 +51,7 @@
                     <RadioButton x:Name="NotesBouton" GroupName="Group1" Checked="noteClick" Content="Notes"  Foreground="White" Tag="&#xE7BE;"
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
-                    <RadioButton x:Name="AbsencesBouton" GroupName="Group1" Checked="noteClick" Content="Absences"  Foreground="White" Tag="&#xE181;"
+                    <RadioButton x:Name="AbsencesBouton" GroupName="Group1" Checked="absenceClick" Content="Absences"  Foreground="White" Tag="&#xE181;"
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
 

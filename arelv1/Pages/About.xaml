@@ -25,28 +25,65 @@
 
 
             <TextBlock FontSize="20" TextWrapping="Wrap" Margin="10,0,0,0">
-               <Hyperlink NavigateUri="http://gitlab.etude.eisti.fr/alvesduart/w10-Arel" 
-                >Code Source sur le Gitlab de l'EISTI</Hyperlink> <LineBreak/>Un fat merci à Tom Darboux le palois pour avoir commencé l'appli sisi rpz 
-                <LineBreak/>
+               <Hyperlink NavigateUri="http://gitlab.etude.eisti.fr/alvesduart/w10-Arel">
+                   Code Source sur le Gitlab de l'EISTI
+               </Hyperlink> 
+               <LineBreak/>Un fat merci à Tom Darboux le palois pour avoir commencé l'appli sisi rpz 
+               <LineBreak/>
             </TextBlock>
 
-            <TextBlock FontSize="12" TextWrapping="Wrap" Margin="10,0,0,0">
-                 LICENCE PUBLIQUE RIEN À BRANLER<LineBreak/>
-                      Version 1, Mars 2009<LineBreak/>
-                <LineBreak/>
-                 Copyright (C) 2009 Sam Hocevar<LineBreak/>
-                  14 rue de Plaisance, 75014 Paris, France<LineBreak/>
-                 <LineBreak/>
-                 La copie et la distribution de copies exactes de cette licence sont<LineBreak/>
-                 autorisées, et toute modification est permise à condition de changer<LineBreak/>
-                 le nom de la licence. <LineBreak/>
-                <LineBreak/>
-                         CONDITIONS DE COPIE, DISTRIBUTON ET MODIFICATION<LineBreak/>
-                               DE LA LICENCE PUBLIQUE RIEN À BRANLER<LineBreak/>
-                <LineBreak/>
-                  0. Faites ce que vous voulez, j’en ai RIEN À BRANLER. <LineBreak/><LineBreak/>
-            </TextBlock>
+            <GridView>
 
+                <StackPanel MaxWidth="370" >
+                    <TextBlock FontSize="20" TextWrapping="Wrap" FontWeight="Bold" Margin="10,0,0,0" TextAlignment="Center" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+                License<LineBreak/>
+                    </TextBlock>
+                    <TextBlock FontSize="12" TextWrapping="Wrap" Margin="10,0" TextAlignment="Center" >
+                         LICENCE PUBLIQUE RIEN À BRANLER<LineBreak/>
+                              Version 1, Mars 2009<LineBreak/>
+                        <LineBreak/>
+                         Copyright (C) 2009 Sam Hocevar<LineBreak/>
+                          14 rue de Plaisance, 75014 Paris, France<LineBreak/>
+                         <LineBreak/>
+                         La copie et la distribution de copies exactes de cette licence sont<LineBreak/>
+                         autorisées, et toute modification est permise à condition de changer<LineBreak/>
+                         le nom de la licence. <LineBreak/>
+                        <LineBreak/>
+                                 CONDITIONS DE COPIE, DISTRIBUTON ET MODIFICATION<LineBreak/>
+                                       DE LA LICENCE PUBLIQUE RIEN À BRANLER<LineBreak/>
+                        <LineBreak/>
+                          0. Faites ce que vous voulez, j’en ai RIEN À BRANLER. <LineBreak/><LineBreak/>
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel MaxWidth="370">
+                    <TextBlock FontSize="20" TextWrapping="Wrap" FontWeight="Bold" Margin="10,0,0,0" TextAlignment="Center" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+                        Politique de Vie Privée<LineBreak/>
+                            </TextBlock>
+                    <TextBlock FontSize="12" TextWrapping="Wrap" Margin="10,0,0,0"  >
+                    	<Run Text="Cette application récupère les informations suivantes vous concernant via l'API d'AREL quand vous accédez aux pages correspondantes:"/>
+                    	<LineBreak/><LineBreak/>
+
+                    	<Run Text=" * Votre planning AREL"/>
+                    	<LineBreak/>
+                    	<Run Text=" * Vos notes"/>
+                    	<LineBreak/>
+                    	<Run Text=" * Vos absences"/>
+                    	<LineBreak/>
+                    	<Run Text=" * Votre nom/prénom tel qu'il est enregistré dans AREL"/>
+                    	<LineBreak/><LineBreak/>
+
+                    	<Run Text="Ces informations sont stockées dans la mémoire interne de l'application pour vous les afficher et ne sont partagées avec personne. "/>
+                    	<LineBreak/>Vos identifiants AREL/LDAP EISTI ne sont pas stockés.<LineBreak/><LineBreak/>
+                    </TextBlock>
+
+                </StackPanel>
+                
+            </GridView>
+            
+
+            
+            
             <TextBlock HorizontalAlignment="Center">
                 
                 <Hyperlink NavigateUri="https://www.youtube.com/watch?v=BSJS6mgqV64" FontWeight="Bold">DEVELOPERS</Hyperlink>﻿

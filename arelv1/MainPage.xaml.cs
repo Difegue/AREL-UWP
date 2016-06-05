@@ -120,11 +120,6 @@ namespace arelv1
 
             if(API.connect(nom.Text.ToLower(), pass.Password))
             {
-                //C'est vraiment une idée de merde de stocker les credentials en dur comme ça,
-                //Tout casse si l'user change son password. 
-                //Après sur la doc y'a rien sur comment renouveler les jetons d'authentification proprement du coup y'a pas trop le choix...
-                localSettings.Values["user"] = nom.Text.ToLower();
-                localSettings.Values["pass"] = pass.Password;
 
                 if (stayConnect)
                     localSettings.Values["stayConnect"] = true;
@@ -142,7 +137,6 @@ namespace arelv1
         public MainPage()
         {
             InitializeComponent(); //demarage de l'interface   
-            localSettings.Values["internet"] = null;
             stayConnect = false;
         }
 
