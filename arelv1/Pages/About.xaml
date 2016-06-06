@@ -18,7 +18,7 @@
 
                 <TextBlock FontSize="30" HorizontalAlignment="Left" CharacterSpacing="-30" 
         	    Margin="10,5,0,10" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    Version 0.7  
+        	    Version 0.7.4  
             </TextBlock>
 
 

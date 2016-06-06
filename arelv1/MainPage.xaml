@@ -60,23 +60,25 @@
 
             <!-- texte -->
             <StackPanel Grid.Column="1" Grid.Row="1" Margin="0,20,0,0">
-            <TextBlock FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" FontSize="25" TextAlignment="Center" TextWrapping="Wrap">Connectez-vous à votre compte AREL</TextBlock>
-            <TextBlock Text="Login" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0,20,0,0" />
+                <TextBlock FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" FontSize="25" TextAlignment="Center" TextWrapping="Wrap">Connectez-vous à votre compte AREL</TextBlock>
+                <TextBlock Text="Login" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1" Margin="0,20,0,0" />
             </StackPanel>
             <!--champs pour username -->
             <TextBox x:Name="nom" Grid.Column="1" Grid.Row="2" MaxWidth="450"/>
             <!-- texte -->
             <TextBlock Text="Mot de Passe" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Column="1" Grid.Row="3" />
             <!--champs pour password -->
-            <PasswordBox x:Name="pass" Grid.Column="1" Grid.Row="4" MaxWidth="450"/>
+            <PasswordBox x:Name="pass" Grid.Column="1" Grid.Row="4" MaxWidth="450" KeyDown="txtPassword_KeyDown"/>
             <!--bouton de validation -->
 
+            <StackPanel Orientation="Horizontal"  Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center">
+                <Button Content="Se Connecter" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" Width="160"/>
+                <CheckBox Content="Rester connecté" HorizontalAlignment="Center" Margin="20,0,0,0" Checked="stayConnectBox" />
 
-            <Button Content="Se Connecter" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" Grid.Row="5" Grid.Column="1" Width="160"/>
-
+            </StackPanel>
 
         </Grid>
-            <CheckBox Content="Rester connecté" HorizontalAlignment="Center" Checked="stayConnectBox" />
+        <ProgressRing x:Name="loginProgress" HorizontalAlignment="Center"  Height="60" Width="60" Margin="5,0,0,0"/>
 
         <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" HorizontalScrollBarVisibility="Disabled">
             <!-- zone de texte ou on afiche les erreurs -->

@@ -94,13 +94,28 @@ namespace arelv1
             UpdateLayout();
         }
 
-        private void decoClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void decoClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            localSettings.Values["token"] = null;
-            localSettings.Values["refresh"] = null;
-            localSettings.Values["stayConnect"] = null;
-            API.clearData();
-            Frame.Navigate(typeof(MainPage));
+            var dialog = new Windows.UI.Popups.MessageDialog(
+                "Voulez-vous vraiment vous déconnecter ? ",
+                "Déconnexion");
+
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("Oui") { Id = 0 });
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("Non") { Id = 1 });
+
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 1;
+
+            var result = await dialog.ShowAsync();
+
+            if ((Int32)result.Id == 0)
+            { 
+                localSettings.Values["token"] = null;
+                localSettings.Values["refresh"] = null;
+                localSettings.Values["stayConnect"] = null;
+                API.clearData();
+                Frame.Navigate(typeof(MainPage));
+            }
         }
 
         

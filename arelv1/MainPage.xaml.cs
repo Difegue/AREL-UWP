@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 // Pour plus d'informations sur le modèle d'élément Page vierge, consultez la page http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -112,12 +113,32 @@ namespace arelv1
         private Windows.Storage.ApplicationDataContainer localSettings =  Windows.Storage.ApplicationData.Current.LocalSettings;//recperation d'un tableau pour stocker nos données
         private ArelAPI.Connector API = new ArelAPI.Connector();//objet pour faire la requete html et peut un jour d'autres choses
         private bool stayConnect;
-        
+
+        private void txtPassword_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+                login_button(sender, e);
+        }
 
         //fonction executée quand on appuie sur le bouton
-        private void login_button(object sender, RoutedEventArgs ev)
+        private async void login_button(object sender, RoutedEventArgs ev)
         {
+            loginProgress.IsActive = true;
+            ecrire("");
+            //loginProgress.Visibility = Visibility.Visible;
+            await Task.Delay(500);
 
+            //Bypass pour le test de certification Windows Store: 
+            //Donne des tokens préfaits pour interaction avec l'API sans utiliser de vrais comptes d'utilisateur
+            if (nom.Text.ToLower()=="windows10test" && pass.Password == "Developers") 
+            {
+                localSettings.Values["token"] = "46c0cd11-ffff-4321-bb94-9cee056049d1";
+                localSettings.Values["refresh"] = "c7f7f03d-2385-4d8d-a0bc-12035d267f4f";
+
+                Frame.Navigate(typeof(acceuil));
+                return;
+            }
+            else
             if(API.connect(nom.Text.ToLower(), pass.Password))
             {
 
@@ -129,7 +150,9 @@ namespace arelv1
             else
             {
                 //L'objet API logge l'erreur de connexion si il en arrive une.
-                ecrire("Erreur de connexion: "+API.getData("erreurLogin"));
+                ecrire("Erreur de connexion: " + API.getData("erreurLogin"));
+                loginProgress.IsActive = false;
+                await Task.Delay(500);
             }  
         }
 
