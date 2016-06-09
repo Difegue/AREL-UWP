@@ -114,21 +114,25 @@ namespace ArelAPI
         }
 
         //Récupère le nom complet de l'utilisateur avec le XML de getUserInfo.
-        public string getUserFullName(string xml)
+        public string getUserFullName(string xml, string fallback)
         {
             string fn = "User";
             string ln = "Anonyme";
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(xml);//chargement de la variable
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
-            {
-                if (node.Name.ToLower() == "firstname")
-                    fn = node.InnerText;
+            try { 
+                System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+                doc.LoadXml(xml);//chargement de la variable
+                foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
+                {
+                    if (node.Name.ToLower() == "firstname")
+                        fn = node.InnerText;
                 
-                if (node.Name.ToLower() == "lastname")
-                    ln = node.InnerText;
+                    if (node.Name.ToLower() == "lastname")
+                        ln = node.InnerText;
+                }
+                return fn + " " + ln;
             }
-            return fn + " " + ln;
+            catch (Exception e) //On renvoie le string de fallback si le parsing échoue
+                { return fallback;  }
         }
 
 
@@ -194,12 +198,12 @@ namespace ArelAPI
                 //Récup non complet rel (aka matière/sujet)
                 string idRel = node.ChildNodes[2].InnerText;
                 string xmlr = getInfo("/api/rels/" + idRel);
-                string relName = getRelName(xmlr);
+                string relName = getRelName(xmlr, node.ChildNodes[11].InnerText);
 
                 //Récup nom complet prof
                 string idProf = node.ChildNodes[3].InnerText;
                 string xmlj = getInfo("/api/users/" + idProf);
-                string profName = getUserFullName(xmlj);
+                string profName = getUserFullName(xmlj, node.ChildNodes[4].InnerText);
                 appo.Organizer = new Windows.ApplicationModel.Appointments.AppointmentOrganizer();
                 appo.Organizer.DisplayName = profName;
 
@@ -220,11 +224,16 @@ namespace ArelAPI
 
         }
 
-        public string getRelName(string xmlr)
+        public string getRelName(string xmlr, string fallback)
         {
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(xmlr);//chargement de la variable
-            return doc.ChildNodes[0].ChildNodes[0].InnerText;
+            try
+            {
+                System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+                doc.LoadXml(xmlr);//chargement de la variable
+                return doc.ChildNodes[0].ChildNodes[0].InnerText;
+            }
+            catch (Exception e) //On renvoie le string de fallback si le parsing échoue
+                { return fallback; }
         }
 
         //--------------------enregistrer dans un fichier... -----------------------------------------

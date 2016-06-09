@@ -86,7 +86,7 @@ namespace arelv1.Pages
             SpinnerSync.IsActive = true;
 
             //update manuelle: On chope les cours des 2 dernières + des 2 prochaines semaines
-            API.updateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.getUserFullName(API.getData("user")));
+            API.updateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.getUserFullName(API.getData("user"),"Mon Planning AREL"));
 
             //On montre le calendrier
             await Windows.ApplicationModel.Appointments.AppointmentManager.ShowTimeFrameAsync(DateTime.Now, new TimeSpan(125, 0, 0));
@@ -266,10 +266,10 @@ namespace arelv1.Pages
                 if (API.isOnline())
                 {
                     string xmlr = API.getInfo("/api/rels/" + idRel);
-                    matiere = API.getRelName(xmlr);
+                    matiere = API.getRelName(xmlr, matiere);
 
                     string xmlj = API.getInfo("/api/users/" + idProf);
-                    profName = API.getUserFullName(xmlj);
+                    profName = API.getUserFullName(xmlj, profName);
                 }
 
                 if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")
@@ -362,7 +362,7 @@ namespace arelv1.Pages
             byte r = (byte)(Convert.ToUInt32(hex.Substring(0, 2), 16));
             byte g = (byte)(Convert.ToUInt32(hex.Substring(2, 2), 16));
             byte b = (byte)(Convert.ToUInt32(hex.Substring(4, 2), 16));
-            //byte b = (byte)(Convert.ToUInt32(hex.Substring(6, 2), 16));
+
             SolidColorBrush myBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, r, g, b));
             return myBrush;
         }

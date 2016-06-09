@@ -16,7 +16,7 @@
 
         <Grid>
             <!--
-               tableau pour que les elements soit centrés avec 50% de la taille (peut être qu'on peut faire plus jolie)
+               tableau pour que les elements soit centrés avec 50% de la taille
             -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.15*" />

@@ -62,7 +62,7 @@ namespace SyncTask
             if (canUpdate)
                 API.updateWindowsCalendar(DateTime.Now.ToString("yyyy-MM-dd"), 
                                                 DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"),
-                                                API.getUserFullName(API.getData("user")));
+                                                API.getUserFullName(API.getData("user"), "Mon Planning AREL"));
 
             //On re-enregistre la tâche si le paramètre est présent
             if (bool.Parse(API.getData("backgroundTask")))

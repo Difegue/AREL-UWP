@@ -35,7 +35,7 @@ namespace arelv1
             }
 
             //Récup du nom de l'utilisateur pour affichage
-            string userName = API.getUserFullName(API.getData("user"));
+            string userName = API.getUserFullName(API.getData("user"), "Utilisateur d'AREL");
             nomUser.Text = userName;
 
             AgendaBouton.IsChecked = true; //Petit trick pour commencer sur l'EDT de base
