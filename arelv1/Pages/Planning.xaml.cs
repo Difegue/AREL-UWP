@@ -59,7 +59,26 @@ namespace arelv1.Pages
 
         }
 
-        
+        //Crée un joli string avec la date + un offset de jour
+        private string getDayStr(DateTime dt, int daysToAdd)
+        {
+
+            dt = dt.AddDays(daysToAdd);
+
+            string s1 = dt.ToString("dddd d ");
+            string s2 = dt.ToString("MMMM");
+
+            //On capitalise la première lettre du jour et du mois - ça serait plus clean en faisant un substring jusqu'au second espace et en capitalisant là au lieu de split le string en deux
+            //Mais flemme
+            char[] a1 = s1.ToCharArray();
+            a1[0] = char.ToUpper(a1[0]);
+            char[] a2 = s2.ToCharArray();
+            a2[0] = char.ToUpper(a2[0]);
+
+            return new string(a1) + new string(a2);
+        }
+
+
 
         private async void ManualSync(object sender, RoutedEventArgs e)
         {
@@ -114,52 +133,14 @@ namespace arelv1.Pages
 
 
         /*
-         * Les fonctions ci-dessous concernent le dessin de l'EDT sur le panel de gauche
+         * Les fonctions ci-dessous concernent le dessin de l'EDT sur le panel de gauche, c'est un peu legacy
          */
-
-        //Crée un joli string avec la date + un offset de jour
-        private string getDayStr(DateTime dt, int daysToAdd)
-        {
-
-            dt = dt.AddDays(daysToAdd);
-
-            string s1 = dt.ToString("dddd d ");
-            string s2 = dt.ToString("MMMM");
-
-            //On capitalise la première lettre du jour et du mois - ça serait plus clean en faisant un substring jusqu'au second espace et en capitalisant là au lieu de split le string en deux
-            //Mais flemme
-            char[] a1 = s1.ToCharArray();
-            a1[0] = char.ToUpper(a1[0]);
-            char[] a2 = s2.ToCharArray();
-            a2[0] = char.ToUpper(a2[0]);
-
-            return new string(a1) + new string(a2);
-        }
-
-
 
         private void updatePlanning(int daysExtra)
         {
             now = now.AddDays(daysExtra);
 
             API.saveData("planning", API.getInfo("api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd")));
-        }
-
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            //Get new info
-            updatePlanning(-1);
-            grid.Children.Clear();
-            DrawPlanning();
-            writePlanning(API.getData("planning"));
-        }
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            updatePlanning(1);
-            grid.Children.Clear();
-            DrawPlanning();
-            writePlanning(API.getData("planning"));
         }
 
         private void ajoutCours(string prof, string heureDebut, string heureFin, string matière, string couleur, DateTime premierJour, string salle)
@@ -221,7 +202,8 @@ namespace arelv1.Pages
 
 
                     macase.Background = new SolidColorBrush(HexToColor(couleur));
-                    //bugfix chelou je sais pas
+
+                    //bugfix chelou mais si on en arrive là c'est que y'a vraiment eu un souci
                     if (col < 0)
                         col = 0;
 
@@ -279,8 +261,13 @@ namespace arelv1.Pages
                         salle = node02.InnerText;
                 }
 
+                //Récup nom complet prof
+                string idProf = node.ChildNodes[3].InnerText;
+                string xmlj = API.getInfo("/api/users/" + idProf);
+                string profName = API.getUserFullName(xmlj);
+
                 if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")
-                    ajoutCours(prof, debut, fin, matiere, couleur, lundi, salle);
+                    ajoutCours(profName, debut, fin, matiere, couleur, lundi, salle);
 
             }
 
@@ -370,7 +357,7 @@ namespace arelv1.Pages
                 g = HexToInt(hexString.Substring(3, 1)) * 16 + HexToInt(hexString.Substring(4, 1));
                 b = HexToInt(hexString.Substring(5, 1)) * 16 + HexToInt(hexString.Substring(6, 1));
 
-                actColor = Color.FromArgb(150, Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
+                actColor = Color.FromArgb(255, Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
             }
             else
             {

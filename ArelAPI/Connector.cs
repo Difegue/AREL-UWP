@@ -20,13 +20,14 @@ namespace ArelAPI
         private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
         private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings; 
         private string resultat;
+        private Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader();
 
         //fonction qui initialise la connection à arel et stocke jeton d'accès / jeton de refresh
         public bool connect(string name, string pass)
         {
             string url = "http://arel.eisti.fr/oauth/token";
             string contentType = "application/x-www-form-urlencoded";
-            string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
+            string identifiants = loader.GetString("APIKey");
             string data = "grant_type=password&username=" + name + "&password=" + pass + "&scope = read&format=xml";
 
             string resultat = http(url, contentType, identifiants, "Basic", data, "POST");//on fait la requete
@@ -52,7 +53,7 @@ namespace ArelAPI
 
             string url = "http://arel.eisti.fr/oauth/token";
             string contentType = "application/x-www-form-urlencoded";
-            string identifiants = "win10-19:LTNsH0D0euweCehmWcn9";
+            string identifiants = loader.GetString("APIKey");
             string data = "grant_type=refresh_token&refresh_token=" + localSettings.Values["refresh"] + "&format=xml";
 
             string resultat = http(url, contentType, identifiants, "Basic", data, "POST");//on fait la requete
@@ -228,14 +229,18 @@ namespace ArelAPI
         public string getData(string key)
         {
             string res;
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(key, FileMode.Open, IsolatedStorageFile.GetUserStoreForApplication()))
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    res = reader.ReadLine();
+            if (isset(key))
+                { 
+                    using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(key, FileMode.Open, IsolatedStorageFile.GetUserStoreForApplication()))
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            res = reader.ReadLine();
+                        }
+                    }
+                    return res;
                 }
-            }
-            return res;
+            return "KEY NOT FOUND";
         }
 
         public bool isset(string key)

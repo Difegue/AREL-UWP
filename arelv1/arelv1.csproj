@@ -99,6 +99,7 @@
     <Content Include="Assets\Montserrat-Light.otf" />
     <Content Include="Assets\Montserrat-UltraLight.otf" />
     <None Include="project.json" />
+    <PRIResource Include="Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="acceuil.xaml.cs">

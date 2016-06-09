@@ -18,21 +18,24 @@
 
                 <TextBlock FontSize="30" HorizontalAlignment="Left" CharacterSpacing="-30" 
         	    Margin="10,5,0,10" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    Version 0.7.4  
+        	    Version 0.7.7  
             </TextBlock>
 
 
 
 
             <TextBlock FontSize="20" TextWrapping="Wrap" Margin="10,0,0,0">
+                <Hyperlink NavigateUri="http://eisti.fr">
+                   Site Web de l'EISTI
+               </Hyperlink> <LineBreak/>
                <Hyperlink NavigateUri="http://gitlab.etude.eisti.fr/alvesduart/w10-Arel">
-                   Code Source sur le Gitlab de l'EISTI
+                   Code Source de l'application sur le Gitlab de l'EISTI
                </Hyperlink> 
                <LineBreak/>Un fat merci à Tom Darboux le palois pour avoir commencé l'appli sisi rpz 
                <LineBreak/>
             </TextBlock>
 
-            <GridView>
+            <GridView HorizontalAlignment="Center" IsHitTestVisible="False">
 
                 <StackPanel MaxWidth="370" >
                     <TextBlock FontSize="20" TextWrapping="Wrap" FontWeight="Bold" Margin="10,0,0,0" TextAlignment="Center" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">

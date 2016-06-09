@@ -152,7 +152,7 @@ namespace arelv1.Pages
                     ueSem2 = ueSem1;
 
                 //On vire le pivot du semestre 2
-                semestresPivot.Items.Remove(semestresPivot.Items.Single(p => ((PivotItem)p).Header.ToString() == "Semestre 2"));
+                pivotSem2.Visibility = Visibility.Collapsed;
 
                 //Si le semestre 1 est vide aussi, il n'y a juste pas de notes -> On affiche le splashscreen associé.
                 if (ueSem1.id == null)
@@ -188,7 +188,24 @@ namespace arelv1.Pages
             s.listUE.Add(u);
         }
 
-        
+        private void showSem1(object sender, PointerRoutedEventArgs e)
+        {
+            sem1Liste.Visibility = Visibility.Visible;
+            sem2Liste.Visibility = Visibility.Collapsed;
+            pivotSem1.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
+            pivotSem2.Foreground = new SolidColorBrush(Windows.UI.Colors.DarkGray);
+            UpdateLayout();
+
+        }
+
+        private void showSem2(object sender, PointerRoutedEventArgs e)
+        {
+            sem1Liste.Visibility = Visibility.Collapsed;
+            sem2Liste.Visibility = Visibility.Visible;
+            pivotSem2.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
+            pivotSem1.Foreground = new SolidColorBrush(Windows.UI.Colors.DarkGray);
+            UpdateLayout();
+        }
     }
 
 

@@ -128,18 +128,21 @@ namespace arelv1
             //loginProgress.Visibility = Visibility.Visible;
             await Task.Delay(500);
 
-            //Bypass pour le test de certification Windows Store: 
-            //Donne des tokens préfaits pour interaction avec l'API sans utiliser de vrais comptes d'utilisateur
-            if (nom.Text.ToLower()=="windows10test" && pass.Password == "Developers") 
-            {
-                localSettings.Values["token"] = "46c0cd11-ffff-4321-bb94-9cee056049d1";
-                localSettings.Values["refresh"] = "c7f7f03d-2385-4d8d-a0bc-12035d267f4f";
+            string login = nom.Text.ToLower();
+            string pwd = pass.Password;
 
-                Frame.Navigate(typeof(acceuil));
-                return;
+            //Bypass pour le test de certification Windows Store: 
+            //Donne un autre compte parce que mdr
+            if (login=="windows10test" && pwd== "Developers") 
+            {
+                var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+
+                login = loader.GetString("LoginTest");
+                pwd = loader.GetString("PasswordTest");
             }
-            else
-            if(API.connect(nom.Text.ToLower(), pass.Password))
+            
+
+            if(API.connect(login,pwd))
             {
 
                 if (stayConnect)
@@ -161,6 +164,17 @@ namespace arelv1
         {
             InitializeComponent(); //demarage de l'interface   
             stayConnect = false;
+
+            if (API.isset("erreurRefresh") && API.getData("erreurRefresh")!="") //Si le refresh token a échoué, on indique pourquoi l'utilisateur n'est plus connecté en lui redemandant son login
+            {
+               ecrire("Erreur API lors de la reconnexion: " + API.getData("erreurRefresh"));
+                API.saveData("erreurRefresh", "");
+            }
+               
+            if (localSettings.Values.ContainsKey("stayConnect"))
+                if ((bool)localSettings.Values["stayConnect"] == true) //Si l'utilisateur a déjà coché Rester Connecté, on le laisse
+                    scBox.IsChecked = true;
+
         }
 
         //fonction pour afficher les erreurs (pourrai être modifier pour faire un pop-up à la place)

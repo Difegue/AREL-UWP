@@ -25,11 +25,11 @@
 
             <Grid BorderThickness="0" BorderBrush="Black" >
                 <Grid.ColumnDefinitions >
+                    <ColumnDefinition MaxWidth="600"/>
                     <ColumnDefinition MaxWidth="330"/>
-                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Background="#FFF9F9F9">
+                <StackPanel Grid.Column="1">
                     <Grid >
 
                         <SymbolIcon Symbol="CalendarDay" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
@@ -102,7 +102,7 @@
                     </ScrollViewer>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                <StackPanel Grid.Column="0" Margin="0,0,10,0">
                     <Grid>
                         <SymbolIcon Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
                             <SymbolIcon.RenderTransform>

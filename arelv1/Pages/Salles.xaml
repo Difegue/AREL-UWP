@@ -16,13 +16,13 @@
         <ScrollViewer x:Name="SalleView" ScrollViewer.VerticalScrollBarVisibility="Visible" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
             <StackPanel>
-                <Grid>
-                    <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,10" Foreground="#FF323232" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
+                <StackPanel>
+                    <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,0" Foreground="#FF323232" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
                         Disponibilité des Salles</TextBlock>
 
-                    <ComboBox x:Name="campusSelection"  Height="40" Width="125"  Margin="0,7,19,0"
+                    <ComboBox x:Name="campusSelection"  Height="40" Width="125"  Margin="0,7,20,0"
                      ItemsSource="{x:Bind campusList}" SelectionChanged="writeSalle" SelectedItem="{x:Bind SelectedComboBoxOption}" HorizontalAlignment="Right" />
-                </Grid>
+                </StackPanel>
 
                 <GridView ItemsSource="{x:Bind salleList}" x:Name="salleGrid">
                     <GridView.ItemTemplate >

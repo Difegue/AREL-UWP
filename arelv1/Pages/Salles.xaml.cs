@@ -76,6 +76,7 @@ namespace arelv1.Pages
             }
             else //Aucun intérêt à voir les salles dispos si on a pas internet pour avoir des datas à jour, on affiche le splash d'erreur
             {
+                API.renewAccessToken();
                 salleGrid.Visibility = Visibility.Collapsed;
                 NoInternetSplash.Visibility = Visibility.Visible;
             }

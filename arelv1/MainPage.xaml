@@ -72,15 +72,15 @@
             <!--bouton de validation -->
 
             <StackPanel Orientation="Horizontal"  Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center">
-                <Button Content="Se Connecter" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" Width="160"/>
-                <CheckBox Content="Rester connecté" HorizontalAlignment="Center" Margin="20,0,0,0" Checked="stayConnectBox" />
+                <Button Content="Connexion" Click="login_button" HorizontalAlignment="Center" Margin="0,5,0,5" />
+                <CheckBox x:Name="scBox" Content="Rester connecté" HorizontalAlignment="Center" Margin="20,0,0,0" Checked="stayConnectBox" />
 
             </StackPanel>
 
         </Grid>
         <ProgressRing x:Name="loginProgress" HorizontalAlignment="Center"  Height="60" Width="60" Margin="5,0,0,0"/>
 
-        <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" HorizontalScrollBarVisibility="Hidden">
             <!-- zone de texte ou on afiche les erreurs -->
             <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
         </ScrollViewer>

@@ -70,16 +70,17 @@
 
                 <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,0">Les noms des UEs ainsi que le calcul des moyennes ne sont pas disponibles à cause de limites de l'API.<LineBreak/> À utiliser avec votre Simulateur de Réussite favori.</TextBlock>
 
-                <Pivot x:Name="semestresPivot" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" Visibility="Visible">
-                    <PivotItem Header="Semestre 1"  >
-                        <!--Data Binding notes Semestre 1-->
-                        <ListView ItemsSource="{x:Bind ueSem1.listUE}" ItemTemplate="{StaticResource semestreView}" x:Name="sem1Liste" IsHitTestVisible="False"/>
-                    </PivotItem>
-                    <PivotItem Header="Semestre 2" >
-                        <!--Data Binding notes Semestre 2-->
-                        <ListView ItemsSource="{x:Bind ueSem2.listUE}" ItemTemplate="{StaticResource semestreView}" x:Name="sem2Liste" IsHitTestVisible="False"/>
-                    </PivotItem>
-                </Pivot>
+                <StackPanel x:Name="semestresPivot" Orientation="Horizontal" Margin="10,5,0,20" Visibility="Visible">
+                    <TextBlock x:Name="pivotSem1" Margin="0,0,0,0" FontSize="25" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" PointerPressed="showSem1" >Semestre 1</TextBlock>
+                    <TextBlock x:Name="pivotSem2" Margin="25,0,0,0" FontSize="25" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" PointerPressed="showSem2" Foreground="Gray" Visibility="Visible" >Semestre 2</TextBlock>
+                </StackPanel>
+
+                <!--Data Binding notes Semestre 1-->
+                <ListView x:Name="sem1Liste"  ItemsSource="{x:Bind ueSem1.listUE}" ItemTemplate="{StaticResource semestreView}" IsHitTestVisible="False" Visibility="Visible" />
+                    
+                <!--Data Binding notes Semestre 2-->
+                <ListView x:Name="sem2Liste" ItemsSource="{x:Bind ueSem2.listUE}" ItemTemplate="{StaticResource semestreView}"  IsHitTestVisible="False" Visibility="Collapsed" />
+                    
 
                 <StackPanel x:Name="NoInternetSplash" Visibility="Collapsed" >
                     <SymbolIcon Symbol="DisconnectDrive" RenderTransformOrigin="0.5,0.5" Margin="0,55,0,32">

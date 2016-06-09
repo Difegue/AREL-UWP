@@ -47,8 +47,6 @@ namespace arelv1
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
-
-
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 this.DebugSettings.EnableFrameRateCounter = false;
@@ -58,19 +56,12 @@ namespace arelv1
 
             // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu,
             // assurez-vous juste que la fenêtre est active
-
-            
             if (rootFrame == null)
             {
                 // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: chargez l'état de l'application précédemment suspendue
-                }
 
                 // Placez le frame dans la fenêtre active
                 Window.Current.Content = rootFrame;
@@ -87,13 +78,18 @@ namespace arelv1
                     if (localSettings.Values["token"] != null && localSettings.Values["refresh"] != null && localSettings.Values["stayConnect"] != null)
                     {
                         if (!API.isOnline()) //On récupère un nouveau jeton d'accès pour cette session si l'ancien est mort
-                            API.renewAccessToken(); 
-                        rootFrame.Navigate(typeof(acceuil), e.Arguments);
+                        { 
+                            if (API.renewAccessToken()) //Si ça marche, on va à l'accueil
+                                rootFrame.Navigate(typeof(acceuil), e.Arguments);
+                            else //Sinon, on renvoie à la mainpage 
+                                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                        }
+                        else
+                            rootFrame.Navigate(typeof(acceuil), e.Arguments);
                     }
                     else
-                    {
                         rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                    }
+                    
                 }
                 // Vérifiez que la fenêtre actuelle est active
                 Window.Current.Activate();
@@ -122,6 +118,53 @@ namespace arelv1
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: enregistrez l'état de l'application et arrêtez toute activité en arrière-plan
             deferral.Complete();
+        }
+
+        //When launched through a notification, we do absolutely fucking nothing different
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            ToastNotificationActivatedEventArgs e = args as ToastNotificationActivatedEventArgs;
+
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // Ne répétez pas l'initialisation de l'application lorsque la fenêtre comporte déjà du contenu,
+            // assurez-vous juste que la fenêtre est active
+            if (rootFrame == null)
+            {
+                // Créez un Frame utilisable comme contexte de navigation et naviguez jusqu'à la première page
+                rootFrame = new Frame();
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                // Placez le frame dans la fenêtre active
+                Window.Current.Content = rootFrame;
+            }
+
+            if (rootFrame.Content == null)
+            {
+                // Quand la pile de navigation n'est pas restaurée, accédez à la première page,
+                // puis configurez la nouvelle page en transmettant les informations requises en tant que
+                // paramètre
+
+                if (localSettings.Values["token"] != null && localSettings.Values["refresh"] != null && localSettings.Values["stayConnect"] != null)
+                {
+                    if (!API.isOnline()) //On récupère un nouveau jeton d'accès pour cette session si l'ancien est mort
+                    {
+                        if (API.renewAccessToken()) //Si ça marche, on va à l'accueil
+                            rootFrame.Navigate(typeof(acceuil), null);
+                        else //Sinon, on renvoie à la mainpage 
+                            rootFrame.Navigate(typeof(MainPage), null);
+                    }
+                    else
+                        rootFrame.Navigate(typeof(acceuil), null);
+                }
+                else
+                    rootFrame.Navigate(typeof(MainPage), null);
+
+            }
+            // Vérifiez que la fenêtre actuelle est active
+            Window.Current.Activate();
+
         }
 
     }
