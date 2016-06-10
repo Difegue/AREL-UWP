@@ -32,7 +32,7 @@ namespace arelv1.Pages
         {
             this.InitializeComponent();
 
-            dateJour.Text = "Emploi du Temps AREL - " + getDayStr(now, 0);
+            dateJour.Text = "Nous sommes le " + getDayStr(now, 0);
 
             if (API.isOnline())
                 updatePlanning(0); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
@@ -197,11 +197,8 @@ namespace arelv1.Pages
                     {
                         macase.Children.Add(salleBlock);
                     }
-
-
-
-
-                    macase.Background = new SolidColorBrush(HexToColor(couleur));
+                    
+                    macase.Background = HexToColor(couleur);
 
                     //bugfix chelou mais si on en arrive là c'est que y'a vraiment eu un souci
                     if (col < 0)
@@ -261,10 +258,15 @@ namespace arelv1.Pages
                         salle = node02.InnerText;
                 }
 
-                //Récup nom complet prof
                 string idProf = node.ChildNodes[3].InnerText;
+                string profName = node.ChildNodes[4].InnerText;
+
+                //Récup nom complet prof...si on a accès à l'API parce que je les sauvegarde pas dans les données de l'appli
+                if (API.isOnline())
+                { 
                 string xmlj = API.getInfo("/api/users/" + idProf);
-                string profName = API.getUserFullName(xmlj);
+                profName = API.getUserFullName(xmlj);
+                }
 
                 if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")
                     ajoutCours(profName, debut, fin, matiere, couleur, lundi, salle);
@@ -344,87 +346,15 @@ namespace arelv1.Pages
 
         //-------------------- convertisseur hexa -> rgb ---------------------------------------------
 
-        public Color HexToColor(String hexString)
+        public SolidColorBrush HexToColor(String hex)
         {
-            Color actColor;
-            int r, g, b;
-            r = 0;
-            g = 0;
-            b = 0;
-            if ((hexString.StartsWith("#")) && (hexString.Length == 7))
-            {
-                r = HexToInt(hexString.Substring(1, 1)) * 16 + HexToInt(hexString.Substring(1, 1));
-                g = HexToInt(hexString.Substring(3, 1)) * 16 + HexToInt(hexString.Substring(4, 1));
-                b = HexToInt(hexString.Substring(5, 1)) * 16 + HexToInt(hexString.Substring(6, 1));
-
-                actColor = Color.FromArgb(255, Convert.ToByte(r), Convert.ToByte(g), Convert.ToByte(b));
-            }
-            else
-            {
-                actColor = Color.FromArgb(0, 0, 0, 0);
-            }
-            return actColor;
-        }
-
-        public int HexToInt(string s)
-        {
-            int res;
-            switch (s)
-            {
-                case "1":
-                    res = 1;
-                    break;
-                case "2":
-                    res = 2;
-                    break;
-                case "3":
-                    res = 3;
-                    break;
-                case "4":
-                    res = 4;
-                    break;
-                case "5":
-                    res = 5;
-                    break;
-                case "6":
-                    res = 6;
-                    break;
-                case "7":
-                    res = 7;
-                    break;
-                case "8":
-                    res = 8;
-                    break;
-                case "9":
-                    res = 9;
-                    break;
-                case "a":
-                    res = 10;
-                    break;
-                case "b":
-                    res = 11;
-                    break;
-                case "c":
-                    res = 12;
-                    break;
-                case "d":
-                    res = 13;
-                    break;
-                case "e":
-                    res = 14;
-                    break;
-                case "f":
-                    res = 15;
-                    break;
-                case "0":
-                    res = 0;
-                    break;
-                default:
-                    res = 0;
-                    break;
-
-            }
-            return res;
+            hex = hex.Replace("#", string.Empty);
+            byte r = (byte)(Convert.ToUInt32(hex.Substring(0, 2), 16));
+            byte g = (byte)(Convert.ToUInt32(hex.Substring(2, 2), 16));
+            byte b = (byte)(Convert.ToUInt32(hex.Substring(4, 2), 16));
+            //byte b = (byte)(Convert.ToUInt32(hex.Substring(6, 2), 16));
+            SolidColorBrush myBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, r, g, b));
+            return myBrush;
         }
 
     }

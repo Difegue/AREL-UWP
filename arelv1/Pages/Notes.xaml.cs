@@ -171,7 +171,7 @@ namespace arelv1.Pages
             }
 
             ueSem1.sortUEs();
-            ueSem2.sortUEs();
+            //ueSem2.sortUEs();
             //Fiou, enfin fini. Le XAML s'occupe de construire la vue des notes via data binding.
         }
 
@@ -194,6 +194,8 @@ namespace arelv1.Pages
             sem2Liste.Visibility = Visibility.Collapsed;
             pivotSem1.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
             pivotSem2.Foreground = new SolidColorBrush(Windows.UI.Colors.DarkGray);
+            pivotSem1.FontSize = 30;
+            pivotSem2.FontSize = 25;
             UpdateLayout();
 
         }
@@ -204,6 +206,8 @@ namespace arelv1.Pages
             sem2Liste.Visibility = Visibility.Visible;
             pivotSem2.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
             pivotSem1.Foreground = new SolidColorBrush(Windows.UI.Colors.DarkGray);
+            pivotSem2.FontSize = 30;
+            pivotSem1.FontSize = 25;
             UpdateLayout();
         }
     }

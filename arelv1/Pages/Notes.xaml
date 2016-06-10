@@ -70,9 +70,13 @@
 
                 <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,0">Les noms des UEs ainsi que le calcul des moyennes ne sont pas disponibles à cause de limites de l'API.<LineBreak/> À utiliser avec votre Simulateur de Réussite favori.</TextBlock>
 
-                <StackPanel x:Name="semestresPivot" Orientation="Horizontal" Margin="10,5,0,20" Visibility="Visible">
-                    <TextBlock x:Name="pivotSem1" Margin="0,0,0,0" FontSize="25" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" PointerPressed="showSem1" >Semestre 1</TextBlock>
-                    <TextBlock x:Name="pivotSem2" Margin="25,0,0,0" FontSize="25" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" PointerPressed="showSem2" Foreground="Gray" Visibility="Visible" >Semestre 2</TextBlock>
+                <StackPanel x:Name="semestresPivot" Orientation="Horizontal" Margin="10,10,0,20" Visibility="Visible">
+                    <TextBlock x:Name="pivotSem1" Margin="0,0,0,0" FontSize="30"  VerticalAlignment="Center" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" PointerPressed="showSem1" >
+                        Semestre 1
+                    </TextBlock>
+                    <TextBlock x:Name="pivotSem2" Margin="10,0,0,0" FontSize="25"  VerticalAlignment="Center" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" PointerPressed="showSem2" Foreground="Gray" Visibility="Visible" >
+                        Semestre 2
+                    </TextBlock>
                 </StackPanel>
 
                 <!--Data Binding notes Semestre 1-->

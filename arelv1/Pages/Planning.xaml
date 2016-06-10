@@ -12,13 +12,11 @@
 
         <StackPanel>
 
-
-
             <Grid x:Name="button_week">
 
                 <TextBlock x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
                            Margin="10,5,0,10" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
-        		Emploi du Temps AREL - Jour X
+        		👌👺👉 Emploi du Temps AREL
                 </TextBlock>
 
             </Grid>
@@ -26,7 +24,7 @@
             <Grid BorderThickness="0" BorderBrush="Black" >
                 <Grid.ColumnDefinitions >
                     <ColumnDefinition MaxWidth="600"/>
-                    <ColumnDefinition MaxWidth="330"/>
+                    <ColumnDefinition MaxWidth="345"/>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Column="1">
@@ -37,7 +35,7 @@
                                 <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                             </SymbolIcon.RenderTransform>
                         </SymbolIcon>
-                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,0,20" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
         		<Run Text="Vos cours de la journée ..."/>
                         </TextBlock>
                     </Grid>
