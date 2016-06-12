@@ -34,6 +34,12 @@ namespace arelv1
                 API.saveData("user", API.getInfo("api/me"));
             }
 
+            //Setting thème
+            if (API.getData("themePref") == "Dark")
+                hamburger.RequestedTheme = ElementTheme.Dark;
+            else
+                hamburger.RequestedTheme = ElementTheme.Light;
+
             //Récup du nom de l'utilisateur pour affichage
             string userName = API.getUserFullName(API.getData("user"), "Utilisateur d'AREL");
             nomUser.Text = userName;
@@ -41,7 +47,6 @@ namespace arelv1
             AgendaBouton.IsChecked = true; //Petit trick pour commencer sur l'EDT de base
             UpdateLayout();
         }
-
 
         private void HamburgerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
@@ -118,6 +123,11 @@ namespace arelv1
             }
         }
 
-        
+        private void changeTheme(object sender, RoutedEventArgs e)
+        {
+            hamburger.RequestedTheme = hamburger.RequestedTheme == ElementTheme.Dark ? ElementTheme.Light : ElementTheme.Dark;
+            API.saveData("themePref", hamburger.RequestedTheme.ToString());
+            ThemeBouton.IsChecked = false;
+        }
     }
 }

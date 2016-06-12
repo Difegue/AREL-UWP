@@ -120,6 +120,7 @@ namespace arelv1
                 login_button(sender, e);
         }
 
+
         //fonction executée quand on appuie sur le bouton
         private async void login_button(object sender, RoutedEventArgs ev)
         {
@@ -164,6 +165,11 @@ namespace arelv1
         {
             InitializeComponent(); //demarage de l'interface   
             stayConnect = false;
+
+            if (API.getData("themePref") == "Dark")
+                loginPage.RequestedTheme = ElementTheme.Dark;
+            else
+                loginPage.RequestedTheme = ElementTheme.Light;
 
             if (API.isset("erreurRefresh") && API.getData("erreurRefresh")!="") //Si le refresh token a échoué, on indique pourquoi l'utilisateur n'est plus connecté en lui redemandant son login
             {

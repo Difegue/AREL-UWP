@@ -18,7 +18,7 @@
                     <VisualState.Setters>
                         <Setter Target="MainGrid.ColumnDefinitions[0].MaxWidth" Value="600"/>
                         <Setter Target="MainGrid.ColumnDefinitions[1].MaxWidth" Value="345"/>
-                        <Setter Target="c1.Width" Value="270"/>
+                        <Setter Target="c1.Width" Value="260"/>
                         <Setter Target="FirstGrid.Margin" Value="0,0,10,0"/>
                         <Setter Target="SecondGrid.(Grid.Column)" Value="1"/>
                         <Setter Target="SecondGrid.(Grid.Row)" Value="1"/>
@@ -55,21 +55,21 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
-                            Margin="10,5,0,10" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
+                            Margin="10,5,0,10" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
         	    👌👺👉 Emploi du Temps AREL
             </TextBlock>
         
         
             <StackPanel Grid.Row="1" Grid.Column="0" x:Name="FirstGrid">
             <Grid>
-                <SymbolIcon Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                    <SymbolIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
                     <SymbolIcon.RenderTransform>
                         <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                     </SymbolIcon.RenderTransform>
                 </SymbolIcon>
                 <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                    Margin="50,8,0,0" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    <Run Text="Marre d'ouvrir l'appli tous les jours ?"/>
+                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}">
+        	    <Run Text="Calendrier Windows 10"/>
                 </TextBlock>
             </Grid>
 
@@ -88,19 +88,19 @@
 
             <StackPanel x:Name="SecondGrid">
             <Grid>
-                <SymbolIcon Symbol="CalendarDay" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                    <SymbolIcon Symbol="CalendarDay" HorizontalAlignment="Left" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
                     <SymbolIcon.RenderTransform>
                         <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                     </SymbolIcon.RenderTransform>
                 </SymbolIcon>
-                <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    <Run Text="Vos cours de la journée ..."/>
+                    <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+        	    <Run Text="Vos cours de la journée"/>
                 </TextBlock>
             </Grid>
 
             <Grid x:Name="grid"  Margin="0,0,10,10" BorderThickness="2,0" HorizontalAlignment="Center">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="25"/>
                     <ColumnDefinition x:Name="c1"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>

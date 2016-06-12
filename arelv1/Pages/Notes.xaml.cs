@@ -192,22 +192,17 @@ namespace arelv1.Pages
         {
             sem1Liste.Visibility = Visibility.Visible;
             sem2Liste.Visibility = Visibility.Collapsed;
-            pivotSem1.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
-            pivotSem2.Foreground = new SolidColorBrush(Windows.UI.Colors.DarkGray);
-            pivotSem1.FontSize = 30;
-            pivotSem2.FontSize = 25;
+            sem2Selected.IsActive = false;
+            sem1Selected.IsActive = true;
             UpdateLayout();
-
         }
 
         private void showSem2(object sender, PointerRoutedEventArgs e)
         {
             sem1Liste.Visibility = Visibility.Collapsed;
             sem2Liste.Visibility = Visibility.Visible;
-            pivotSem2.Foreground = new SolidColorBrush(Windows.UI.Colors.Black);
-            pivotSem1.Foreground = new SolidColorBrush(Windows.UI.Colors.DarkGray);
-            pivotSem2.FontSize = 30;
-            pivotSem1.FontSize = 25;
+            sem1Selected.IsActive = false;
+            sem2Selected.IsActive = true;
             UpdateLayout();
         }
     }

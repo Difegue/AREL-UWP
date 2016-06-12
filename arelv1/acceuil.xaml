@@ -51,7 +51,7 @@
                     <RadioButton x:Name="NotesBouton" GroupName="Group1" Checked="noteClick" Content="Notes"  Foreground="White" Tag="&#xE7BE;"
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
-                    <RadioButton x:Name="AbsencesBouton" GroupName="Group1" Checked="absenceClick" Content="Absences"  Foreground="White" Tag="&#xE181;"
+                    <RadioButton x:Name="AbsencesBouton" GroupName="Group1" Checked="absenceClick" Content="Absences"  Foreground="White" Tag="&#xE1E0;"
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
 
@@ -59,6 +59,8 @@
 
                 <StackPanel Grid.Row="2">
 
+                    <RadioButton Margin="0,0,0,0" x:Name="ThemeBouton" GroupName="Group1" Checked="changeTheme" Content="Changer Thème" Foreground="White" Tag="&#xE2B1;"
+                            Style="{StaticResource NavRadioButtonStyle}" />
 
                     <RadioButton Margin="0,0,0,0" x:Name="AboutBouton" GroupName="Group1" Checked="aboutClick" Content="À Propos..." Foreground="White" Tag="&#xE97F;"
                             Style="{StaticResource NavRadioButtonStyle}" />
