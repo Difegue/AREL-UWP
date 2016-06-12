@@ -8,126 +8,154 @@
     mc:Ignorable="d">
 
     <!--emploi du temps-->
-    <ScrollViewer x:Name="PlanningView" Visibility="Visible" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="620" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainGrid.ColumnDefinitions[0].MaxWidth" Value="600"/>
+                        <Setter Target="MainGrid.ColumnDefinitions[1].MaxWidth" Value="345"/>
+                        <Setter Target="c1.Width" Value="270"/>
+                        <Setter Target="FirstGrid.Margin" Value="0,0,10,0"/>
+                        <Setter Target="SecondGrid.(Grid.Column)" Value="1"/>
+                        <Setter Target="SecondGrid.(Grid.Row)" Value="1"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="FirstGrid.Margin" Value="0,0,10,10"/>
+                        <Setter Target="SecondGrid.Margin" Value="0,0,10,0"/>
+                        <Setter Target="c1.Width" Value="300"/>
+                        <Setter Target="FirstGrid.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="FirstGrid.(Grid.Row)" Value="2"/>
+                        <Setter Target="SecondGrid.(Grid.Column)" Value="0"/>
+                        <Setter Target="SecondGrid.(Grid.ColumnSpan)" Value="2"/>
+                        <Setter Target="SecondGrid.(Grid.Row)" Value="1"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid BorderThickness="0" BorderBrush="Black" x:Name="MainGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
-        <StackPanel>
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-            <Grid x:Name="button_week">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition MinHeight="680"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-                <TextBlock x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
-                           Margin="10,5,0,10" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
-        		👌👺👉 Emploi du Temps AREL
+            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
+                            Margin="10,5,0,10" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
+        	    👌👺👉 Emploi du Temps AREL
+            </TextBlock>
+        
+        
+            <StackPanel Grid.Row="1" Grid.Column="0" x:Name="FirstGrid">
+            <Grid>
+                <SymbolIcon Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                    <SymbolIcon.RenderTransform>
+                        <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                    </SymbolIcon.RenderTransform>
+                </SymbolIcon>
+                <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
+                                    Margin="50,8,0,0" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+        	    <Run Text="Marre d'ouvrir l'appli tous les jours ?"/>
                 </TextBlock>
-
             </Grid>
 
-            <Grid BorderThickness="0" BorderBrush="Black" >
-                <Grid.ColumnDefinitions >
-                    <ColumnDefinition MaxWidth="600"/>
-                    <ColumnDefinition MaxWidth="345"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="1">
-                    <Grid >
-
-                        <SymbolIcon Symbol="CalendarDay" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
-                            <SymbolIcon.RenderTransform>
-                                <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        		<Run Text="Vos cours de la journée ..."/>
-                        </TextBlock>
-                    </Grid>
-
-                    <ScrollViewer>
-                        <Grid x:Name="grid"  Margin="0,3,3,18" BorderThickness="2,0" >
-                            <Grid.ColumnDefinitions >
-                                <ColumnDefinition Width="15"/>
-                                <ColumnDefinition  MinWidth="150" MaxWidth="270" x:Name="c1"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="15" />
-
-                                <RowDefinition Height="15" />
-                                <RowDefinition Height="30" />
-
-                            </Grid.RowDefinitions>
-                        </Grid>
-                    </ScrollViewer>
-                </StackPanel>
-
-                <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                    <Grid>
-                        <SymbolIcon Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
-                            <SymbolIcon.RenderTransform>
-                                <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                    Margin="50,8,0,0" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        		<Run Text="Marre d'ouvrir l'appli tous les jours ?"/>
-                        </TextBlock>
-                    </Grid>
-
-                    <TextBlock Margin="20,15,0,0" FontSize="15" TextWrapping="Wrap">Vous pouvez utiliser cette application pour synchroniser votre Calendrier Windows 10 avec votre planning AREL.<LineBreak/>
+            <TextBlock Margin="20,15,0,0" FontSize="15" TextWrapping="Wrap">Vous pouvez utiliser cette application pour synchroniser votre Calendrier Windows 10 avec votre planning AREL.<LineBreak/>
                         La synchronisation peut être effectuée automatiquement ou manuellement.</TextBlock>
 
-                    <Grid>
-                        <Button Margin="20,15,0,0" x:Name="SyncNow" Click="ManualSync">Synchroniser</Button>
-                        <ProgressRing x:Name="SpinnerSync" Margin="130,15,0,0" HorizontalAlignment="Left"/>
-                    </Grid>
-                    <ToggleSwitch Margin="20,15,0,0" x:Name="BackgroundSyncSwitch" Header="Synchro. automatique" Toggled="AutoSync" />
+            <Grid>
+                <Button Margin="20,15,0,0" x:Name="SyncNow" Click="ManualSync">Synchroniser</Button>
+                <ProgressRing x:Name="SpinnerSync" Margin="130,15,0,0" HorizontalAlignment="Left"/>
+            </Grid>
+            <ToggleSwitch Margin="20,15,0,0" x:Name="BackgroundSyncSwitch" Header="Synchro. automatique" Toggled="AutoSync" />
 
-                    <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Une première synchronisation sera effectuée à l'activation de la synchro automatique.
+            <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Une première synchronisation sera effectuée à l'activation de la synchro automatique.
                         <LineBreak/>L'application Calendrier s'ouvrira automatiquement lorsqu'elle sera terminée.</TextBlock>
-                </StackPanel>
+        </StackPanel>
+
+            <StackPanel x:Name="SecondGrid">
+            <Grid>
+                <SymbolIcon Symbol="CalendarDay" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                    <SymbolIcon.RenderTransform>
+                        <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                    </SymbolIcon.RenderTransform>
+                </SymbolIcon>
+                <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="#FF323232" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+        	    <Run Text="Vos cours de la journée ..."/>
+                </TextBlock>
+            </Grid>
+
+            <Grid x:Name="grid"  Margin="0,0,10,10" BorderThickness="2,0" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition x:Name="c1"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="15" />
+
+                    <RowDefinition Height="15" />
+                    <RowDefinition Height="30" />
+
+                </Grid.RowDefinitions>
             </Grid>
         </StackPanel>
-        <!--<ListBox ItemsSource="{Binding Prenoms}" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
-                        -->
+  
+        </Grid>
     </ScrollViewer>
 </Page>
