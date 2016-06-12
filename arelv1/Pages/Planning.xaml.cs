@@ -258,14 +258,18 @@ namespace arelv1.Pages
                         salle = node02.InnerText;
                 }
 
+                string idRel = node.ChildNodes[2].InnerText;
                 string idProf = node.ChildNodes[3].InnerText;
                 string profName = node.ChildNodes[4].InnerText;
 
-                //Récup nom complet prof...si on a accès à l'API parce que je les sauvegarde pas dans les données de l'appli
+                //Récup nom complet prof et rel...si on a accès à l'API parce que je les sauvegarde pas dans les données de l'appli
                 if (API.isOnline())
-                { 
-                string xmlj = API.getInfo("/api/users/" + idProf);
-                profName = API.getUserFullName(xmlj);
+                {
+                    string xmlr = API.getInfo("/api/rels/" + idRel);
+                    matiere = API.getRelName(xmlr);
+
+                    string xmlj = API.getInfo("/api/users/" + idProf);
+                    profName = API.getUserFullName(xmlj);
                 }
 
                 if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")
@@ -280,7 +284,7 @@ namespace arelv1.Pages
         private void DrawPlanning()
         {
 
-            for (int j = 1; j < 41; j = j + 1)
+            for (int j = 1; j < 41; j++)
             {
                 TextBlock heure = new TextBlock();
                 heure.FontSize = 13;
@@ -292,17 +296,23 @@ namespace arelv1.Pages
                 Grid.SetColumn(heure, 0);
                 Grid.SetRow(heure, j);
 
-                for (int i = 1; i < 6; i++)
-                {
-                    StackPanel macase = new StackPanel();
+                //Remplissage de la colonne
+                StackPanel macase = new StackPanel();
 
-                    macase.BorderThickness = new Thickness(1, 1, 1, 1);
-                    macase.BorderBrush = new SolidColorBrush(Colors.LightGray);
+                if (j == (4 * jj))
+                    macase.BorderThickness = new Thickness(1,0,1,1);
+                else
+                    macase.BorderThickness = new Thickness(1, 0, 1, 0);
 
-                    grid.Children.Add(macase);
-                    Grid.SetColumn(macase, i);
-                    Grid.SetRow(macase, j);
-                }
+                if (j == 1)
+                    macase.BorderThickness = new Thickness(1, 1, 1, 0);
+
+                macase.BorderBrush = new SolidColorBrush(Colors.LightGray);
+
+                grid.Children.Add(macase);
+                Grid.SetColumn(macase, 1);
+                Grid.SetRow(macase, j);
+                
             }
 
         }

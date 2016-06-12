@@ -154,6 +154,7 @@ namespace ArelAPI
         //On peut par la suite ouvrir l'appli calendrier Windows sur ce cal. custom.
         public async void updateWindowsCalendar(string start, string end, string calendarName)
         {
+            //string startest = "2016-06-01";
             string apiUrl = "api/planning/slots?start=" + start + "&end=" + end;
 
             string planningXML = getInfo(apiUrl);
@@ -189,6 +190,12 @@ namespace ArelAPI
                 appo.StartTime = startDate;
                 appo.Duration = new TimeSpan(0, (int)(endDate - startDate).TotalMinutes, 0);
 
+
+                //Récup non complet rel (aka matière/sujet)
+                string idRel = node.ChildNodes[2].InnerText;
+                string xmlr = getInfo("/api/rels/" + idRel);
+                string relName = getRelName(xmlr);
+
                 //Récup nom complet prof
                 string idProf = node.ChildNodes[3].InnerText;
                 string xmlj = getInfo("/api/users/" + idProf);
@@ -196,7 +203,7 @@ namespace ArelAPI
                 appo.Organizer = new Windows.ApplicationModel.Appointments.AppointmentOrganizer();
                 appo.Organizer.DisplayName = profName;
 
-                appo.Subject = node.ChildNodes[11].InnerText + profName;
+                appo.Subject = relName + " - " + profName;
 
                 //Est-ce que cet appointment exact existe déjà 
                 //On regarde les appointments sur ce créneau
@@ -211,6 +218,13 @@ namespace ArelAPI
 
             }
 
+        }
+
+        public string getRelName(string xmlr)
+        {
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xmlr);//chargement de la variable
+            return doc.ChildNodes[0].ChildNodes[0].InnerText;
         }
 
         //--------------------enregistrer dans un fichier... -----------------------------------------

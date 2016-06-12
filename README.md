@@ -10,7 +10,7 @@ Une application cross-devices Windows 10 utilisant l'api d'AREL pour :
 Un fichier Resources.resw doit être ajouté dans le projet arelv1, contenant votre clé d'API(APIKey) et un login/mot de passe de test (LoginTest/PasswordTest).  
 
 
-[![Lien sur le store](https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png =250x)](https://www.microsoft.com/store/apps/9nblggh4wlhz)
+<a href="https://www.microsoft.com/store/apps/9nblggh4wlhz"><img width=250 src="https://assets.windowsphone.com/f2f77ec7-9ba9-4850-9ebe-77e366d08adc/English_Get_it_Win_10_InvariantCulture_Default.png" alt="Get it on Windows 10" /></a>
 
 ![emploi du temps](screen01.png)  
 ![notes](screen02.png)
