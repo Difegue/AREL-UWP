@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="arelv1.App">
-      <uap:VisualElements DisplayName="AREL" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="version minimale d'Arel dans une application windows 10" BackgroundColor="#2F4050">
+      <uap:VisualElements DisplayName="AREL" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Version minimale d'Arel dans une application windows 10" BackgroundColor="#2F4050">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="wide310x150Logo" />

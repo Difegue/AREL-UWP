@@ -22,9 +22,57 @@ namespace arelv1.Pages
     /// </summary>
     public sealed partial class Absences : Page
     {
+        private ArelAPI.Connector API = new ArelAPI.Connector();
+
         public Absences()
         {
-            this.InitializeComponent();
+            initPage();
         }
+
+        private void initPage()
+        {
+            if (API.isOnline())
+            {
+                string absencesXml = API.getInfo("/api/me/absences");
+                API.saveData("absences", absencesXml);
+                buildAbsences(absencesXml);
+            }
+            else if (API.isset("absences"))
+            {
+                string absencesXml = API.getData("absences");
+                buildAbsences(absencesXml);
+            }
+            else
+            {
+                //semestresPivot.Visibility = Visibility.Collapsed;
+                NoInternetSplash.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void buildAbsences(string xml)
+        {
+
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+
+            //Structure de l'xml renvoyé par l'API: Liste d'absences, chacune contenant un ID vers le slot concerné d'emploi du temps
+            foreach (System.Xml.XmlNode absence in doc.FirstChild.ChildNodes)
+            {
+                string idSlot = absence.ChildNodes[1].InnerText;
+                string slotInfo = API.getInfo("/api/plannings/slots/" + idSlot); //La seconde childnode contient le slotId
+                System.Xml.XmlDocument doc2 = new System.Xml.XmlDocument();
+                doc2.LoadXml(slotInfo);
+
+
+
+            }
+
+        }
+
+        private void initPage(object sender, RoutedEventArgs e)
+        {
+            initPage();
+        }
+
     }
 }

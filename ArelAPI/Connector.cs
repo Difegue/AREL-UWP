@@ -131,7 +131,7 @@ namespace ArelAPI
                 }
                 return fn + " " + ln;
             }
-            catch (Exception e) //On renvoie le string de fallback si le parsing échoue
+            catch (Exception) //On renvoie le string de fallback si le parsing échoue
                 { return fallback;  }
         }
 
@@ -147,7 +147,7 @@ namespace ArelAPI
                 doc.LoadXml(data); //On essaie de charger un call bidon, si on obtient un XML correct (et pas "Accès Refusé") on est OK
                 return true;
             }
-            catch (System.Xml.XmlException e) //Une exception sera lancée si notre jeton est invalide
+            catch (System.Xml.XmlException ) //Une exception sera lancée si notre jeton est invalide
             {
                 return false;
             } 
@@ -232,7 +232,7 @@ namespace ArelAPI
                 doc.LoadXml(xmlr);//chargement de la variable
                 return doc.ChildNodes[0].ChildNodes[0].InnerText;
             }
-            catch (Exception e) //On renvoie le string de fallback si le parsing échoue
+            catch (Exception) //On renvoie le string de fallback si le parsing échoue
                 { return fallback; }
         }
 
