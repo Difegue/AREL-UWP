@@ -63,7 +63,7 @@ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
                                               ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" 
                                               Content="{TemplateBinding Content}" Grid.Column="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                               Margin="{TemplateBinding Padding}" TextWrapping="Wrap" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              FontFamily="ms-appx:/Assets/Montserrat-UltraLight.otf#Montserrat"/>
+                                              />
                         </Grid>
                     </Border>
                 </ControlTemplate>
