@@ -124,13 +124,21 @@ namespace arelv1
         //fonction executée quand on appuie sur le bouton
         private async void login_button(object sender, RoutedEventArgs ev)
         {
+
+            string login = nom.Text.ToLower();
+            string pwd = pass.Password;
+
+            if (pwd == "" || login == "")
+            {
+                ecrire("Veuillez entrer vos identifiants.");
+                return;
+            }
+
             loginProgress.IsActive = true;
             ecrire("");
             //loginProgress.Visibility = Visibility.Visible;
             await Task.Delay(500);
 
-            string login = nom.Text.ToLower();
-            string pwd = pass.Password;
 
             //Bypass pour le test de certification Windows Store: 
             //Donne un autre compte parce que mdr

@@ -80,11 +80,9 @@
         </Grid>
         <ProgressRing x:Name="loginProgress" HorizontalAlignment="Center"  Height="60" Width="60" Margin="5,0,0,0"/>
 
-        <ScrollViewer VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" HorizontalScrollBarVisibility="Hidden">
-            <!-- zone de texte ou on afiche les erreurs -->
-            <TextBlock x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
-        </ScrollViewer>
-
+        <!-- zone de texte ou on afiche les erreurs -->
+        <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" 
+                   FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
 
     </StackPanel>
 </Page>

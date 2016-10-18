@@ -406,6 +406,10 @@ namespace ArelAPI
                 {
                     resultat = "Erreur du serveur";
                 }
+                else if (erreur.IndexOf("404") > -1)
+                {
+                    resultat = "Endpoint introuvable.";
+                }
                 else
                 {
                     resultat = "Erreur Inconnue.\n" + e.Status;

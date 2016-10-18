@@ -35,11 +35,17 @@ namespace arelv1.Pages
             {
                 string absencesXml = API.getInfo("/api/me/absences");
                 API.saveData("absences", absencesXml);
+
+                //test string from resources.resw
+                Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+                absencesXml = loader.GetString("AbsencesXmlTest");
+
                 buildAbsences(absencesXml);
             }
             else if (API.isset("absences"))
             {
-                string absencesXml = API.getData("absences");
+                string absencesXml = API.getData("absences")
+
                 buildAbsences(absencesXml);
             }
             else
@@ -59,11 +65,11 @@ namespace arelv1.Pages
             foreach (System.Xml.XmlNode absence in doc.FirstChild.ChildNodes)
             {
                 string idSlot = absence.ChildNodes[1].InnerText;
-                string slotInfo = API.getInfo("/api/plannings/slots/" + idSlot); //La seconde childnode contient le slotId
+                string slotInfo = API.getInfo("/api/planning/slots/" + idSlot); //La seconde childnode contient le slotId
                 System.Xml.XmlDocument doc2 = new System.Xml.XmlDocument();
                 doc2.LoadXml(slotInfo);
 
-
+                //TODO: parse absences 
 
             }
 

@@ -52,7 +52,7 @@
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
                     <RadioButton x:Name="AbsencesBouton" GroupName="Group1" Checked="absenceClick" Content="Absences"  Foreground="White" Tag="&#xE1E0;"
-                                 Style="{StaticResource NavRadioButtonStyle}" Visibility="Collapsed"/>
+                                 Style="{StaticResource NavRadioButtonStyle}"/>
 
 
                 </StackPanel>
