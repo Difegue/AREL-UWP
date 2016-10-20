@@ -24,6 +24,9 @@ namespace arelv1.Pages
     {
         private ArelAPI.Connector API = new ArelAPI.Connector();
 
+        //Utilisé pour trier les absences par maatière
+        private Dictionary<string, Module> modules = new Dictionary<string, Module>();
+
         public Absences()
         {
             initPage();
@@ -44,7 +47,7 @@ namespace arelv1.Pages
             }
             else if (API.isset("absences"))
             {
-                string absencesXml = API.getData("absences")
+                string absencesXml = API.getData("absences");
 
                 buildAbsences(absencesXml);
             }
@@ -66,10 +69,55 @@ namespace arelv1.Pages
             {
                 string idSlot = absence.ChildNodes[1].InnerText;
                 string slotInfo = API.getInfo("/api/planning/slots/" + idSlot); //La seconde childnode contient le slotId
-                System.Xml.XmlDocument doc2 = new System.Xml.XmlDocument();
-                doc2.LoadXml(slotInfo);
+                System.Xml.XmlDocument docAbsence = new System.Xml.XmlDocument();
+                docAbsence.LoadXml(slotInfo);
 
-                //TODO: parse absences 
+                /*Structure d'un XML de slot planning :
+                 * 
+                 * <planningSlot id="875795">
+                       <beginDate>2016-10-12 11:30:00</beginDate>
+                       <endDate>2016-10-12 13:00:00</endDate>
+                       <label>LV1-</label>
+                       <lectureType>CT</lectureType>
+                       <relId>206</relId>
+                       <programId>6488</programId>
+                       <siteId>1991</siteId>
+                       <affectations>
+                        (ids des profs/élèves)
+                       </affectations>
+                   </planningSlot>
+                */
+
+                //On chope le rel (la matière) correspondant à ce slot via le RelId
+                string relId = docAbsence.GetElementsByTagName("relId")[0].InnerText;
+                string relInfo = API.getInfo("/api/rels/" + relId);
+                System.Xml.XmlDocument docRel = new System.Xml.XmlDocument();
+                docRel.LoadXml(relInfo);
+
+                string labelMatiere = docRel.GetElementsByTagName("label")[0].InnerText;
+
+                DateTime startDate = new DateTime();
+                DateTime.TryParse(docAbsence.GetElementsByTagName("beginDate")[0].InnerText, out startDate);
+
+                DateTime endDate = new DateTime();
+                DateTime.TryParse(docAbsence.GetElementsByTagName("endDate")[0].InnerText, out endDate);
+
+                Absence a = new Absence(startDate, endDate, labelMatiere);
+
+                //Add absence to rel, create module objet for rel if it doesn't exist.
+                if (modules.ContainsKey(relId))
+                {
+                    modules[relId].absences.Add(a);
+                }
+                else
+                {
+                    Module m = new Module();
+                    m.id = relId;
+                    m.absences = new List<Absence>();
+                    m.absences.Add(a);
+                    m.labelModule = labelMatiere;
+                    modules[relId] = m;
+                }
 
             }
 
@@ -81,4 +129,5 @@ namespace arelv1.Pages
         }
 
     }
+
 }

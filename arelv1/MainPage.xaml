@@ -82,7 +82,7 @@
 
         <!-- zone de texte ou on afiche les erreurs -->
         <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" 
-                   FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
+                   FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" x:Name="result" Foreground="Red" Text="{Binding Valeur}"/>
 
     </StackPanel>
 </Page>

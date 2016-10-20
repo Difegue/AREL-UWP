@@ -117,6 +117,7 @@
     <Compile Include="Pages\Absences.xaml.cs">
       <DependentUpon>Absences.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DataBindingClasses.cs" />
     <Compile Include="Pages\Planning.xaml.cs">
       <DependentUpon>Planning.xaml</DependentUpon>
     </Compile>
