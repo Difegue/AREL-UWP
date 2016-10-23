@@ -24,11 +24,13 @@ namespace arelv1.Pages
     {
         private ArelAPI.Connector API = new ArelAPI.Connector();
 
-        //Utilisé pour trier les absences par maatière
+        //Utilisé pour trier les absences par matière
         private Dictionary<string, Module> modules = new Dictionary<string, Module>();
+        private List<Module> finalListModules;
 
         public Absences()
         {
+            this.InitializeComponent();
             initPage();
         }
 
@@ -44,18 +46,22 @@ namespace arelv1.Pages
                 absencesXml = loader.GetString("AbsencesXmlTest");
 
                 buildAbsences(absencesXml);
+                finalListModules = modules.Values.ToList<Module>();
             }
             else if (API.isset("absences"))
             {
                 string absencesXml = API.getData("absences");
 
                 buildAbsences(absencesXml);
+                finalListModules = modules.Values.ToList<Module>();
             }
             else
             {
-                //semestresPivot.Visibility = Visibility.Collapsed;
+                AbsenceStack.Visibility = Visibility.Collapsed;
                 NoInternetSplash.Visibility = Visibility.Visible;
             }
+
+            UpdateLayout();
         }
 
         private void buildAbsences(string xml)
@@ -119,6 +125,12 @@ namespace arelv1.Pages
                     modules[relId] = m;
                 }
 
+            }
+
+            if (modules.Count == 0)
+            {
+                AbsenceStack.Visibility = Visibility.Collapsed;
+                NoAbsenceSplash.Visibility = Visibility.Visible;
             }
 
         }

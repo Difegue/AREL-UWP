@@ -129,11 +129,7 @@
                 </StackPanel>
 
                 <StackPanel x:Name="NoNoteSplash" Visibility="Collapsed" >
-                    <SymbolIcon Symbol="Preview" RenderTransformOrigin="0.5,0.5" Margin="0,55,0,32">
-                        <SymbolIcon.RenderTransform>
-                            <CompositeTransform ScaleX="3" ScaleY="3"/>
-                        </SymbolIcon.RenderTransform>
-                    </SymbolIcon>
+                    <TextBlock FontSize="50" HorizontalAlignment="Center" Margin="10">😔</TextBlock>
                     <TextBlock FontSize="26" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center">
                     Pas encore de notes cette année !<LineBreak/>Tes souffrances viendront bien assez vite.</TextBlock>
 

@@ -244,7 +244,7 @@ namespace ArelAPI
             {
                 using (StreamWriter writer = new StreamWriter(stream))
                 {
-                    writer.WriteLine(data);
+                    writer.Write(data);
                 }
             }
         }
@@ -258,12 +258,12 @@ namespace ArelAPI
                     {
                         using (StreamReader reader = new StreamReader(stream))
                         {
-                            res = reader.ReadLine();
+                            res = reader.ReadToEnd();
                         }
                     }
                     return res;
                 }
-            return "KEY NOT FOUND";
+            return null;
         }
 
         public bool isset(string key)

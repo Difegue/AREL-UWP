@@ -7,14 +7,47 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel x:Name="AbsencesNotImplemented" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <SymbolIcon Symbol="Flag" RenderTransformOrigin="0.5,0.5" Margin="0,55,0,32">
-            <SymbolIcon.RenderTransform>
-                <CompositeTransform ScaleX="3" ScaleY="3"/>
-            </SymbolIcon.RenderTransform>
-        </SymbolIcon>
-        <TextBlock FontSize="26" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center">
-                    En Construction...</TextBlock>
+    <Page.Resources>
+        <DataTemplate x:Key="absenceView" x:DataType="local:Module">
+            <StackPanel >
+                <Grid Background="{StaticResource SystemControlBackgroundAccentBrush}" Height="30" Width="500" HorizontalAlignment="Left">
+                    <SymbolIcon Symbol="Send" Foreground="White" HorizontalAlignment="Left" Margin="3,0,0,0"/>
+                    <TextBlock Text="{x:Bind labelModule}"  FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" Foreground="White" Margin="30,0,0,0" VerticalAlignment="Center"/>
+                </Grid>
+                
+                <GridView ItemsSource="{x:Bind absences}" IsHitTestVisible="False" Margin="25,0,0,0" >
+                    <GridView.ItemTemplate >
+                        <DataTemplate x:DataType="local:Absence">
+                            <StackPanel Width="150">
+                                <StackPanel Orientation="Horizontal">
+                                    <SymbolIcon Symbol="Page2" VerticalAlignment="Center" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"  >
+                                        <SymbolIcon.RenderTransform>
+                                            <CompositeTransform ScaleX="0.5" ScaleY="0.5"/>
+                                        </SymbolIcon.RenderTransform>
+                                    </SymbolIcon>
+                                    <TextBlock Text="{x:Bind startDate}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{x:Bind endDate}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+                            
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <StackPanel x:Name="AbsencePage" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,30" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
+                        Vos absences de l'année</TextBlock>
+
+        <StackPanel x:Name="AbsenceStack" Visibility="Visible" >
+            <!--Data Binding absences-->
+            <ListView x:Name="absListe"  ItemsSource="{x:Bind finalListModules}" ItemTemplate="{StaticResource absenceView}" IsHitTestVisible="False" Visibility="Visible" />
+
+        </StackPanel>
+        
 
         <StackPanel x:Name="NoInternetSplash" Visibility="Collapsed" >
             <SymbolIcon Symbol="DisconnectDrive" RenderTransformOrigin="0.5,0.5" Margin="0,55,0,32">
@@ -27,7 +60,14 @@
 
             <Button Click="initPage" HorizontalAlignment="Center" Margin="0,10,0,0" >Réessayer ?</Button>
         </StackPanel>
-        
+
+        <StackPanel x:Name="NoAbsenceSplash" Visibility="Collapsed" >
+            <TextBlock FontSize="50" HorizontalAlignment="Center" Margin="10">👌</TextBlock>
+            <TextBlock FontSize="26" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center">
+                    Pas encore d'absences !<LineBreak/>Impressionant...</TextBlock>
+
+        </StackPanel>
+
     </StackPanel>
     
     

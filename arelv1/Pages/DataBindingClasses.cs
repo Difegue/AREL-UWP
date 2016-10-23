@@ -100,6 +100,42 @@ namespace arelv1.Pages
 
     }
 
+    public class Campus
+    {
+        private string id;
+        private string label;
 
+        public Campus(string id, string label)
+        {
+            this.id = id;
+            this.label = label;
+        }
+
+        public override string ToString()
+        { return label; }
+
+        public string getId()
+        { return id; }
+    }
+
+
+    public class Salle
+    {
+        public string nom;
+        public string desc;
+        public bool dispo;
+        public string tbl;
+        public string cap;
+
+        public Salle(string n, string d, bool di, string t, string c)
+        {
+            nom = n;
+            desc = d;
+            dispo = di;
+            tbl = t;
+            cap = c;
+        }
+
+    }
 
 }

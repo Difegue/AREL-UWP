@@ -32,8 +32,41 @@ namespace arelv1.Pages
         {
             this.InitializeComponent();
 
+            //Vérifier si des campuses sont enregistrés : si oui, on itère dessus et on wipe les salles enregistrées
+            if (API.isset("campuses"))
+            {
+                string campusXML = API.getData("campuses");
+                System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+                doc.LoadXml(campusXML);//chargement de la variable
+
+                foreach (System.Xml.XmlNode site in doc.FirstChild.ChildNodes)
+                {
+                    API.saveData("salles" + site.Attributes[0].Value, "");
+                }
+            }
+
             getSalles(null,null);
 
+        }
+
+        private void searchSalle(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            //Refresh salleList
+            writeSalle(sender, null);
+
+            //Get the string searched by the user
+            string search = salleSearchBox.Text;
+
+            //Filter salleList and return the result as the databinding
+            List<Salle> searchResult = salleList.Where(item => item.nom.StartsWith(search)).ToList();
+            salleList.Clear();
+            
+            foreach (Salle s in searchResult)
+            {
+                salleList.Add(s);
+            }
+
+            UpdateLayout();
         }
 
         private void getSalles(object sender, RoutedEventArgs e)
@@ -79,6 +112,7 @@ namespace arelv1.Pages
                 API.renewAccessToken();
                 salleGrid.Visibility = Visibility.Collapsed;
                 NoInternetSplash.Visibility = Visibility.Visible;
+                UpdateLayout();
             }
         }
 
@@ -91,8 +125,18 @@ namespace arelv1.Pages
             Campus c = (Campus)campusSelection.SelectedItem;
 
             API.saveData("favCampus", c.getId());
-            //On récupère les salles du campus sélectionné
-            String xmlSalles = API.getInfo("api/campus/rooms?siteId="+c.getId());
+
+            //On récupère les salles du campus sélectionné -- On regarde d'abord si il y a un cache pour la session en cours, sinon on récupère de l'API.
+
+            String xmlSalles = API.getData("salles" + c.getId());
+
+            if( xmlSalles == null || xmlSalles == "" || xmlSalles == "\r\n")
+            {
+                xmlSalles = API.getInfo("api/campus/rooms?siteId=" + c.getId());
+
+                //On sauvegarde les salles pour que la recherche ne retape pas dans l'API à chaque fois
+                API.saveData("salles" + c.getId(), xmlSalles);
+            }
 
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
             doc.LoadXml(xmlSalles);//chargement de la variable
@@ -122,55 +166,18 @@ namespace arelv1.Pages
                 string tbl = room.ChildNodes[3].InnerText;
                 string cap = room.ChildNodes[2].InnerText;
 
-                if (nom !="???" && nom!="DAUPHINE" && nom!="ENSEA" && nom!="GEM") 
+                if (nom !="???") 
                     salleList.Add(new Salle(nom, desc, bookable, tbl, cap));
 
             }
 
         }
-    }
-
-    //Mini classe pour faciliter la sélection de campus dans la combobox
-    public class Campus
-    {
-        private string id;
-        private string label;
-
-        public Campus(string id, string label)
-        {
-            this.id = id;
-            this.label = label;
-        }
-
-        public override string ToString()
-        { return label; }
-
-        public string getId()
-        { return id; }
-    }
-
-    //Idem pour les salles
-    public class Salle
-    {
-        public string nom;
-        public string desc;
-        public bool dispo;
-        public string tbl;
-        public string cap;
-
-        public Salle(string n, string d, bool di, string t, string c)
-        {
-            nom = n;
-            desc = d;
-            dispo = di;
-            tbl = t;
-            cap = c;
-        }
 
     }
+
 
     //Convertisseur à utiliser en XAML pour obtenir couleur et type d'icône à partir du boolean dispo de la classe Salle.
-    public class DispoToIcon: IValueConverter
+    public class DispoToIcon : IValueConverter
     {
         // Define the Convert method to convert the boolean to a Symbol or a color string, depending on the type required.
         public object Convert(object value, Type targetType,
@@ -203,7 +210,6 @@ namespace arelv1.Pages
             throw new NotImplementedException();
         }
     }
-
 
 
 }
