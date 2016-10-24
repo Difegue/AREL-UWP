@@ -22,11 +22,19 @@ namespace arelv1.Pages
         public DateTime endDate;
         public String labelMatiere;
 
+        public String day;
+        public String endHour;
+        public String startHour;
+
+
         public Absence(DateTime startDate, DateTime endDate, string labelMatiere)
         {
             this.startDate = startDate;
             this.endDate = endDate;
             this.labelMatiere = labelMatiere;
+            day = startDate.ToString("d");
+            startHour = startDate.ToString("t");
+            endHour = endDate.ToString("t");
         }
     }
 

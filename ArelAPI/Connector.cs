@@ -277,19 +277,6 @@ namespace ArelAPI
             IsolatedStorageFile.GetUserStoreForApplication().Dispose();
         }
 
-        async void saveDataAsync(string key,string data)//ecriture asynchrone
-        {
-            StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(key, CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(file, data);
-        }
-
-        async void getDataAsync(string key) //lecture asynchrone
-        {
-            StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(key);
-            resultat = await FileIO.ReadTextAsync(file);
-        }
-
-
         //--------------------------------requete http-------------------------------------
 
         

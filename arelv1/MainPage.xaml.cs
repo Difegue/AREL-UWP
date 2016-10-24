@@ -183,6 +183,7 @@ namespace arelv1
             {
                ecrire("Erreur API lors de la reconnexion: " + API.getData("erreurRefresh"));
                 API.saveData("erreurRefresh", "");
+                API.clearData(); //On wipe les données vu qu'on est arrivé sur un écran de connexion
             }
                
             if (localSettings.Values.ContainsKey("stayConnect"))

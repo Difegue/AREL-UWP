@@ -19,14 +19,25 @@
                     <GridView.ItemTemplate >
                         <DataTemplate x:DataType="local:Absence">
                             <StackPanel Width="150">
-                                <StackPanel Orientation="Horizontal">
-                                    <SymbolIcon Symbol="Page2" VerticalAlignment="Center" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"  >
-                                        <SymbolIcon.RenderTransform>
-                                            <CompositeTransform ScaleX="0.5" ScaleY="0.5"/>
-                                        </SymbolIcon.RenderTransform>
-                                    </SymbolIcon>
-                                    <TextBlock Text="{x:Bind startDate}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{x:Bind endDate}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                                    
+                                    <StackPanel Orientation="Horizontal">
+                                        <SymbolIcon Symbol="Tag" VerticalAlignment="Center" Margin="0,0,0,0" RenderTransformOrigin="0.5,0.5"  >
+                                            <SymbolIcon.RenderTransform>
+                                                <CompositeTransform ScaleX="0.8" ScaleY="0.8"/>
+                                            </SymbolIcon.RenderTransform>
+                                        </SymbolIcon>
+
+                                        <TextBlock Text="{x:Bind day}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="De " FontSize="12" FontWeight="Bold" Margin="0,0,5,0"/>
+                                        <TextBlock Text="{x:Bind startHour}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                        <TextBlock Text=" à " FontSize="12" FontWeight="Bold" Margin="3,0,5,0"/>
+                                        <TextBlock Text="{x:Bind endHour}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
@@ -39,8 +50,10 @@
 
     <StackPanel x:Name="AbsencePage" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-        <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,30" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
+        <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,10" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
                         Vos absences de l'année</TextBlock>
+
+        <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,20">Toutes vos absences durant l'année. <LineBreak/>L'API ne permet pas de différencier entre les absences justifiées/non justifiées, mais est-ce vraiment important ?</TextBlock>
 
         <StackPanel x:Name="AbsenceStack" Visibility="Visible" >
             <!--Data Binding absences-->

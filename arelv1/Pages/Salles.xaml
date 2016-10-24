@@ -20,11 +20,11 @@
                     <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,0" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
                         Disponibilité des Salles</TextBlock>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                        <ComboBox x:Name="campusSelection"  Height="40" Width="125"  Margin="0,7,20,0"
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,7,20,20">
+                        <ComboBox x:Name="campusSelection"  Height="35" Width="125" 
                          ItemsSource="{x:Bind campusList}" SelectionChanged="writeSalle" SelectedItem="{x:Bind SelectedComboBoxOption}" HorizontalAlignment="Right" />
 
-                        <AutoSuggestBox x:Name="salleSearchBox" Height="40" Width="200" HorizontalAlignment="Right" Margin="0,7,20,0" TextChanged="searchSalle">
+                        <AutoSuggestBox x:Name="salleSearchBox" Height="35" Width="200" HorizontalAlignment="Right" Margin="20,0,0,0" TextChanged="searchSalle" PlaceholderText="Rechercher une salle" >
                             <AutoSuggestBox.QueryIcon>
                                 <SymbolIcon Symbol="Find"/>
                             </AutoSuggestBox.QueryIcon>
