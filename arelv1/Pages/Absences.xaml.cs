@@ -39,18 +39,18 @@ namespace arelv1.Pages
             if (API.isOnline())
             {
                 string absencesXml = API.getInfo("/api/me/absences");
-                API.saveData("absences", absencesXml);
+                ArelAPI.DataStorage.saveData("absences", absencesXml);
 
                 //test string from resources.resw
-                Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader();
-                absencesXml = loader.GetString("AbsencesXmlTest");
+                //Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+                //absencesXml = loader.GetString("AbsencesXmlTest");
 
                 buildAbsences(absencesXml);
                 finalListModules = modules.Values.ToList<Module>();
             }
-            else if (API.isset("absences"))
+            else if (ArelAPI.DataStorage.isset("absences"))
             {
-                string absencesXml = API.getData("absences");
+                string absencesXml = ArelAPI.DataStorage.getData("absences");
 
                 buildAbsences(absencesXml);
                 finalListModules = modules.Values.ToList<Module>();

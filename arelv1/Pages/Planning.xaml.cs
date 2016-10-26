@@ -24,38 +24,20 @@ namespace arelv1.Pages
         //Temps enregistré pour l'affichage du planning
         private DateTime now = DateTime.Now;
         private ArelAPI.Connector API = new ArelAPI.Connector();
-        private bool taskRegistered = false;
-        private bool firstLaunch = false;
-        private string taskName;
+       
 
         public Planning()
         {
             this.InitializeComponent();
 
-            dateJour.Text = "Nous sommes le " + getDayStr(now, 0);
+            dateJour.Text = getDayStr(now, 0);
 
             if (API.isOnline())
                 updatePlanning(0); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
 
             DrawPlanning();
-            writePlanning(API.getData("planning"));
+            writePlanning(ArelAPI.DataStorage.getData("planning"));
             UpdateLayout();
-
-            //Etat de la tâche de synch du planning pour cet utilisateur
-            taskName = "ARELSyncPlanningTask";
-            
-            foreach (var task in BackgroundTaskRegistration.AllTasks)
-            {
-                if (task.Value.Name == taskName)
-                {
-                    taskRegistered = true;
-                    firstLaunch = true; //Pour permettre au premier appel de toggled - qui vient dès le démarrage de l'appli vu qu'on met isOn = true si y'a déjà un background event - de passer sans désactiver le call et foutre le bordel, on met ce bool en vérif
-                    break;
-                }
-            }
-
-            API.saveData("backgroundTask", taskRegistered.ToString());
-            BackgroundSyncSwitch.IsOn = taskRegistered;
 
         }
 
@@ -79,59 +61,6 @@ namespace arelv1.Pages
         }
 
 
-
-        private async void ManualSync(object sender, RoutedEventArgs e)
-        {
-            //On montre un spinner pour l'amusement
-            SpinnerSync.IsActive = true;
-
-            //update manuelle: On chope les cours des 2 dernières + des 2 prochaines semaines
-            API.updateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.getUserFullName(API.getData("user"),"Mon Planning AREL"));
-
-            //On montre le calendrier
-            await Windows.ApplicationModel.Appointments.AppointmentManager.ShowTimeFrameAsync(DateTime.Now, new TimeSpan(125, 0, 0));
-            SpinnerSync.IsActive = false;
-        }
-
-        private void AutoSync(object sender, RoutedEventArgs e)
-        {
-            if (firstLaunch)
-                firstLaunch = false;
-            else
-                if (taskRegistered)
-                {
-                    API.saveData("backgroundTask", "false");
-                    taskRegistered = false;
-                }
-                else
-                {
-                    //On vétifie si la tâche n'est pas déjà enregistrée
-                    foreach (var task in BackgroundTaskRegistration.AllTasks)
-                    {
-                        if (task.Value.Name == taskName)
-                        {
-                            taskRegistered = true;
-                            return;
-                        }
-                    }
-
-                    var builder = new BackgroundTaskBuilder();
-                    TimeTrigger hourlyTrigger = new TimeTrigger(120, false); //On rafraîchit le planning toutes les 2 heures.
-
-                    builder.Name = taskName;
-                    builder.TaskEntryPoint = "SyncTask.ARELPlanningBackgroundTask";
-                    builder.SetTrigger(hourlyTrigger);
-                    builder.AddCondition(new SystemCondition(SystemConditionType.InternetAvailable));
-
-                    builder.Register();
-                    API.saveData("backgroundTask", "true");
-                    taskRegistered = true;
-
-                    ManualSync(sender,e);
-                }
-        }
-
-
         /*
          * Les fonctions ci-dessous concernent le dessin de l'EDT sur le panel de gauche, c'est un peu legacy
          */
@@ -140,7 +69,7 @@ namespace arelv1.Pages
         {
             now = now.AddDays(daysExtra);
 
-            API.saveData("planning", API.getInfo("api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd")));
+            ArelAPI.DataStorage.saveData("planning", API.getInfo("api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd")));
         }
 
         private void ajoutCours(string prof, string heureDebut, string heureFin, string matière, string couleur, DateTime premierJour, string salle)
@@ -167,17 +96,20 @@ namespace arelv1.Pages
                 matBlock.Text = matière;
                 matBlock.FontSize = 13;
                 matBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                matBlock.Foreground = new SolidColorBrush(Colors.Black);
+                
 
                 TextBlock profBlock = new TextBlock();
                 profBlock.Text = prof;
                 profBlock.FontSize = 13;
                 profBlock.HorizontalAlignment = HorizontalAlignment.Center;
+                profBlock.Foreground = new SolidColorBrush(Colors.Black);
 
                 TextBlock salleBlock = new TextBlock();
                 salleBlock.Text = salle;
                 salleBlock.FontSize = 13;
                 salleBlock.HorizontalAlignment = HorizontalAlignment.Center;
-
+                salleBlock.Foreground = new SolidColorBrush(Colors.Black);
 
                 for (int i = ligneDeb; i <= ligneFin; i++)
                 {

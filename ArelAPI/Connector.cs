@@ -40,7 +40,7 @@ namespace ArelAPI
             }
             else
             {            
-                saveData("erreurLogin", resultat);
+                DataStorage.saveData("erreurLogin", resultat);
                 return false;
             }
         }
@@ -66,7 +66,7 @@ namespace ArelAPI
             }
             else
             {
-                saveData("erreurRefresh", resultat);
+                DataStorage.saveData("erreurRefresh", resultat);
                 return false;
             }
 
@@ -164,7 +164,14 @@ namespace ArelAPI
             string planningXML = getInfo(apiUrl);
 
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(planningXML);//chargement de la variable
+            try
+            { 
+                doc.LoadXml(planningXML); //chargement de la variable
+            }
+            catch (Exception)
+            {
+                return; //Pas très catholique tout ça
+            }
             //On a le XML, on ouvre le calendrier custom
 
             // 1. get access to appointmentstore 
@@ -234,47 +241,6 @@ namespace ArelAPI
             }
             catch (Exception) //On renvoie le string de fallback si le parsing échoue
                 { return fallback; }
-        }
-
-        //--------------------enregistrer dans un fichier... -----------------------------------------
-
-        public void saveData(string key, string data)//ecriture normale
-        {
-            using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(key, FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication()))
-            {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    writer.Write(data);
-                }
-            }
-        }
-
-        public string getData(string key)
-        {
-            string res;
-            if (isset(key))
-                { 
-                    using (IsolatedStorageFileStream stream = new IsolatedStorageFileStream(key, FileMode.Open, IsolatedStorageFile.GetUserStoreForApplication()))
-                    {
-                        using (StreamReader reader = new StreamReader(stream))
-                        {
-                            res = reader.ReadToEnd();
-                        }
-                    }
-                    return res;
-                }
-            return null;
-        }
-
-        public bool isset(string key)
-        {
-            IsolatedStorageFile racine = IsolatedStorageFile.GetUserStoreForApplication();
-            return racine.FileExists(key);      
-        }
-
-        public void clearData()
-        {
-            IsolatedStorageFile.GetUserStoreForApplication().Dispose();
         }
 
         //--------------------------------requete http-------------------------------------

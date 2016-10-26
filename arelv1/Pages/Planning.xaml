@@ -16,8 +16,8 @@
                         <AdaptiveTrigger MinWindowWidth="620" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="MainGrid.ColumnDefinitions[0].MaxWidth" Value="600"/>
-                        <Setter Target="MainGrid.ColumnDefinitions[1].MaxWidth" Value="345"/>
+                        <Setter Target="MainGrid.ColumnDefinitions[0].MaxWidth" Value="400"/>
+                        <Setter Target="MainGrid.ColumnDefinitions[1].MaxWidth" Value="400"/>
                         <Setter Target="c1.Width" Value="260"/>
                         <Setter Target="FirstGrid.Margin" Value="0,0,10,0"/>
                         <Setter Target="SecondGrid.(Grid.Column)" Value="1"/>
@@ -43,119 +43,164 @@
         </VisualStateManager.VisualStateGroups>
         <Grid BorderThickness="0" BorderBrush="Black" x:Name="MainGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
 
-            <Grid.ColumnDefinitions >
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition MaxHeight="60"/>
-                <RowDefinition MinHeight="680" Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition MaxHeight="60" Height="60*"/>
+                <RowDefinition MinHeight="680" Height="236*"/>
+                <RowDefinition Height="481*"/>
+                <RowDefinition Height="303*"/>
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
                             Margin="10,5,0,10" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
         	    👌👺👉 Emploi du Temps AREL
             </TextBlock>
-        
-        
-            <StackPanel Grid.Row="1" Grid.Column="0" x:Name="FirstGrid">
-            <Grid>
-                    <SymbolIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
-                    <SymbolIcon.RenderTransform>
-                        <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
-                    </SymbolIcon.RenderTransform>
-                </SymbolIcon>
-                <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}">
-        	    <Run Text="Calendrier Windows 10"/>
-                </TextBlock>
-            </Grid>
 
-            <TextBlock Margin="20,15,0,0" FontSize="15" TextWrapping="Wrap">Vous pouvez utiliser cette application pour synchroniser votre Calendrier Windows 10 avec votre planning AREL.<LineBreak/>
-                        La synchronisation peut être effectuée automatiquement ou manuellement.</TextBlock>
 
-            <Grid>
-                <Button Margin="20,15,0,0" x:Name="SyncNow" Click="ManualSync">Synchroniser</Button>
-                <ProgressRing x:Name="SpinnerSync" Margin="130,15,0,0" HorizontalAlignment="Left"/>
-            </Grid>
-            <ToggleSwitch Margin="20,15,0,0" x:Name="BackgroundSyncSwitch" Header="Synchro. automatique" Toggled="AutoSync" />
-
-            <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Une première synchronisation sera effectuée à l'activation de la synchro automatique.
-                        <LineBreak/>L'application Calendrier s'ouvrira automatiquement lorsqu'elle sera terminée.</TextBlock>
-        </StackPanel>
-
-            <StackPanel x:Name="SecondGrid">
-            <Grid>
-                    <SymbolIcon Symbol="CalendarDay" HorizontalAlignment="Left" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
-                    <SymbolIcon.RenderTransform>
-                        <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
-                    </SymbolIcon.RenderTransform>
-                </SymbolIcon>
+            <StackPanel Grid.Row="1" Grid.Column="0" x:Name="FirstGrid" Grid.RowSpan="2">
+                <Grid>
+                    <FontIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Glyph="&#xE184;" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                        <FontIcon.RenderTransform>
+                            <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
                     <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
         	    <Run Text="Vos cours de la journée"/>
-                </TextBlock>
-            </Grid>
+                    </TextBlock>
+                </Grid>
 
-            <Grid x:Name="grid"  Margin="0,0,10,10" BorderThickness="2,0" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="25"/>
-                    <ColumnDefinition x:Name="c1"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
+                <Grid x:Name="grid"  Margin="0,0,10,10" BorderThickness="2,0" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition x:Name="c1"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
 
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
 
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
 
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
 
-                    <RowDefinition Height="15" />
-                    <RowDefinition Height="30" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="30" />
 
-                </Grid.RowDefinitions>
-            </Grid>
-        </StackPanel>
-  
+                    </Grid.RowDefinitions>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel x:Name="SecondGrid" Grid.RowSpan="2">
+                <Grid>
+                    <FontIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Glyph="&#xE787;" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                        <FontIcon.RenderTransform>
+                            <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                        </FontIcon.RenderTransform>
+                    </FontIcon>
+                    <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+        	    <Run Text="Vos cours de demain !"/>
+                    </TextBlock>
+                </Grid>
+
+                <Grid x:Name="grid2"  Margin="0,0,10,10" BorderThickness="2,0" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition x:Name="c2"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="30" />
+
+                    </Grid.RowDefinitions>
+                </Grid>
+            </StackPanel>
+
         </Grid>
     </ScrollViewer>
 </Page>

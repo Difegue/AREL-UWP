@@ -31,17 +31,17 @@ namespace arelv1
             if(API.isOnline())
             {
                 //màj des données de l'utilisateur
-                API.saveData("user", API.getInfo("api/me"));
+                ArelAPI.DataStorage.saveData("user", API.getInfo("api/me"));
             }
 
             //Setting thème
-            if (API.getData("themePref") == "Dark")
+            if (ArelAPI.DataStorage.getData("themePref") == "Dark")
                 hamburger.RequestedTheme = ElementTheme.Dark;
             else
                 hamburger.RequestedTheme = ElementTheme.Light;
 
             //Récup du nom de l'utilisateur pour affichage
-            string userName = API.getUserFullName(API.getData("user"), "Utilisateur d'AREL");
+            string userName = API.getUserFullName(ArelAPI.DataStorage.getData("user"), "Utilisateur d'AREL");
             nomUser.Text = userName;
 
             AgendaBouton.IsChecked = true; //Petit trick pour commencer sur l'EDT de base
@@ -92,10 +92,10 @@ namespace arelv1
             UpdateLayout();
         }
 
-        private void aboutClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void settingsClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             hamburger.IsPaneOpen = false;
-            hamburgerContent.Navigate(typeof(Pages.About));
+            hamburgerContent.Navigate(typeof(Pages.Settings));
             UpdateLayout();
         }
 
@@ -118,16 +118,10 @@ namespace arelv1
                 localSettings.Values["token"] = null;
                 localSettings.Values["refresh"] = null;
                 localSettings.Values["stayConnect"] = null;
-                API.clearData();
+                ArelAPI.DataStorage.clearData();
                 Frame.Navigate(typeof(MainPage));
             }
         }
 
-        private void changeTheme(object sender, RoutedEventArgs e)
-        {
-            hamburger.RequestedTheme = hamburger.RequestedTheme == ElementTheme.Dark ? ElementTheme.Light : ElementTheme.Dark;
-            API.saveData("themePref", hamburger.RequestedTheme.ToString());
-            ThemeBouton.IsChecked = false;
-        }
     }
 }

@@ -39,12 +39,12 @@ namespace arelv1.Pages
             if (API.isOnline())
             {
                 string notesXml = API.getInfo("/api/me/marks");
-                API.saveData("notes", notesXml);
+                ArelAPI.DataStorage.saveData("notes", notesXml);
                 buildNotes(notesXml);
             }
-            else if (API.isset("notes"))
+            else if (ArelAPI.DataStorage.isset("notes"))
             {
-                string notesXml = API.getData("notes");
+                string notesXml = ArelAPI.DataStorage.getData("notes");
                 buildNotes(notesXml);
             }
             else

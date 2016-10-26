@@ -1,0 +1,108 @@
+﻿<Page
+    x:Class="arelv1.Pages.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:arelv1.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer x:Name="SettingsView" Visibility="Visible" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <StackPanel>
+
+            <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
+        		    Margin="10,5,0,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
+        		  Paramètres
+            </TextBlock>
+
+          
+                <StackPanel>
+                    <Grid>
+                        <SymbolIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                            <SymbolIcon.RenderTransform>
+                                <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                            </SymbolIcon.RenderTransform>
+                        </SymbolIcon>
+                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
+                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}">
+        	    <Run Text="Synchronisation Calendrier"/>
+                        </TextBlock>
+                    </Grid>
+
+                    <TextBlock Margin="20,15,0,0" FontSize="15" TextWrapping="Wrap">Vous pouvez utiliser cette application pour synchroniser votre Calendrier Windows 10 avec votre planning AREL.<LineBreak/>La synchronisation peut être effectuée automatiquement ou manuellement.</TextBlock>
+
+                    <Grid>
+                        <Button Margin="20,15,0,0" x:Name="SyncNow" Click="ManualSync">Synchroniser</Button>
+                        <ProgressRing x:Name="SpinnerSync" Margin="130,15,0,0" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <ToggleSwitch Margin="20,15,0,0" x:Name="BackgroundSyncSwitch" Header="Synchro. automatique" Toggled="AutoSync" />
+
+                    <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Une première synchronisation sera effectuée à l'activation de la synchro automatique.
+<LineBreak/>L'application Calendrier s'ouvrira automatiquement lorsqu'elle sera terminée.</TextBlock>
+
+                </StackPanel>
+
+
+
+                <StackPanel Margin="0,30,0,0">
+                    <Grid>
+                        <FontIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Glyph="&#xE2B1;" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                            <FontIcon.RenderTransform>
+                                <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                            </FontIcon.RenderTransform>
+                        </FontIcon>
+
+
+                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
+                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}">
+        	    <Run Text="Thème de l'application"/>
+                        </TextBlock>
+                    </Grid>
+
+                    <ToggleSwitch Margin="20,15,0,0" x:Name="ThemeSwitch" Header="Activer le thème sombre" Toggled="changeTheme" />
+
+                <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Les changements de thème seront appliqués au prochain démarrage de l'appli.</TextBlock>
+
+            </StackPanel>
+
+                <StackPanel Margin="0,30,0,0">
+                    <Grid>
+                        <FontIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Glyph="&#xEC24;" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                            <FontIcon.RenderTransform>
+                                <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
+                            </FontIcon.RenderTransform>
+                        </FontIcon>
+
+
+                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
+                                        Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}">
+        	            AREL Windows 10
+                    </TextBlock>
+                        
+                        
+                    </Grid>
+
+                <TextBlock Margin="20,10,0,0" >Version 0.8</TextBlock>
+                <TextBlock  Margin="20,-10,0,0" FontSize="12" TextWrapping="Wrap" >
+                    
+                    <LineBreak/><LineBreak/>
+                   <Hyperlink NavigateUri="http://eisti.fr">
+                   Site Web de l'EISTI
+                   </Hyperlink> <LineBreak/>
+                   <Hyperlink NavigateUri="http://gitlab.etude.eisti.fr/alvesduart/w10-Arel">
+                       Code Source de l'application sur le Gitlab de l'EISTI
+                   </Hyperlink> 
+                   <LineBreak/>Un fat merci à Tom Darboux le palois pour avoir commencé l'appli sisi rpz 
+                   <LineBreak/>
+                </TextBlock>
+
+                <Button Margin="20,0,0,0" Click="aboutClick">License</Button>
+
+                </StackPanel>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
+</Page>

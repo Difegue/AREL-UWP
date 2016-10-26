@@ -162,7 +162,7 @@ namespace arelv1
             else
             {
                 //L'objet API logge l'erreur de connexion si il en arrive une.
-                ecrire("Erreur de connexion: " + API.getData("erreurLogin"));
+                ecrire("Erreur de connexion: " + ArelAPI.DataStorage.getData("erreurLogin"));
                 loginProgress.IsActive = false;
                 await Task.Delay(500);
             }  
@@ -174,16 +174,16 @@ namespace arelv1
             InitializeComponent(); //demarage de l'interface   
             stayConnect = false;
 
-            if (API.getData("themePref") == "Dark")
+            if (ArelAPI.DataStorage.getData("themePref") == "Dark")
                 loginPage.RequestedTheme = ElementTheme.Dark;
             else
                 loginPage.RequestedTheme = ElementTheme.Light;
 
-            if (API.isset("erreurRefresh") && API.getData("erreurRefresh")!="") //Si le refresh token a échoué, on indique pourquoi l'utilisateur n'est plus connecté en lui redemandant son login
+            if (ArelAPI.DataStorage.isset("erreurRefresh") && ArelAPI.DataStorage.getData("erreurRefresh")!="") //Si le refresh token a échoué, on indique pourquoi l'utilisateur n'est plus connecté en lui redemandant son login
             {
-               ecrire("Erreur API lors de la reconnexion: " + API.getData("erreurRefresh"));
-                API.saveData("erreurRefresh", "");
-                API.clearData(); //On wipe les données vu qu'on est arrivé sur un écran de connexion
+               ecrire("Erreur API lors de la reconnexion: " + ArelAPI.DataStorage.getData("erreurRefresh"));
+                ArelAPI.DataStorage.saveData("erreurRefresh", "");
+                ArelAPI.DataStorage.clearData(); //On wipe les données vu qu'on est arrivé sur un écran de connexion
             }
                
             if (localSettings.Values.ContainsKey("stayConnect"))

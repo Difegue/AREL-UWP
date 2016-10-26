@@ -33,15 +33,15 @@ namespace arelv1.Pages
             this.InitializeComponent();
 
             //Vérifier si des campuses sont enregistrés : si oui, on itère dessus et on wipe les salles enregistrées
-            if (API.isset("campuses"))
+            if (ArelAPI.DataStorage.isset("campuses"))
             {
-                string campusXML = API.getData("campuses");
+                string campusXML = ArelAPI.DataStorage.getData("campuses");
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
                 doc.LoadXml(campusXML);//chargement de la variable
 
                 foreach (System.Xml.XmlNode site in doc.FirstChild.ChildNodes)
                 {
-                    API.saveData("salles" + site.Attributes[0].Value, "");
+                    ArelAPI.DataStorage.saveData("salles" + site.Attributes[0].Value, "");
                 }
             }
 
@@ -80,7 +80,7 @@ namespace arelv1.Pages
                 NoInternetSplash.Visibility = Visibility.Collapsed;
 
                 campusXML = API.getInfo("api/campus/sites");
-                API.saveData("campuses", campusXML);
+                ArelAPI.DataStorage.saveData("campuses", campusXML);
 
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
                 doc.LoadXml(campusXML);//chargement de la variable
@@ -93,9 +93,9 @@ namespace arelv1.Pages
 
                 //On met le premier campus de la liste en valeur par défaut, sauf si l'utilisateur a une préférence
                 SelectedComboBoxOption = null;
-                if (API.isset("favCampus"))
+                if (ArelAPI.DataStorage.isset("favCampus"))
                 {
-                    string idFav = API.getData("favCampus");
+                    string idFav = ArelAPI.DataStorage.getData("favCampus");
                     foreach (Campus c in campusList)
                         if (c.getId() == idFav)
                             SelectedComboBoxOption = c;
@@ -124,18 +124,18 @@ namespace arelv1.Pages
             //On récupère le campus sélectionné et on le sauvegarde en tant que pref. de l'utilisateur
             Campus c = (Campus)campusSelection.SelectedItem;
 
-            API.saveData("favCampus", c.getId());
+            ArelAPI.DataStorage.saveData("favCampus", c.getId());
 
             //On récupère les salles du campus sélectionné -- On regarde d'abord si il y a un cache pour la session en cours, sinon on récupère de l'API.
 
-            String xmlSalles = API.getData("salles" + c.getId());
+            String xmlSalles = ArelAPI.DataStorage.getData("salles" + c.getId());
 
             if( xmlSalles == null || xmlSalles == "" || xmlSalles == "\r\n")
             {
                 xmlSalles = API.getInfo("api/campus/rooms?siteId=" + c.getId());
 
                 //On sauvegarde les salles pour que la recherche ne retape pas dans l'API à chaque fois
-                API.saveData("salles" + c.getId(), xmlSalles);
+                ArelAPI.DataStorage.saveData("salles" + c.getId(), xmlSalles);
             }
 
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
