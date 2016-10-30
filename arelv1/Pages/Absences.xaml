@@ -53,9 +53,9 @@
         <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,10" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
                         Vos absences de l'année</TextBlock>
 
-        <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,20">Toutes vos absences durant l'année. <LineBreak/>L'API ne permet pas de différencier entre les absences justifiées/non justifiées, mais est-ce vraiment important ?</TextBlock>
+        <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,0">Toutes vos absences durant l'année. <LineBreak/>L'API ne permet pas de différencier entre les absences justifiées/non justifiées, mais est-ce vraiment important ?</TextBlock>
 
-        <ScrollViewer x:Name="AbsenceStack" Visibility="Visible" >
+        <ScrollViewer x:Name="AbsenceStack" Visibility="Visible" Margin="20,0,0,0">
             <!--Data Binding absences-->
             <ListView x:Name="absListe"  ItemsSource="{x:Bind finalListModules}" ItemTemplate="{StaticResource absenceView}" IsHitTestVisible="False" Visibility="Visible" />
 

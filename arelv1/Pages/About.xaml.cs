@@ -28,6 +28,11 @@ namespace arelv1.Pages
         {
             this.InitializeComponent();
 
+            if (ArelAPI.DataStorage.getData("themePref") == "Dark")
+                AboutView.RequestedTheme = ElementTheme.Dark;
+            else
+                AboutView.RequestedTheme = ElementTheme.Light;
+
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 0, 0, 30);

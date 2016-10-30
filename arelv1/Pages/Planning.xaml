@@ -70,7 +70,7 @@
                         </FontIcon.RenderTransform>
                     </FontIcon>
                     <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    <Run Text="Vos cours de la journée"/>
+        	    <Run Text="Les cours de la journée"/>
                     </TextBlock>
                 </Grid>
 
@@ -140,7 +140,7 @@
                         </FontIcon.RenderTransform>
                     </FontIcon>
                     <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    <Run Text="Vos cours de demain !"/>
+        	    <Run Text="Les cours de demain !"/>
                     </TextBlock>
                 </Grid>
 

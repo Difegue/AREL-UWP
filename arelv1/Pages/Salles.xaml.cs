@@ -79,7 +79,7 @@ namespace arelv1.Pages
                 salleGrid.Visibility = Visibility.Visible;
                 NoInternetSplash.Visibility = Visibility.Collapsed;
 
-                campusXML = API.getInfo("api/campus/sites");
+                campusXML = API.getInfo("/api/campus/sites");
                 ArelAPI.DataStorage.saveData("campuses", campusXML);
 
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
@@ -132,7 +132,7 @@ namespace arelv1.Pages
 
             if( xmlSalles == null || xmlSalles == "" || xmlSalles == "\r\n")
             {
-                xmlSalles = API.getInfo("api/campus/rooms?siteId=" + c.getId());
+                xmlSalles = API.getInfo("/api/campus/rooms?siteId=" + c.getId());
 
                 //On sauvegarde les salles pour que la recherche ne retape pas dans l'API à chaque fois
                 ArelAPI.DataStorage.saveData("salles" + c.getId(), xmlSalles);

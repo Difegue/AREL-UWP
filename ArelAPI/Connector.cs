@@ -86,8 +86,15 @@ namespace ArelAPI
             return res;
         }
 
+        //Récupère les données d'un endpoint API AREL spécifié. Renvoie des données de test si le test mode est actif.
         public string getInfo(string url)
         {
+            if (DataStorage.isTestModeEnabled())
+            {
+                return getTestData(url);
+            }
+            else
+            { 
             url = "https://arel.eisti.fr/" + url;
             string contentType = "application/xml";
             string identifiants = localSettings.Values["token"].ToString();
@@ -95,6 +102,32 @@ namespace ArelAPI
 
             string resultat = http(url, contentType, identifiants, "Bearer", data, "GET");//on fait la requete
             return resultat;
+            }
+        }
+
+        //Renvoie différentes données de test selon l'endpoint spécifié.
+        private String getTestData(String url)
+        {
+            //Les strings sont obtenus de TestData.resw
+            Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+
+            switch (url)
+            {
+                case "/api/me":
+                    return loader.GetString("userXmlTest");
+                case "/api/me/absences":
+                    return loader.GetString("absencesXmlTest");
+                case "/api/campus/sites":
+                    return loader.GetString("campusXmlTest");
+                case "/api/campus/rooms?siteId=1991": //test data dispo pour cergy seulement parce que flemme
+                    return loader.GetString("sallesXmlTest");
+                case "/api/planning/slots?start=&end=":
+                    return loader.GetString("planningXmlTest");
+                case "/api/me/marks":
+                    return loader.GetString("notesXmlTest");
+                default:
+                    return "<NoTestDataAvailable/>";
+            }
         }
 
         //Récupère l'ID de l'utlisateur avec le XML de getUserInfo.
@@ -140,6 +173,10 @@ namespace ArelAPI
         //Check if our connection to the Arel API is still in good standing (token hasn't expired or website isn't down)
         public bool isOnline()
         {
+
+            if (DataStorage.isTestModeEnabled()) //Pas de connexion à l'API nécessaire en test mode
+                return true;
+
             try
             {
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml

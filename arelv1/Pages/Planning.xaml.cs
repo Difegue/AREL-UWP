@@ -71,8 +71,8 @@ namespace arelv1.Pages
         {
             now = now.AddDays(daysExtra);
 
-            ArelAPI.DataStorage.saveData("planningToday", API.getInfo("api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd")));
-            ArelAPI.DataStorage.saveData("planningTomorrow", API.getInfo("api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd")));
+            ArelAPI.DataStorage.saveData("planningToday", API.getInfo("/api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd")));
+            ArelAPI.DataStorage.saveData("planningTomorrow", API.getInfo("/api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd")));
         }
 
         /*
@@ -101,20 +101,21 @@ namespace arelv1.Pages
 
                 TextBlock matBlock = new TextBlock();
                 matBlock.Text = matière;
-                matBlock.FontSize = 13;
+                matBlock.FontSize = 12;
                 matBlock.HorizontalAlignment = HorizontalAlignment.Center;
                 matBlock.Foreground = new SolidColorBrush(Colors.Black);
+
                 
 
                 TextBlock profBlock = new TextBlock();
                 profBlock.Text = prof;
-                profBlock.FontSize = 13;
+                profBlock.FontSize = 12;
                 profBlock.HorizontalAlignment = HorizontalAlignment.Center;
                 profBlock.Foreground = new SolidColorBrush(Colors.Black);
 
                 TextBlock salleBlock = new TextBlock();
                 salleBlock.Text = salle;
-                salleBlock.FontSize = 13;
+                salleBlock.FontSize = 12;
                 salleBlock.HorizontalAlignment = HorizontalAlignment.Center;
                 salleBlock.Foreground = new SolidColorBrush(Colors.Black);
 
@@ -234,7 +235,7 @@ namespace arelv1.Pages
                 TextBlock heure = new TextBlock();
                 heure.FontSize = 13;
                 int jj = (j / 4);
-                if (j == (4 * jj))
+                if (j == (4 * jj) || j == 1)
                     heure.Text = (8 + jj).ToString() + "h ";
                 planningGrid.Children.Add(heure);
 

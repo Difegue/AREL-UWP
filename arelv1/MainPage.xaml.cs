@@ -144,12 +144,9 @@ namespace arelv1
             //Active le mode TEST pour cette session, qui fournira pour chaque call API des données préparées à l'avance.
             if (login=="windows10test" && pwd== "Developers") 
             {
-                var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
-
-                ArelAPI.DataStorage.saveData("testMode", "true");
-
-                login = loader.GetString("LoginTest");
-                pwd = loader.GetString("PasswordTest");
+                ArelAPI.DataStorage.enableTestMode();
+                Frame.Navigate(typeof(acceuil));
+                return;
             }
             
 
@@ -176,16 +173,12 @@ namespace arelv1
             InitializeComponent(); //demarage de l'interface   
             stayConnect = false;
 
-            if (ArelAPI.DataStorage.getData("themePref") == "Dark")
-                loginPage.RequestedTheme = ElementTheme.Dark;
-            else
-                loginPage.RequestedTheme = ElementTheme.Light;
+            ArelAPI.DataStorage.clearData(); //On wipe les données vu qu'on est arrivé sur un écran de connexion
 
             if (ArelAPI.DataStorage.isset("erreurRefresh") && ArelAPI.DataStorage.getData("erreurRefresh")!="") //Si le refresh token a échoué, on indique pourquoi l'utilisateur n'est plus connecté en lui redemandant son login
             {
                ecrire("Erreur API lors de la reconnexion: " + ArelAPI.DataStorage.getData("erreurRefresh"));
                 ArelAPI.DataStorage.saveData("erreurRefresh", "");
-                ArelAPI.DataStorage.clearData(); //On wipe les données vu qu'on est arrivé sur un écran de connexion
             }
                
             if (localSettings.Values.ContainsKey("stayConnect"))

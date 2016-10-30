@@ -41,10 +41,6 @@ namespace arelv1.Pages
                 string absencesXml = API.getInfo("/api/me/absences");
                 ArelAPI.DataStorage.saveData("absences", absencesXml);
 
-                //test string from resources.resw
-                //Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader();
-                //absencesXml = loader.GetString("AbsencesXmlTest");
-
                 buildAbsences(absencesXml);
                 finalListModules = modules.Values.ToList<Module>();
             }

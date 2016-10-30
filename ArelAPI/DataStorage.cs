@@ -52,5 +52,17 @@ namespace ArelAPI
             IsolatedStorageFile.GetUserStoreForApplication().Dispose();
         }
 
+        public static void enableTestMode()
+        {
+            saveData("testMode", "true");
+        }
+
+        public static bool isTestModeEnabled()
+        {
+            if (isset("testMode"))
+                return true;
+            else
+                return false;
+        }
     }
 }
