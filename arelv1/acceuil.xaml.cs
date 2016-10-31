@@ -31,7 +31,7 @@ namespace arelv1
             if(API.isOnline())
             {
                 //màj des données de l'utilisateur
-                ArelAPI.DataStorage.saveData("user", API.getInfo("api/me"));
+                ArelAPI.DataStorage.saveData("user", API.getInfo("/api/me"));
             }
 
             //Setting thème

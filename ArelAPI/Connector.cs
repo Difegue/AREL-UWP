@@ -104,30 +104,44 @@ namespace ArelAPI
             return resultat;
             }
         }
-
+    
         //Renvoie différentes données de test selon l'endpoint spécifié.
         private String getTestData(String url)
         {
             //Les strings sont obtenus de TestData.resw
-            Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+            Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader("TestData");
+
+            string returnData = "<NoTestDataAvailable/>";
+
+            if (url.StartsWith("/api/planning/slots?start="))
+                returnData = loader.GetString("planningTestXml");
+
+            if (url.StartsWith("/api/planning/slots/"))
+                returnData = loader.GetString("absenceSlotTestXml");
+
+            if (url.StartsWith("/api/rels/"))
+                returnData = loader.GetString("relTestXml");
 
             switch (url)
             {
                 case "/api/me":
-                    return loader.GetString("userXmlTest");
+                    returnData = loader.GetString("userTestXml");
+                    break;
                 case "/api/me/absences":
-                    return loader.GetString("absencesXmlTest");
+                    returnData = loader.GetString("absencesTestXml");
+                    break;
                 case "/api/campus/sites":
-                    return loader.GetString("campusXmlTest");
+                    returnData = loader.GetString("campusTestXml");
+                    break;
                 case "/api/campus/rooms?siteId=1991": //test data dispo pour cergy seulement parce que flemme
-                    return loader.GetString("sallesXmlTest");
-                case "/api/planning/slots?start=&end=":
-                    return loader.GetString("planningXmlTest");
+                    returnData = loader.GetString("sallesTestXml");
+                    break;
                 case "/api/me/marks":
-                    return loader.GetString("notesXmlTest");
-                default:
-                    return "<NoTestDataAvailable/>";
+                    returnData = loader.GetString("notesTestXml");
+                    break;
             }
+
+            return returnData;
         }
 
         //Récupère l'ID de l'utlisateur avec le XML de getUserInfo.

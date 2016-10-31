@@ -173,6 +173,7 @@ namespace arelv1
             InitializeComponent(); //demarage de l'interface   
             stayConnect = false;
 
+            ArelAPI.DataStorage.disableTestMode();
             ArelAPI.DataStorage.clearData(); //On wipe les données vu qu'on est arrivé sur un écran de connexion
 
             if (ArelAPI.DataStorage.isset("erreurRefresh") && ArelAPI.DataStorage.getData("erreurRefresh")!="") //Si le refresh token a échoué, on indique pourquoi l'utilisateur n'est plus connecté en lui redemandant son login

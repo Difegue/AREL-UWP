@@ -4,7 +4,7 @@
   <mp:PhoneIdentity PhoneProductId="bb5f7131-4cd6-4b8e-bffa-2b89fd853834" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>AREL - École virtuelle de l'EISTI</DisplayName>
-    <PublisherDisplayName>Difegue</PublisherDisplayName>
+    <PublisherDisplayName>alvesduart</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

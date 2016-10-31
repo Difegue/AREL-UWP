@@ -59,10 +59,15 @@ namespace ArelAPI
 
         public static bool isTestModeEnabled()
         {
-            if (isset("testMode"))
+            if (getData("testMode") == "true")
                 return true;
             else
                 return false;
+        }
+
+        public static void disableTestMode()
+        {
+            saveData("testMode", "false");
         }
     }
 }
