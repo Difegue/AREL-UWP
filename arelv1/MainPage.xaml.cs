@@ -141,10 +141,12 @@ namespace arelv1
 
 
             //Bypass pour le test de certification Windows Store: 
-            //Donne un autre compte parce que mdr
+            //Active le mode TEST pour cette session, qui fournira pour chaque call API des données préparées à l'avance.
             if (login=="windows10test" && pwd== "Developers") 
             {
                 var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
+
+                ArelAPI.DataStorage.saveData("testMode", "true");
 
                 login = loader.GetString("LoginTest");
                 pwd = loader.GetString("PasswordTest");

@@ -35,8 +35,10 @@ namespace arelv1.Pages
             if (API.isOnline())
                 updatePlanning(0); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
 
-            DrawPlanning();
-            writePlanning(ArelAPI.DataStorage.getData("planning"));
+            drawPlanning(grid);
+            drawPlanning(grid2);
+            writePlanning(ArelAPI.DataStorage.getData("planningToday"), grid);
+            writePlanning(ArelAPI.DataStorage.getData("planningTomorrow"), grid2);
             UpdateLayout();
 
         }
@@ -62,17 +64,22 @@ namespace arelv1.Pages
 
 
         /*
-         * Les fonctions ci-dessous concernent le dessin de l'EDT sur le panel de gauche, c'est un peu legacy
+         * Les fonctions ci-dessous concernent le dessin de l'EDT sur des élements XAML Grid.
          */
 
         private void updatePlanning(int daysExtra)
         {
             now = now.AddDays(daysExtra);
 
-            ArelAPI.DataStorage.saveData("planning", API.getInfo("api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd")));
+            ArelAPI.DataStorage.saveData("planningToday", API.getInfo("api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd")));
+            ArelAPI.DataStorage.saveData("planningTomorrow", API.getInfo("api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd")));
         }
 
-        private void ajoutCours(string prof, string heureDebut, string heureFin, string matière, string couleur, DateTime premierJour, string salle)
+        /*
+         * Ajoute le cours détaillé à la grille de planning spécifiée.
+         * Il y a actuellement deux grilles sur la page, une pour chaque jour.
+         */
+        private void ajoutCours(string prof, string heureDebut, string heureFin, string matière, string couleur, DateTime premierJour, string salle, Grid planningGrid)
         {
             DateTime now = DateTime.Now;
 
@@ -136,7 +143,7 @@ namespace arelv1.Pages
                     if (col < 0)
                         col = 0;
 
-                    grid.Children.Add(macase);
+                    planningGrid.Children.Add(macase);
                     Grid.SetColumn(macase, col);
                     Grid.SetRow(macase, i);
                 }
@@ -144,7 +151,10 @@ namespace arelv1.Pages
 
         }
 
-        private void writePlanning(string xml)
+        /*
+         * Récupère depuis un XML de l'API les informations des cours, et les écrit dans la grille de journée spécifiée.  
+         */
+        private void writePlanning(string xml, Grid planningGrid)
         {
 
             string prof = "";
@@ -205,7 +215,7 @@ namespace arelv1.Pages
                 }
 
                 if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")
-                    ajoutCours(profName, debut, fin, matiere, couleur, lundi, salle);
+                    ajoutCours(profName, debut, fin, matiere, couleur, lundi, salle, planningGrid);
 
             }
 
@@ -213,7 +223,10 @@ namespace arelv1.Pages
 
         }
 
-        private void DrawPlanning()
+        /*
+         * Dessine sur la grille spécifiée le squelette du planning (heures et lignes) 
+         */
+        private void drawPlanning(Grid planningGrid)
         {
 
             for (int j = 1; j < 41; j++)
@@ -223,7 +236,7 @@ namespace arelv1.Pages
                 int jj = (j / 4);
                 if (j == (4 * jj))
                     heure.Text = (8 + jj).ToString() + "h ";
-                grid.Children.Add(heure);
+                planningGrid.Children.Add(heure);
 
                 Grid.SetColumn(heure, 0);
                 Grid.SetRow(heure, j);
@@ -241,7 +254,7 @@ namespace arelv1.Pages
 
                 macase.BorderBrush = new SolidColorBrush(Colors.LightGray);
 
-                grid.Children.Add(macase);
+                planningGrid.Children.Add(macase);
                 Grid.SetColumn(macase, 1);
                 Grid.SetRow(macase, j);
                 

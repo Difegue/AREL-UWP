@@ -55,11 +55,11 @@
 
         <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,20">Toutes vos absences durant l'année. <LineBreak/>L'API ne permet pas de différencier entre les absences justifiées/non justifiées, mais est-ce vraiment important ?</TextBlock>
 
-        <StackPanel x:Name="AbsenceStack" Visibility="Visible" >
+        <ScrollViewer x:Name="AbsenceStack" Visibility="Visible" >
             <!--Data Binding absences-->
             <ListView x:Name="absListe"  ItemsSource="{x:Bind finalListModules}" ItemTemplate="{StaticResource absenceView}" IsHitTestVisible="False" Visibility="Visible" />
 
-        </StackPanel>
+        </ScrollViewer>
         
 
         <StackPanel x:Name="NoInternetSplash" Visibility="Collapsed" >

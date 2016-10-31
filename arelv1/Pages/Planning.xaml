@@ -13,12 +13,13 @@
             <VisualStateGroup>
                 <VisualState x:Name="WideState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="620" />
+                        <AdaptiveTrigger MinWindowWidth="700" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="MainGrid.ColumnDefinitions[0].MaxWidth" Value="400"/>
                         <Setter Target="MainGrid.ColumnDefinitions[1].MaxWidth" Value="400"/>
                         <Setter Target="c1.Width" Value="260"/>
+                        <Setter Target="c2.Width" Value="260"/>
                         <Setter Target="FirstGrid.Margin" Value="0,0,10,0"/>
                         <Setter Target="SecondGrid.(Grid.Column)" Value="1"/>
                         <Setter Target="SecondGrid.(Grid.Row)" Value="1"/>
@@ -32,11 +33,11 @@
                         <Setter Target="FirstGrid.Margin" Value="0,0,10,10"/>
                         <Setter Target="SecondGrid.Margin" Value="0,0,10,0"/>
                         <Setter Target="c1.Width" Value="300"/>
+                        <Setter Target="c2.Width" Value="300"/>
                         <Setter Target="FirstGrid.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="FirstGrid.(Grid.Row)" Value="2"/>
                         <Setter Target="SecondGrid.(Grid.Column)" Value="0"/>
                         <Setter Target="SecondGrid.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="SecondGrid.(Grid.Row)" Value="1"/>
+                        <Setter Target="SecondGrid.(Grid.Row)" Value="2"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
