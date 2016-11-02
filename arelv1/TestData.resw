@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="absenceSlotTest1Xml" xml:space="preserve">
+  <data name="absenceSlotTestXml" xml:space="preserve">
     <value>&lt;planningSlot id="875795"&gt;&lt;beginDate&gt;2016-10-12 11:30:00&lt;/beginDate&gt;&lt;endDate&gt;2016-10-12 13:00:00&lt;/endDate&gt;&lt;label&gt;LV1&lt;/label&gt;&lt;lectureType&gt;CT&lt;/lectureType&gt;&lt;relId&gt;206&lt;/relId&gt;&lt;programId&gt;6488&lt;/programId&gt;&lt;siteId&gt;1991&lt;/siteId&gt;&lt;affectations&gt;&lt;/affectations&gt;&lt;/planningSlot&gt;</value>
   </data>
   <data name="absencesTestXml" xml:space="preserve">
