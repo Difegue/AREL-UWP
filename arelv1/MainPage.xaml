@@ -78,7 +78,7 @@
             </StackPanel>
 
         </Grid>
-        <ProgressRing x:Name="loginProgress" HorizontalAlignment="Center"  Height="60" Width="60" Margin="5,0,0,0"/>
+        <ProgressRing x:Name="loginProgress" HorizontalAlignment="Center"  Height="60" Width="60" Margin="5,10,0,0"/>
 
         <!-- zone de texte ou on afiche les erreurs -->
         <TextBlock VerticalAlignment="Top" HorizontalAlignment="Center"

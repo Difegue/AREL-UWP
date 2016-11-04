@@ -51,7 +51,7 @@
     <ScrollViewer x:Name="AbsencePage" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <StackPanel>
-            <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,10" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
+            <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,10"  FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
                             Vos absences de l'année</TextBlock>
 
             <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,0">Toutes vos absences durant l'année. <LineBreak/>L'API ne permet pas de différencier entre les absences justifiées/non justifiées, mais est-ce vraiment important ?</TextBlock>
@@ -76,7 +76,7 @@
             </StackPanel>
 
             <StackPanel x:Name="NoAbsenceSplash" Visibility="Collapsed" >
-                <TextBlock FontSize="50" HorizontalAlignment="Center">👌</TextBlock>
+                <TextBlock FontSize="50" HorizontalAlignment="Center" Margin="10">👌</TextBlock>
                 <TextBlock FontSize="26" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center">
                         Pas encore d'absences !<LineBreak/>Impressionant...</TextBlock>
 

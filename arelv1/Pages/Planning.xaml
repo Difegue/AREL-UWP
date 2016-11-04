@@ -57,19 +57,19 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
-                            Margin="10,5,0,10" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
+                            Margin="10,5,0,10"  TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
         	    👌👺👉 Emploi du Temps AREL
             </TextBlock>
 
 
             <StackPanel Grid.Row="1" Grid.Column="0" x:Name="FirstGrid" Grid.RowSpan="2">
                 <Grid>
-                    <FontIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Glyph="&#xE184;" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                    <FontIcon  Glyph="&#xE184;" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
                         <FontIcon.RenderTransform>
                             <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                    <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+                    <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20"  TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
         	    <Run Text="Les cours de la journée"/>
                     </TextBlock>
                 </Grid>
@@ -134,12 +134,12 @@
 
             <StackPanel x:Name="SecondGrid" Grid.RowSpan="2">
                 <Grid>
-                    <FontIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Glyph="&#xE787;" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                    <FontIcon  Glyph="&#xE787;" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
                         <FontIcon.RenderTransform>
                             <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                         </FontIcon.RenderTransform>
                     </FontIcon>
-                    <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
+                    <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20"  TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
         	    <Run Text="Les cours de demain !"/>
                     </TextBlock>
                 </Grid>

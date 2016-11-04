@@ -140,9 +140,10 @@ namespace arelv1.Pages
                     
                     macase.Background = HexToColor(couleur);
 
-                    //bugfix chelou mais si on en arrive là c'est que y'a vraiment eu un souci
+                    //bugfix chelou pour les fins de mois - il arrive que le calcul de col parte séverement dans les négatifs 
+                    //comme c'est du vieux code ici j'ai aucune motivation de regarder au-delà
                     if (col < 0)
-                        col = 0;
+                        col = 1;
 
                     planningGrid.Children.Add(macase);
                     Grid.SetColumn(macase, col);

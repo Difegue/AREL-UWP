@@ -93,7 +93,7 @@
         <ScrollViewer x:Name="NotesView" ScrollViewer.VerticalScrollBarVisibility="Visible" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
             <StackPanel>
-                <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,10" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
+                <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,10"  FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
                         Vos notes pour l'année</TextBlock>
 
                 <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,0">Les noms des UEs ainsi que le calcul des moyennes ne sont pas disponibles à cause de limites de l'API.<LineBreak/> À utiliser avec votre Simulateur de Réussite favori.</TextBlock>

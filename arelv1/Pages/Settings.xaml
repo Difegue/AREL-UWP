@@ -12,20 +12,20 @@
         <StackPanel>
 
             <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
-        		    Margin="10,5,0,20" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
+        		    Margin="10,5,0,20" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
         		  Paramètres
             </TextBlock>
 
           
                 <StackPanel>
                     <Grid>
-                        <SymbolIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                        <SymbolIcon  Symbol="Sync" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
                             <SymbolIcon.RenderTransform>
                                 <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                             </SymbolIcon.RenderTransform>
                         </SymbolIcon>
                         <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}">
+                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" >
         	    <Run Text="Synchronisation Calendrier"/>
                         </TextBlock>
                     </Grid>
@@ -47,7 +47,7 @@
 
                 <StackPanel Margin="0,30,0,0">
                     <Grid>
-                        <FontIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Glyph="&#xE2B1;" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                        <FontIcon  Glyph="&#xE2B1;" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
                             <FontIcon.RenderTransform>
                                 <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                             </FontIcon.RenderTransform>
@@ -55,7 +55,7 @@
 
 
                         <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}">
+                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" >
         	    <Run Text="Thème de l'application"/>
                         </TextBlock>
                     </Grid>
@@ -68,7 +68,7 @@
 
                 <StackPanel Margin="0,30,0,0">
                     <Grid>
-                        <FontIcon Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}" Glyph="&#xEC24;" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
+                        <FontIcon  Glyph="&#xEC24;" HorizontalAlignment="Left" Margin="20,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
                             <FontIcon.RenderTransform>
                                 <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                             </FontIcon.RenderTransform>
@@ -76,7 +76,7 @@
 
 
                         <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                        Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" Foreground="{ThemeResource ApplicationPointerOverForegroundThemeBrush}">
+                                        Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" >
         	            AREL Windows 10
                     </TextBlock>
                         
@@ -97,7 +97,7 @@
                    <LineBreak/>
                 </TextBlock>
 
-                <Button Margin="20,0,0,0" Click="aboutClick">License</Button>
+                <Button Margin="20,0,0,20" Click="aboutClick">License</Button>
 
                 </StackPanel>
 
