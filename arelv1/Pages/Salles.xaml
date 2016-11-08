@@ -14,46 +14,54 @@
     <Grid>
         <!-- Les salles-->
         <ScrollViewer x:Name="SalleView" ScrollViewer.VerticalScrollBarVisibility="Visible" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup>
+                    <VisualState x:Name="WideState">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="700" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="campusSelection.(Grid.Row)" Value="0"/>
+                            <Setter Target="campusSelection.(Grid.Column)" Value="0"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="NarrowState">
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="0" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="campusSelection.(Grid.Row)" Value="1"/>
+                            <Setter Target="campusSelection.(Grid.Column)" Value="1"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+            
             <StackPanel>
                 <StackPanel>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState x:Name="WideState">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="700" />
-                                </VisualState.StateTriggers>
-                                <VisualState.Setters>
-                                    <Setter Target="ComboBoxes.Orientation" Value="Horizontal"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="NarrowState">
-                                <VisualState.StateTriggers>
-                                    <AdaptiveTrigger MinWindowWidth="0" />
-                                </VisualState.StateTriggers>
-                                <VisualState.Setters>
-                                    <Setter Target="ComboBoxes.Orientation" Value="Vertical"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
 
                     <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,0"  FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
                         Disponibilité des Salles</TextBlock>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,7,20,20" x:Name="ComboBoxes">
-                        
-                        
-                        
-                        <ComboBox x:Name="campusSelection"  Height="35" Width="125" 
+                    <Grid HorizontalAlignment="Right" Margin="0,7,20,20" x:Name="ComboBoxes">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="225"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition Height="35"/>
+                        </Grid.RowDefinitions>
+
+                        <ComboBox x:Name="campusSelection"  Height="35" Width="125"
                          ItemsSource="{x:Bind campusList}" SelectionChanged="writeSalle" SelectedItem="{x:Bind SelectedComboBoxOption}" HorizontalAlignment="Right" />
 
-                        <AutoSuggestBox x:Name="salleSearchBox" Height="35" Width="200" HorizontalAlignment="Right" Margin="20,0,0,0" TextChanged="searchSalle" PlaceholderText="Rechercher une salle" >
+                        <AutoSuggestBox x:Name="salleSearchBox" Grid.Column="1" Height="35" Width="200" HorizontalAlignment="Right" Margin="20,0,0,0" TextChanged="searchSalle" PlaceholderText="Rechercher une salle" >
                             <AutoSuggestBox.QueryIcon>
                                 <SymbolIcon Symbol="Find"/>
                             </AutoSuggestBox.QueryIcon>
                         </AutoSuggestBox>
-                    </StackPanel>
+                    </Grid>
                     
                 </StackPanel>
 
