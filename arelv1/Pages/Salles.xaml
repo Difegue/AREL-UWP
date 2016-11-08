@@ -17,10 +17,34 @@
 
             <StackPanel>
                 <StackPanel>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="WideState">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="700" />
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Target="ComboBoxes.Orientation" Value="Horizontal"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="NarrowState">
+                                <VisualState.StateTriggers>
+                                    <AdaptiveTrigger MinWindowWidth="0" />
+                                </VisualState.StateTriggers>
+                                <VisualState.Setters>
+                                    <Setter Target="ComboBoxes.Orientation" Value="Vertical"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+
                     <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,0"  FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
                         Disponibilité des Salles</TextBlock>
 
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,7,20,20">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,7,20,20" x:Name="ComboBoxes">
+                        
+                        
+                        
                         <ComboBox x:Name="campusSelection"  Height="35" Width="125" 
                          ItemsSource="{x:Bind campusList}" SelectionChanged="writeSalle" SelectedItem="{x:Bind SelectedComboBoxOption}" HorizontalAlignment="Right" />
 
