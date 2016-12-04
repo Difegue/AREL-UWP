@@ -90,8 +90,8 @@
                    <Hyperlink NavigateUri="http://eisti.fr">
                    Site Web de l'EISTI
                    </Hyperlink> <LineBreak/>
-                   <Hyperlink NavigateUri="http://gitlab.etude.eisti.fr/alvesduart/w10-Arel">
-                       Code Source de l'application sur le Gitlab de l'EISTI
+                   <Hyperlink NavigateUri="https://github.com/Difegue/AREL-UWP">
+                       Code Source de l'application sur Github
                    </Hyperlink> 
                    <LineBreak/>Un fat merci à Tom Darboux le palois pour avoir commencé l'appli sisi rpz 
                    <LineBreak/>
