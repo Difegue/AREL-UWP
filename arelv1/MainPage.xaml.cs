@@ -126,9 +126,8 @@ namespace arelv1
         {
 
             string login = nom.Text.ToLower();
-            string pwd = pass.Password;
 
-            if (pwd == "" || login == "")
+            if (pass.Password == "" || login == "")
             {
                 ecrire("Veuillez entrer vos identifiants.");
                 return;
@@ -142,7 +141,7 @@ namespace arelv1
 
             //Bypass pour le test de certification Windows Store: 
             //Active le mode TEST pour cette session, qui fournira pour chaque call API des données préparées à l'avance.
-            if (login=="windows10test" && pwd== "Developers") 
+            if (login=="windows10test" && pass.Password== "Developers") 
             {
                 ArelAPI.DataStorage.enableTestMode();
                 Frame.Navigate(typeof(acceuil));
@@ -150,7 +149,7 @@ namespace arelv1
             }
             
 
-            if(API.connect(login,pwd))
+            if(API.connect(login, pass.Password))
             {
 
                 if (stayConnect)

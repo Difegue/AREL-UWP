@@ -8,7 +8,7 @@ Une application cross-devices Windows 10 utilisant l'api d'AREL pour :
   
 ===============
 * Déployer cette appli  
-Un fichier Resources.resw doit être ajouté dans le projet arelv1, contenant votre clé d'API AREL sous le nom "APIKey".  
+Un fichier Resources.resw doit être ajouté dans le projet arelv1, contenant votre clé d'API AREL sous le nom "APIKey" (syntaxe votre_app_id:votre_app_secret).  
 Un mode de test sans usage de l'API peut être activé en se loggant avec les identifiants windows10test/Developers .  
 
 

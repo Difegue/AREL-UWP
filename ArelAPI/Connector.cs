@@ -25,7 +25,7 @@ namespace ArelAPI
         //fonction qui initialise la connection à arel et stocke jeton d'accès / jeton de refresh
         public bool connect(string name, string pass)
         {
-            string url = "http://arel.eisti.fr/oauth/token";
+            string url = "https://arel.eisti.fr/oauth/token";
             string contentType = "application/x-www-form-urlencoded";
             string identifiants = loader.GetString("APIKey");
             string data = "grant_type=password&username=" + name + "&password=" + pass + "&scope = read&format=xml";
@@ -51,7 +51,7 @@ namespace ArelAPI
             if (!localSettings.Values.ContainsKey("refresh")) //Si il n'y a pas de refresh token enregistré, on renvoie false direct.
                 return false; //Même si normalement cet usecase n'arrive jamais, mieux vaut être safe.
 
-            string url = "http://arel.eisti.fr/oauth/token";
+            string url = "https://arel.eisti.fr/oauth/token";
             string contentType = "application/x-www-form-urlencoded";
             string identifiants = loader.GetString("APIKey");
             string data = "grant_type=refresh_token&refresh_token=" + localSettings.Values["refresh"] + "&format=xml";
