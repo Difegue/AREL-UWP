@@ -97,7 +97,7 @@
                    <LineBreak/>
                 </TextBlock>
 
-                <Button Margin="20,0,0,20" Click="aboutClick">License</Button>
+                <Button Margin="20,0,0,20" Click="aboutClick">License et Vie Privée</Button>
 
                 </StackPanel>
 

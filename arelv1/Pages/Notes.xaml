@@ -98,7 +98,7 @@
 
                 <TextBlock TextWrapping="Wrap" FontSize="11" Margin="10,0,0,0">Les noms des UEs ainsi que le calcul des moyennes ne sont pas disponibles à cause de limites de l'API.<LineBreak/> À utiliser avec votre Simulateur de Réussite favori.</TextBlock>
 
-                <StackPanel x:Name="semestresPivot" Orientation="Horizontal" Margin="10,10,0,20" Visibility="Visible">
+                <StackPanel x:Name="semestresPivot" Orientation="Horizontal" Margin="10,10,0,20" Visibility="Collapsed">
                     <TextBlock x:Name="pivotSem1" Margin="0,0,0,0" VerticalAlignment="Center" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" 
                                 PointerPressed="showSem1" >
                         Semestre 1

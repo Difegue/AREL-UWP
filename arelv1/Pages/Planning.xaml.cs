@@ -32,7 +32,9 @@ namespace arelv1.Pages
 
             dateJour.Text = getDayStr(now, 0);
 
-            
+            FirstGrid.Visibility = Visibility.Collapsed;
+            SecondGrid.Visibility = Visibility.Collapsed;
+
             updatePlanning(); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
 
             
@@ -71,19 +73,109 @@ namespace arelv1.Pages
             {
             //now = now.AddDays(daysExtra);
 
-            string xmlToday = await API.GetInfoAsync("/api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd"));
-            string xmlTomorrow = await API.GetInfoAsync("/api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd"));
+                string xmlToday = await API.GetInfoAsync("/api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd"));
+                string xmlTomorrow = await API.GetInfoAsync("/api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd"));
 
-            ArelAPI.DataStorage.saveData("planningToday", xmlToday);
-            ArelAPI.DataStorage.saveData("planningTomorrow", xmlTomorrow);
+                ArelAPI.DataStorage.saveData("planningToday", xmlToday);
+                ArelAPI.DataStorage.saveData("planningTomorrow", xmlTomorrow);
 
-            drawPlanning(grid);
-            drawPlanning(grid2);
-            writePlanning(ArelAPI.DataStorage.getData("planningToday"), grid);
-            writePlanning(ArelAPI.DataStorage.getData("planningTomorrow"), grid2);
+                drawPlanning(grid);
+                drawPlanning(grid2);
+                await writePlanning(ArelAPI.DataStorage.getData("planningToday"), grid);
+                await writePlanning(ArelAPI.DataStorage.getData("planningTomorrow"), grid2);
 
-            UpdateLayout();
+                FirstGrid.Visibility = Visibility.Visible;
+                SecondGrid.Visibility = Visibility.Visible;
+                LoadingIndicator.Visibility = Visibility.Collapsed;
+
+                UpdateLayout();
             }
+
+        }
+
+        /*
+         * Récupère depuis un XML de l'API les informations des cours, et les écrit dans la grille de journée spécifiée.  
+         */
+        private async Task<bool> writePlanning(string xml, Grid planningGrid)
+        {
+
+            string week = "";
+            string week1 = "";
+            DateTime lundi;
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
+            {
+                if (node.Name == "week")
+                {
+                    week = node.InnerText;
+                    week1 = week.Substring(0, 2);
+                }
+            }
+
+            lundi = weekToDate(Convert.ToInt32(week1), 2016, "lundi");
+
+            var tasks = new List<Task>();
+
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds en parallèle
+            {
+                tasks.Add(computeCours(node, lundi, planningGrid)); 
+            }
+
+            //LA VITESSE
+            await Task.WhenAll(tasks);
+
+            return true;
+        }
+
+        //Récupère les données du noeud XML du cours et appelle ajoutCours pour le dessiner à l'écran
+        private async Task<bool> computeCours(System.Xml.XmlNode node, DateTime lundi, Grid planningGrid)
+        {
+
+            string prof = "";
+            string salle = "";
+            string matiere = "";
+            string debut = "";
+            string fin = "";
+            string couleur = "";
+
+            foreach (System.Xml.XmlNode node02 in node)
+                {
+                    //ecrire(node02.Name);
+                    if (node02.Name == "teacherLogin")
+                        prof = node02.InnerText;
+                    if (node02.Name == "label")
+                        matiere = node02.InnerText;
+                    if (node02.Name == "departmentColor")
+                        couleur = node02.InnerText;
+                    if (node02.Name == "beginDate")
+                        debut = node02.InnerText;
+                    if (node02.Name == "endDate")
+                        fin = node02.InnerText;
+                    if (node02.Name == "roomLabel")
+                        salle = node02.InnerText;
+                }
+
+            string idRel = node.ChildNodes[2].InnerText;
+            string idProf = node.ChildNodes[3].InnerText;
+            string profName = node.ChildNodes[4].InnerText;
+
+            //Récup nom complet prof et rel...si on a accès à l'API parce que je les sauvegarde pas dans les données de l'appli
+            Boolean isOnline = await API.IsOnlineAsync();
+            if (isOnline)
+            {
+                string xmlr = await API.GetInfoAsync("/api/rels/" + idRel);
+                matiere = API.getRelName(xmlr, matiere);
+
+                string xmlj = await API.GetInfoAsync("/api/users/" + idProf);
+                profName = API.GetUserFullName(xmlj, profName);
+            }
+
+            if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")
+                ajoutCours(profName, debut, fin, matiere, couleur, lundi, salle, planningGrid);
+
+            return true;
 
         }
 
@@ -117,7 +209,7 @@ namespace arelv1.Pages
                 matBlock.HorizontalAlignment = HorizontalAlignment.Center;
                 matBlock.Foreground = new SolidColorBrush(Colors.Black);
 
-                
+
 
                 TextBlock profBlock = new TextBlock();
                 profBlock.Text = prof;
@@ -149,7 +241,7 @@ namespace arelv1.Pages
                     {
                         macase.Children.Add(salleBlock);
                     }
-                    
+
                     macase.Background = HexToColor(couleur);
 
                     //bugfix chelou pour les fins de mois - il arrive que le calcul de col parte séverement dans les négatifs 
@@ -162,79 +254,6 @@ namespace arelv1.Pages
                     Grid.SetRow(macase, i);
                 }
             }
-
-        }
-
-        /*
-         * Récupère depuis un XML de l'API les informations des cours, et les écrit dans la grille de journée spécifiée.  
-         */
-        private async void writePlanning(string xml, Grid planningGrid)
-        {
-
-            string prof = "";
-            string salle = "";
-            string matiere = "";
-            string debut = "";
-            string fin = "";
-            string couleur = "";
-            string week = "";
-            string week1 = "";
-            DateTime lundi;
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(xml);//chargement de la variable
-
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
-            {
-                if (node.Name == "week")
-                {
-                    week = node.InnerText;
-                    week1 = week.Substring(0, 2);
-                }
-            }
-
-            lundi = weekToDate(Convert.ToInt32(week1), 2016, "lundi");
-
-
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds
-            {
-                foreach (System.Xml.XmlNode node02 in node)
-                {
-                    //ecrire(node02.Name);
-                    if (node02.Name == "teacherLogin")
-                        prof = node02.InnerText;
-                    if (node02.Name == "label")
-                        matiere = node02.InnerText;
-                    if (node02.Name == "departmentColor")
-                        couleur = node02.InnerText;
-                    if (node02.Name == "beginDate")
-                        debut = node02.InnerText;
-                    if (node02.Name == "endDate")
-                        fin = node02.InnerText;
-                    if (node02.Name == "roomLabel")
-                        salle = node02.InnerText;
-                }
-
-                string idRel = node.ChildNodes[2].InnerText;
-                string idProf = node.ChildNodes[3].InnerText;
-                string profName = node.ChildNodes[4].InnerText;
-
-                //Récup nom complet prof et rel...si on a accès à l'API parce que je les sauvegarde pas dans les données de l'appli
-                Boolean isOnline = await API.IsOnlineAsync();
-                if (isOnline)
-                {
-                    string xmlr = await API.GetInfoAsync("/api/rels/" + idRel);
-                    matiere = API.getRelName(xmlr, matiere);
-
-                    string xmlj = await API.GetInfoAsync("/api/users/" + idProf);
-                    profName = API.GetUserFullName(xmlj, profName);
-                }
-
-                if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")
-                    ajoutCours(profName, debut, fin, matiere, couleur, lundi, salle, planningGrid);
-
-            }
-
-
 
         }
 

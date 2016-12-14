@@ -49,6 +49,7 @@ namespace arelv1.Pages
                 absencesXml = ArelAPI.DataStorage.getData("absences");
             }
 
+            LoadingIndicator.IsActive = true;
             buildAbsences(absencesXml);
         }
 
@@ -59,61 +60,16 @@ namespace arelv1.Pages
             doc.LoadXml(xml);//chargement de la variable
 
             //Structure de l'xml renvoyé par l'API: Liste d'absences, chacune contenant un ID vers le slot concerné d'emploi du temps
+
+            var tasks = new List<Task>();
+
             foreach (System.Xml.XmlNode absence in doc.FirstChild.ChildNodes)
             {
-                string idSlot = absence.ChildNodes[1].InnerText;
-                string slotInfo = await API.GetInfoAsync("/api/planning/slots/" + idSlot); //La seconde childnode contient le slotId
-                System.Xml.XmlDocument docAbsence = new System.Xml.XmlDocument();
-                docAbsence.LoadXml(slotInfo);
-
-                /*Structure d'un XML de slot planning :
-                 * 
-                 * <planningSlot id="875795">
-                       <beginDate>2016-10-12 11:30:00</beginDate>
-                       <endDate>2016-10-12 13:00:00</endDate>
-                       <label>LV1-</label>
-                       <lectureType>CT</lectureType>
-                       <relId>206</relId>
-                       <programId>6488</programId>
-                       <siteId>1991</siteId>
-                       <affectations>
-                        (ids des profs/élèves)
-                       </affectations>
-                   </planningSlot>
-                */
-
-                //On chope le rel (la matière) correspondant à ce slot via le RelId
-                string relId = docAbsence.GetElementsByTagName("relId")[0].InnerText;
-                string relInfo = await API.GetInfoAsync("/api/rels/" + relId);
-                System.Xml.XmlDocument docRel = new System.Xml.XmlDocument();
-                docRel.LoadXml(relInfo);
-
-                string labelMatiere = docRel.GetElementsByTagName("label")[0].InnerText;
-
-                DateTime startDate = new DateTime();
-                DateTime.TryParse(docAbsence.GetElementsByTagName("beginDate")[0].InnerText, out startDate);
-
-                DateTime endDate = new DateTime();
-                DateTime.TryParse(docAbsence.GetElementsByTagName("endDate")[0].InnerText, out endDate);
-
-                Absence a = new Absence(startDate, endDate, labelMatiere);
-
-                //Add absence to rel, create module objet for rel if it doesn't exist.
-                if (modules.ContainsKey(relId))
-                {
-                    modules[relId].absences.Add(a);
-                }
-                else
-                {
-                    Module m = new Module();
-                    m.id = relId;
-                    m.absences = new List<Absence>();
-                    m.absences.Add(a);
-                    m.labelModule = labelMatiere;
-                    modules[relId] = m;
-                }
-
+                tasks.Add(computeAbsence(absence));
             }
+
+            //On fait le calcul des absences en parallèle pour LA VITESSE
+            await Task.WhenAll(tasks);
 
             if (modules.Count == 0)
             {
@@ -122,10 +78,69 @@ namespace arelv1.Pages
             }
 
             finalListModules = modules.Values.ToList<Module>();
-            
+
+            LoadingIndicator.IsActive = false;
+            LoadingText.Visibility = Visibility.Collapsed;
             this.Bindings.Update();
             UpdateLayout();
 
+        }
+
+        private async Task<bool> computeAbsence(System.Xml.XmlNode absence)
+        {
+            string idSlot = absence.ChildNodes[1].InnerText;
+            string slotInfo = await API.GetInfoAsync("/api/planning/slots/" + idSlot); //La seconde childnode contient le slotId
+            System.Xml.XmlDocument docAbsence = new System.Xml.XmlDocument();
+            docAbsence.LoadXml(slotInfo);
+
+            /*Structure d'un XML de slot planning :
+             * 
+             * <planningSlot id="875795">
+                   <beginDate>2016-10-12 11:30:00</beginDate>
+                   <endDate>2016-10-12 13:00:00</endDate>
+                   <label>LV1-</label>
+                   <lectureType>CT</lectureType>
+                   <relId>206</relId>
+                   <programId>6488</programId>
+                   <siteId>1991</siteId>
+                   <affectations>
+                    (ids des profs/élèves)
+                   </affectations>
+               </planningSlot>
+            */
+
+            //On chope le rel (la matière) correspondant à ce slot via le RelId
+            string relId = docAbsence.GetElementsByTagName("relId")[0].InnerText;
+            string relInfo = await API.GetInfoAsync("/api/rels/" + relId);
+            System.Xml.XmlDocument docRel = new System.Xml.XmlDocument();
+            docRel.LoadXml(relInfo);
+
+            string labelMatiere = docRel.GetElementsByTagName("label")[0].InnerText;
+
+            DateTime startDate = new DateTime();
+            DateTime.TryParse(docAbsence.GetElementsByTagName("beginDate")[0].InnerText, out startDate);
+
+            DateTime endDate = new DateTime();
+            DateTime.TryParse(docAbsence.GetElementsByTagName("endDate")[0].InnerText, out endDate);
+
+            Absence a = new Absence(startDate, endDate, labelMatiere);
+
+            //Add absence to rel, create module objet for rel if it doesn't exist.
+            if (modules.ContainsKey(relId))
+            {
+                modules[relId].absences.Add(a);
+            }
+            else
+            {
+                Module m = new Module();
+                m.id = relId;
+                m.absences = new List<Absence>();
+                m.absences.Add(a);
+                m.labelModule = labelMatiere;
+                modules[relId] = m;
+            }
+
+            return true;
         }
 
         private void initPage(object sender, RoutedEventArgs e)

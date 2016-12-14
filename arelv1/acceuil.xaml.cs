@@ -36,10 +36,6 @@ namespace arelv1
             else
                 hamburger.RequestedTheme = ElementTheme.Light;
 
-            //Récup du nom de l'utilisateur pour affichage
-            string userName = API.GetUserFullName(ArelAPI.DataStorage.getData("user"), "Utilisateur d'AREL");
-            nomUser.Text = userName;
-
             AgendaBouton.IsChecked = true; //Petit trick pour commencer sur l'EDT de base
 
             
@@ -55,6 +51,11 @@ namespace arelv1
                 string infoUser = await API.GetInfoAsync("/api/me");
                 ArelAPI.DataStorage.saveData("user", infoUser);
 
+                //Récup du nom de l'utilisateur pour affichage
+                string userName = API.GetUserFullName(ArelAPI.DataStorage.getData("user"), "Utilisateur d'AREL");
+                nomUser.Text = userName;
+
+                UpdateLayout();
             }
         }
 
@@ -127,11 +128,16 @@ namespace arelv1
             { 
                 localSettings.Values["token"] = null;
                 localSettings.Values["refresh"] = null;
-                localSettings.Values["stayConnect"] = null;
 
-                var vault = new Windows.Security.Credentials.PasswordVault();
-                vault.Remove(vault.Retrieve("ARELUWP_User", API.GetUserLogin(ArelAPI.DataStorage.getData("user"))));
+                
+                if (!ArelAPI.DataStorage.isTestModeEnabled() && localSettings.Values["stayConnect"] != null)
+                {
+                    var vault = new Windows.Security.Credentials.PasswordVault();
+                    vault.Remove(vault.Retrieve("ARELUWP_User", API.GetUserLogin(ArelAPI.DataStorage.getData("user"))));
 
+                    localSettings.Values["stayConnect"] = null;
+                }
+                    
                 ArelAPI.DataStorage.clearData();
                 Frame.Navigate(typeof(MainPage));
             }

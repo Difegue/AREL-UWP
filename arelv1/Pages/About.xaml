@@ -50,10 +50,8 @@
                     	<Run Text=" * Vos absences"/>
                     	<LineBreak/>
                     	<Run Text=" * Votre nom/prénom tel qu'il est enregistré dans AREL"/>
-                    	<LineBreak/><LineBreak/>
-
-                    	<Run Text="Ces informations sont stockées dans la mémoire interne de l'application pour vous les afficher et ne sont partagées avec personne. "/>
-                    	<LineBreak/>Vos identifiants AREL/LDAP EISTI ne sont pas stockés.<LineBreak/><LineBreak/>
+                    	<LineBreak/><LineBreak/>Ces informations sont stockées dans la mémoire interne de l'application pour vous les afficher et ne sont partagées avec personne.
+                    	<LineBreak/><LineBreak/>Vos identifiants AREL/LDAP EISTI sont stockés de manière cryptée si vous avez coché la case "Rester Connecté".<LineBreak/><LineBreak/>
                     </TextBlock>
 
                 </StackPanel>

@@ -51,7 +51,6 @@ namespace arelv1.Pages
             }
             else
             {
-                semestresPivot.Visibility = Visibility.Collapsed;
                 NoInternetSplash.Visibility = Visibility.Visible;
             }
         }
@@ -161,7 +160,6 @@ namespace arelv1.Pages
                 //Si le semestre 1 est vide aussi, il n'y a juste pas de notes -> On affiche le splashscreen associé.
                 if (ueSem1.id == null)
                 {
-                    semestresPivot.Visibility = Visibility.Collapsed;
                     NoNoteSplash.Visibility = Visibility.Visible;
                 }
 
@@ -176,6 +174,12 @@ namespace arelv1.Pages
 
             ueSem1.sortUEs();
             //ueSem2.sortUEs();
+
+            if (NoNoteSplash.Visibility != Visibility.Visible)
+            {
+                semestresPivot.Visibility = Visibility.Visible;
+            }
+
             //Fiou, enfin fini. Le XAML s'occupe de construire la vue des notes via data binding.
             this.Bindings.Update();
             UpdateLayout();
