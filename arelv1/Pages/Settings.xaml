@@ -83,7 +83,7 @@
                         
                     </Grid>
 
-                <TextBlock Margin="20,10,0,0" >Version 0.8.3</TextBlock>
+                <TextBlock Margin="20,10,0,0" >Version 0.8.5</TextBlock>
                 <TextBlock  Margin="20,-10,0,0" FontSize="12" TextWrapping="Wrap" >
                     
                     <LineBreak/><LineBreak/>
