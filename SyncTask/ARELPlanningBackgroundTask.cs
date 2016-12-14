@@ -36,10 +36,12 @@ namespace SyncTask
             ArelAPI.Connector API = new ArelAPI.Connector();
 
             Boolean canUpdate = true;
+            Boolean isOnline = await API.IsOnlineAsync();
 
-            if (!API.isOnline()) //Si le token n'est plus valide, on le rafraîchit avec le refreshToken
+            if (!isOnline) //Si le token n'est plus valide, on le rafraîchit avec le refreshToken
             {
-                if (!API.renewAccessToken()) //Si on peut rafraîchir le jeton, on continue, sinon on notifie l'utilisateur qu'il doit ré-entrer ses logins
+                bool isReLogged = await API.RenewAccessTokenAsync();
+                if (!isReLogged) //Si on peut rafraîchir le jeton, on continue, sinon on notifie l'utilisateur qu'il doit ré-entrer ses logins
                 {
                     Show(new ToastContent()
                     {
@@ -60,9 +62,9 @@ namespace SyncTask
 
             //On appelle la fonction de màj du calendrier windows qui est dans Planning.xaml.cs
             if (canUpdate)
-                API.updateWindowsCalendar(DateTime.Now.ToString("yyyy-MM-dd"), 
+                API.UpdateWindowsCalendar(DateTime.Now.ToString("yyyy-MM-dd"), 
                                                 DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"),
-                                                API.getUserFullName(ArelAPI.DataStorage.getData("user"), "Mon Planning AREL"));
+                                                API.GetUserFullName(ArelAPI.DataStorage.getData("user"), "Mon Planning AREL"));
 
             //On re-enregistre la tâche si le paramètre est présent
             if (bool.Parse(ArelAPI.DataStorage.getData("backgroundTask")))

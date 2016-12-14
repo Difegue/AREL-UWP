@@ -34,11 +34,13 @@ namespace arelv1.Pages
 
         }
 
-        private void initPage()
+        private async void initPage()
         {
-            if (API.isOnline())
+            Boolean isOnline = await API.IsOnlineAsync();
+
+            if (isOnline)
             {
-                string notesXml = API.getInfo("/api/me/marks");
+                string notesXml = await API.GetInfoAsync("/api/me/marks");
                 ArelAPI.DataStorage.saveData("notes", notesXml);
                 buildNotes(notesXml);
             }
@@ -175,6 +177,8 @@ namespace arelv1.Pages
             ueSem1.sortUEs();
             //ueSem2.sortUEs();
             //Fiou, enfin fini. Le XAML s'occupe de construire la vue des notes via data binding.
+            this.Bindings.Update();
+            UpdateLayout();
         }
 
 

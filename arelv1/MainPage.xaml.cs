@@ -147,13 +147,19 @@ namespace arelv1
                 Frame.Navigate(typeof(acceuil));
                 return;
             }
-            
 
-            if(API.connect(login, pass.Password))
+            Boolean connectionState = await API.LoginARELUserAsync(login, pass.Password);
+            if(connectionState)
             {
-
                 if (stayConnect)
+                {
+                    //On déclare un flag pour indiquer qu'on sauvegarde les données de login
                     localSettings.Values["stayConnect"] = true;
+                    //On stocke login/pass dans un Credential Locker
+                    var vault = new Windows.Security.Credentials.PasswordVault();
+                    vault.Add(new Windows.Security.Credentials.PasswordCredential(
+                        "ARELUWP_User", login, pass.Password));
+                }
                 
                 Frame.Navigate(typeof(acceuil));
             }

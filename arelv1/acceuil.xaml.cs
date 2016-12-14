@@ -28,11 +28,7 @@ namespace arelv1
         {
             this.InitializeComponent();
 
-            if(API.isOnline())
-            {
-                //màj des données de l'utilisateur
-                ArelAPI.DataStorage.saveData("user", API.getInfo("/api/me"));
-            }
+            InitializeUserInfo();
 
             //Setting thème
             if (ArelAPI.DataStorage.getData("themePref") == "Dark")
@@ -41,11 +37,25 @@ namespace arelv1
                 hamburger.RequestedTheme = ElementTheme.Light;
 
             //Récup du nom de l'utilisateur pour affichage
-            string userName = API.getUserFullName(ArelAPI.DataStorage.getData("user"), "Utilisateur d'AREL");
+            string userName = API.GetUserFullName(ArelAPI.DataStorage.getData("user"), "Utilisateur d'AREL");
             nomUser.Text = userName;
 
             AgendaBouton.IsChecked = true; //Petit trick pour commencer sur l'EDT de base
+
+            
             UpdateLayout();
+        }
+
+        private async void InitializeUserInfo()
+        {
+            Boolean isOnline = await API.IsOnlineAsync();
+            if(isOnline)
+            {
+                //màj des données de l'utilisateur
+                string infoUser = await API.GetInfoAsync("/api/me");
+                ArelAPI.DataStorage.saveData("user", infoUser);
+
+            }
         }
 
         private void HamburgerButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
@@ -118,6 +128,10 @@ namespace arelv1
                 localSettings.Values["token"] = null;
                 localSettings.Values["refresh"] = null;
                 localSettings.Values["stayConnect"] = null;
+
+                var vault = new Windows.Security.Credentials.PasswordVault();
+                vault.Remove(vault.Retrieve("ARELUWP_User", API.GetUserLogin(ArelAPI.DataStorage.getData("user"))));
+
                 ArelAPI.DataStorage.clearData();
                 Frame.Navigate(typeof(MainPage));
             }

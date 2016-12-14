@@ -32,14 +32,10 @@ namespace arelv1.Pages
 
             dateJour.Text = getDayStr(now, 0);
 
-            if (API.isOnline())
-                updatePlanning(0); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
+            
+            updatePlanning(); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
 
-            drawPlanning(grid);
-            drawPlanning(grid2);
-            writePlanning(ArelAPI.DataStorage.getData("planningToday"), grid);
-            writePlanning(ArelAPI.DataStorage.getData("planningTomorrow"), grid2);
-            UpdateLayout();
+            
 
         }
 
@@ -67,12 +63,28 @@ namespace arelv1.Pages
          * Les fonctions ci-dessous concernent le dessin de l'EDT sur des élements XAML Grid.
          */
 
-        private void updatePlanning(int daysExtra)
+        private async void updatePlanning()
         {
-            now = now.AddDays(daysExtra);
+            Boolean isOnline = await API.IsOnlineAsync();
 
-            ArelAPI.DataStorage.saveData("planningToday", API.getInfo("/api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd")));
-            ArelAPI.DataStorage.saveData("planningTomorrow", API.getInfo("/api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd")));
+            if (isOnline)
+            {
+            //now = now.AddDays(daysExtra);
+
+            string xmlToday = await API.GetInfoAsync("/api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd"));
+            string xmlTomorrow = await API.GetInfoAsync("/api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd"));
+
+            ArelAPI.DataStorage.saveData("planningToday", xmlToday);
+            ArelAPI.DataStorage.saveData("planningTomorrow", xmlTomorrow);
+
+            drawPlanning(grid);
+            drawPlanning(grid2);
+            writePlanning(ArelAPI.DataStorage.getData("planningToday"), grid);
+            writePlanning(ArelAPI.DataStorage.getData("planningTomorrow"), grid2);
+
+            UpdateLayout();
+            }
+
         }
 
         /*
@@ -156,7 +168,7 @@ namespace arelv1.Pages
         /*
          * Récupère depuis un XML de l'API les informations des cours, et les écrit dans la grille de journée spécifiée.  
          */
-        private void writePlanning(string xml, Grid planningGrid)
+        private async void writePlanning(string xml, Grid planningGrid)
         {
 
             string prof = "";
@@ -207,13 +219,14 @@ namespace arelv1.Pages
                 string profName = node.ChildNodes[4].InnerText;
 
                 //Récup nom complet prof et rel...si on a accès à l'API parce que je les sauvegarde pas dans les données de l'appli
-                if (API.isOnline())
+                Boolean isOnline = await API.IsOnlineAsync();
+                if (isOnline)
                 {
-                    string xmlr = API.getInfo("/api/rels/" + idRel);
+                    string xmlr = await API.GetInfoAsync("/api/rels/" + idRel);
                     matiere = API.getRelName(xmlr, matiere);
 
-                    string xmlj = API.getInfo("/api/users/" + idProf);
-                    profName = API.getUserFullName(xmlj, profName);
+                    string xmlj = await API.GetInfoAsync("/api/users/" + idProf);
+                    profName = API.GetUserFullName(xmlj, profName);
                 }
 
                 if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")

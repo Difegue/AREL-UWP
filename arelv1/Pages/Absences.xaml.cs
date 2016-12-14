@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -34,33 +35,24 @@ namespace arelv1.Pages
             initPage();
         }
 
-        private void initPage()
+        private async void initPage()
         {
-            if (API.isOnline())
+            Boolean isOnline = await API.IsOnlineAsync();
+            string absencesXml = "";
+            if (isOnline)
             {
-                string absencesXml = API.getInfo("/api/me/absences");
+                absencesXml = await API.GetInfoAsync("/api/me/absences");
                 ArelAPI.DataStorage.saveData("absences", absencesXml);
-
-                buildAbsences(absencesXml);
-                finalListModules = modules.Values.ToList<Module>();
             }
             else if (ArelAPI.DataStorage.isset("absences"))
             {
-                string absencesXml = ArelAPI.DataStorage.getData("absences");
-
-                buildAbsences(absencesXml);
-                finalListModules = modules.Values.ToList<Module>();
-            }
-            else
-            {
-                AbsenceStack.Visibility = Visibility.Collapsed;
-                NoInternetSplash.Visibility = Visibility.Visible;
+                absencesXml = ArelAPI.DataStorage.getData("absences");
             }
 
-            UpdateLayout();
+            buildAbsences(absencesXml);
         }
 
-        private void buildAbsences(string xml)
+        private async void buildAbsences(string xml)
         {
 
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
@@ -70,7 +62,7 @@ namespace arelv1.Pages
             foreach (System.Xml.XmlNode absence in doc.FirstChild.ChildNodes)
             {
                 string idSlot = absence.ChildNodes[1].InnerText;
-                string slotInfo = API.getInfo("/api/planning/slots/" + idSlot); //La seconde childnode contient le slotId
+                string slotInfo = await API.GetInfoAsync("/api/planning/slots/" + idSlot); //La seconde childnode contient le slotId
                 System.Xml.XmlDocument docAbsence = new System.Xml.XmlDocument();
                 docAbsence.LoadXml(slotInfo);
 
@@ -92,7 +84,7 @@ namespace arelv1.Pages
 
                 //On chope le rel (la matière) correspondant à ce slot via le RelId
                 string relId = docAbsence.GetElementsByTagName("relId")[0].InnerText;
-                string relInfo = API.getInfo("/api/rels/" + relId);
+                string relInfo = await API.GetInfoAsync("/api/rels/" + relId);
                 System.Xml.XmlDocument docRel = new System.Xml.XmlDocument();
                 docRel.LoadXml(relInfo);
 
@@ -128,6 +120,11 @@ namespace arelv1.Pages
                 AbsenceStack.Visibility = Visibility.Collapsed;
                 NoAbsenceSplash.Visibility = Visibility.Visible;
             }
+
+            finalListModules = modules.Values.ToList<Module>();
+            
+            this.Bindings.Update();
+            UpdateLayout();
 
         }
 

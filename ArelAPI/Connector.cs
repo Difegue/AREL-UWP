@@ -4,10 +4,14 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Appointments;
+using Windows.Foundation;
+using Windows.Security.Credentials;
 using Windows.Storage;
 using Windows.UI;
 
@@ -16,64 +20,91 @@ namespace ArelAPI
     //Classe générique pour traiter avec l'API d'Arel.
     public sealed class Connector
     {
-        
+
         private static ManualResetEvent allDone = new ManualResetEvent(false);//pour les events asynchrone
-        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings; 
-        private string resultat;
+        private Windows.Storage.ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         private Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader();
 
         //fonction qui initialise la connection à arel et stocke jeton d'accès / jeton de refresh
-        public bool connect(string name, string pass)
+
+        public IAsyncOperation<bool> LoginARELUserAsync(string name, string pass)
         {
-            string url = "https://arel.eisti.fr/oauth/token";
-            string contentType = "application/x-www-form-urlencoded";
-            string identifiants = loader.GetString("APIKey");
-            string data = "grant_type=password&username=" + name + "&password=" + pass + "&scope = read&format=xml";
-
-            string resultat = http(url, contentType, identifiants, "Basic", data, "POST");//on fait la requete
-
-            if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
-            {
-                localSettings.Values["token"] = getToken(resultat, "access_token");//on save le token
-                localSettings.Values["refresh"] = getToken(resultat, "refresh_token"); //idem pour le refresh
-                return true;
-            }
-            else
-            {            
-                DataStorage.saveData("erreurLogin", resultat);
-                return false;
-            }
+            Task<bool> load = LoginARELUser(name, pass);
+            IAsyncOperation<bool> to = load.AsAsyncOperation();
+            return to;
         }
 
-        //gros C/C des familles mdr - permet de récupérer un nouveau jeton d'accès par la puissance des endpoints non documentés
-        public bool renewAccessToken()
+        private async Task<bool> LoginARELUser(string name, string pass)
         {
-            if (!localSettings.Values.ContainsKey("refresh")) //Si il n'y a pas de refresh token enregistré, on renvoie false direct.
-                return false; //Même si normalement cet usecase n'arrive jamais, mieux vaut être safe.
 
-            string url = "https://arel.eisti.fr/oauth/token";
-            string contentType = "application/x-www-form-urlencoded";
-            string identifiants = loader.GetString("APIKey");
-            string data = "grant_type=refresh_token&refresh_token=" + localSettings.Values["refresh"] + "&format=xml";
+            var client = new HttpClient();
+            client.BaseAddress = new Uri("https://arel.eisti.fr");
+            var request = new HttpRequestMessage(HttpMethod.Post, "/oauth/token");
 
-            string resultat = http(url, contentType, identifiants, "Basic", data, "POST");//on fait la requete
+            //request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+            var byteArray = new UTF8Encoding().GetBytes(loader.GetString("APIKey"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+            var formData = new List<KeyValuePair<string, string>>();
+            formData.Add(new KeyValuePair<string, string>("grant_type", "password"));
+            formData.Add(new KeyValuePair<string, string>("username", name));
+            formData.Add(new KeyValuePair<string, string>("password", pass));
+            formData.Add(new KeyValuePair<string, string>("scope", "read"));
+            formData.Add(new KeyValuePair<string, string>("format", "xml"));
+
+            request.Content = new FormUrlEncodedContent(formData);
+
+            var response = await client.SendAsync(request);
+
+
+            string resultat = await response.Content.ReadAsStringAsync();
 
             if (resultat.IndexOf("tok") > -1)//si on trouve tok (en) dans la sortie c'est que c'est bon
             {
-                localSettings.Values["token"] = getToken(resultat, "access_token");//on save le token
-                localSettings.Values["refresh"] = getToken(resultat, "refresh_token"); //idem pour le refresh même si normalement il ne change pas
+                localSettings.Values["token"] = GetToken(resultat, "access_token");//on save le token
+
                 return true;
             }
             else
             {
-                DataStorage.saveData("erreurRefresh", resultat);
+                
+                string erreur = response.StatusCode.ToString();
+
+                switch(response.StatusCode)
+                {
+                    case (HttpStatusCode.BadRequest):
+                        erreur = "Identifiants incorrects";
+                        break;
+
+                    case (HttpStatusCode.Unauthorized):
+                        erreur = "Accès refusé";
+                        break;
+
+                    case (HttpStatusCode.Forbidden):
+                        erreur = "Ressource interdite";
+                        break;
+
+                    case (HttpStatusCode.InternalServerError):
+                        erreur = "Erreur Serveur";
+                        break;
+
+                    case (HttpStatusCode.NotFound):
+                        erreur = "Endpoint introuvable.";
+                        break;
+
+                    default:
+                        break;
+
+                } 
+
+                DataStorage.saveData("erreurLogin", erreur);
                 return false;
             }
-
         }
 
         //recupère le token a partir du resultat de la requete
-        private string getToken(string data, string type)
+        private string GetToken(string data, string type)
         {
             string res = "toto";
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
@@ -87,26 +118,42 @@ namespace ArelAPI
         }
 
         //Récupère les données d'un endpoint API AREL spécifié. Renvoie des données de test si le test mode est actif.
-        public string getInfo(string url)
+        public IAsyncOperation<string> GetInfoAsync (string url)
+        {
+            Task<string> load = GetInfo(url);
+            IAsyncOperation<string> to = load.AsAsyncOperation();
+            return to;
+        }
+
+        private async Task<string> GetInfo(string url)
         {
             if (DataStorage.isTestModeEnabled())
             {
-                return getTestData(url);
+                return GetTestData(url);
             }
             else
-            { 
-            url = "https://arel.eisti.fr/" + url;
-            string contentType = "application/xml";
-            string identifiants = localSettings.Values["token"].ToString();
-            string data = "format=xml";
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri("https://arel.eisti.fr");
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", localSettings.Values["token"].ToString());
 
-            string resultat = http(url, contentType, identifiants, "Bearer", data, "GET");//on fait la requete
-            return resultat;
+                var formData = new List<KeyValuePair<string, string>>();
+                formData.Add(new KeyValuePair<string, string>("format", "xml"));
+
+                request.Content = new FormUrlEncodedContent(formData);
+
+                var response = await client.SendAsync(request);
+
+                string resultat = await response.Content.ReadAsStringAsync();
+
+                return resultat;
             }
         }
-    
+
         //Renvoie différentes données de test selon l'endpoint spécifié.
-        private String getTestData(String url)
+        private String GetTestData(String url)
         {
             //Les strings sont obtenus de TestData.resw
             Windows.ApplicationModel.Resources.ResourceLoader loader = new Windows.ApplicationModel.Resources.ResourceLoader("TestData");
@@ -144,48 +191,38 @@ namespace ArelAPI
             return returnData;
         }
 
-        //Récupère l'ID de l'utlisateur avec le XML de getUserInfo.
-        public string getIdUser(string xml)
+
+        //Récupère le login stocké dans le Credential Locker et l'utilise pour réobtenir un access token.
+
+        public IAsyncOperation<bool> RenewAccessTokenAsync()
         {
-            string userid = "0";
-            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-            doc.LoadXml(xml);//chargement de la variable
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
-            {
-                if (node.Name == "id")
-                {
-                    userid = node.InnerText;
-                }
-            }
-            return userid;
+            Task<bool> load = RenewAccessToken();
+            IAsyncOperation<bool> to = load.AsAsyncOperation();
+            return to;
         }
 
-        //Récupère le nom complet de l'utilisateur avec le XML de getUserInfo.
-        public string getUserFullName(string xml, string fallback)
+        private async Task<bool> RenewAccessToken()
         {
-            string fn = "User";
-            string ln = "Anonyme";
-            try { 
-                System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-                doc.LoadXml(xml);//chargement de la variable
-                foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
-                {
-                    if (node.Name.ToLower() == "firstname")
-                        fn = node.InnerText;
-                
-                    if (node.Name.ToLower() == "lastname")
-                        ln = node.InnerText;
-                }
-                return fn + " " + ln;
-            }
-            catch (Exception) //On renvoie le string de fallback si le parsing échoue
-                { return fallback;  }
+
+            var vault = new Windows.Security.Credentials.PasswordVault();
+            string login = GetUserLogin(ArelAPI.DataStorage.getData("user"));
+            PasswordCredential passwd = vault.Retrieve("ARELUWP_User", login);
+
+            bool result = await LoginARELUser(login, passwd.Password);
+
+            //Si result = true, un nouvel access token a été stocké.
+            return result;
         }
-
-
 
         //Check if our connection to the Arel API is still in good standing (token hasn't expired or website isn't down)
-        public bool isOnline()
+        public IAsyncOperation<bool> IsOnlineAsync()
+        {
+            Task<bool> load = IsOnline();
+            IAsyncOperation<bool> to = load.AsAsyncOperation();
+            return to;
+        }
+
+        private async Task<bool> IsOnline()
         {
 
             if (DataStorage.isTestModeEnabled()) //Pas de connexion à l'API nécessaire en test mode
@@ -194,29 +231,29 @@ namespace ArelAPI
             try
             {
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
-                string data = getInfo("/api/me");
+                string data = await GetInfo("/api/me");
                 doc.LoadXml(data); //On essaie de charger un call bidon, si on obtient un XML correct (et pas "Accès Refusé") on est OK
                 return true;
             }
-            catch (System.Xml.XmlException ) //Une exception sera lancée si notre jeton est invalide
+            catch (System.Xml.XmlException) //Une exception sera lancée si notre jeton est invalide
             {
                 return false;
-            } 
+            }
 
         }
 
         //Met à jour un calendrier Windows custom avec les données de planning de l'API Arel.
         //On peut par la suite ouvrir l'appli calendrier Windows sur ce cal. custom.
-        public async void updateWindowsCalendar(string start, string end, string calendarName)
+        public async void UpdateWindowsCalendar(string start, string end, string calendarName)
         {
-            //string startest = "2016-06-01";
+            
             string apiUrl = "api/planning/slots?start=" + start + "&end=" + end;
 
-            string planningXML = getInfo(apiUrl);
+            string planningXML = await GetInfo(apiUrl);
 
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
             try
-            { 
+            {
                 doc.LoadXml(planningXML); //chargement de la variable
             }
             catch (Exception)
@@ -255,13 +292,13 @@ namespace ArelAPI
 
                 //Récup non complet rel (aka matière/sujet)
                 string idRel = node.ChildNodes[2].InnerText;
-                string xmlr = getInfo("/api/rels/" + idRel);
+                string xmlr = await GetInfo("/api/rels/" + idRel);
                 string relName = getRelName(xmlr, node.ChildNodes[11].InnerText);
 
                 //Récup nom complet prof
                 string idProf = node.ChildNodes[3].InnerText;
-                string xmlj = getInfo("/api/users/" + idProf);
-                string profName = getUserFullName(xmlj, node.ChildNodes[4].InnerText);
+                string xmlj = await GetInfo("/api/users/" + idProf);
+                string profName = GetUserFullName(xmlj, node.ChildNodes[4].InnerText);
                 appo.Organizer = new Windows.ApplicationModel.Appointments.AppointmentOrganizer();
                 appo.Organizer.DisplayName = profName;
 
@@ -282,6 +319,9 @@ namespace ArelAPI
 
         }
 
+
+        //Fonctions de traitement des XML renvoyés par l'API
+
         public string getRelName(string xmlr, string fallback)
         {
             try
@@ -291,137 +331,66 @@ namespace ArelAPI
                 return doc.ChildNodes[0].ChildNodes[0].InnerText;
             }
             catch (Exception) //On renvoie le string de fallback si le parsing échoue
-                { return fallback; }
+            { return fallback; }
         }
 
-        //--------------------------------requete http-------------------------------------
 
-        
-        //private string resultat;//resultat de la requete
-        private string postData;
-
-        public string http(string url,string contentType,string identifiants,string modeAuth,string data,string toc)
+        //Récupère l'ID de l'utlisateur avec le XML de getUserInfo.
+        public string GetIdUser(string xml)
         {
-            WebRequest connexion = WebRequest.Create(url);//url
-            allDone = new ManualResetEvent(false);//reinitialisation de l'event asynchrone
-
-            connexion.Method = toc;//Post ou get
-            //return connexion.Method;
-            connexion.Headers["ACCEPT"] = "application/xml";
-            connexion.ContentType = contentType;
-
-            string autorization = "";
-            postData = data;
-
-            //pour les identifiants
-            if(modeAuth == "Bearer")
+            string userid = "0";
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+            doc.LoadXml(xml);//chargement de la variable
+            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
             {
-               autorization = identifiants;
-               autorization = modeAuth + " " + autorization;
+                if (node.Name == "id")
+                {
+                    userid = node.InnerText;
+                }
             }
-            else
-            {
-                autorization = identifiants;//identifiants de l'application
-                byte[] binaryAuthorization = System.Text.Encoding.UTF8.GetBytes(autorization);//conversion en tableau de la chaine
-                autorization = Convert.ToBase64String(binaryAuthorization);
-                autorization = modeAuth + " " + autorization; 
-            }
-            connexion.Headers["AUTHORIZATION"] = autorization;
-
-            if (connexion.Method == "GET")
-            {
-                //connexion.BeginGetResponse(this.ResponseCallback, state);
-                connexion.BeginGetResponse(new AsyncCallback(reponse), connexion);
-            }
-            else
-            {
-                connexion.BeginGetRequestStream(new AsyncCallback(requete), connexion);//lance la connexion asynchrone
-            }
-
-            allDone.WaitOne();//attend et reste sur la page en cours
-            return resultat;  
-            
+            return userid;
         }
 
-       
-
-        private void requete(IAsyncResult asynchronousResult)
+        //Récupère le nom complet de l'utilisateur avec le XML de getUserInfo.
+        public string GetUserFullName(string xml, string fallback)
         {
-            
-            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
-
-            // End the operation
-            Stream postStream = request.EndGetRequestStream(asynchronousResult);
-            
-            // Convert the string into a byte array.
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-
-            // Write to the request stream.
-            postStream.Write(byteArray, 0, postData.Length);
-
-            // Start the asynchronous operation to get the response
-            request.BeginGetResponse(new AsyncCallback(reponse), request);
-        }
-
-        private void reponse(IAsyncResult asynchronousResult)
-        {
-
-
-            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
-
-            // End the operation
+            string fn = "User";
+            string ln = "Anonyme";
             try
             {
+                System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+                doc.LoadXml(xml);//chargement de la variable
+                foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
+                {
+                    if (node.Name.ToLower() == "firstname")
+                        fn = node.InnerText;
 
-
-                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
-                Stream streamResponse = response.GetResponseStream();
-                StreamReader streamRead = new StreamReader(streamResponse);
-                string responseString = streamRead.ReadToEnd();
-                
-                resultat = responseString;
+                    if (node.Name.ToLower() == "lastname")
+                        ln = node.InnerText;
+                }
+                return fn + " " + ln;
             }
-            catch (WebException e)
+            catch (Exception) //On renvoie le string de fallback si le parsing échoue
+            { return fallback; }
+        }
+
+        public string GetUserLogin(string xml)
+        {
+            string ret = "user";
+            try
             {
-                
-                string erreur = e.ToString();
-                if (erreur.IndexOf("400") > -1)
-                {                   
-                    resultat = "Identifiants incorrects";
-                }
-                else if (erreur.IndexOf("401") > -1)
+                System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
+                doc.LoadXml(xml);//chargement de la variable
+                foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
                 {
-                    resultat = "Accès refusé";
+                    if (node.Name.ToLower() == "username")
+                        ret = node.InnerText;
                 }
-                else if (erreur.IndexOf("403") > -1)
-                {
-                    Stream streamResponse = e.Response.GetResponseStream();
-                    StreamReader streamRead = new StreamReader(streamResponse);
-                    string responseString = streamRead.ReadToEnd();
-
-
-                    resultat = "Ressource interdite: "+responseString;
-                }
-                else if (e.Status.ToString().IndexOf("ResolutionFailure") > -1)
-                {
-                    resultat = "Pas de connection internet";
-                }
-                else if(erreur.IndexOf("500") > -1)
-                {
-                    resultat = "Erreur du serveur";
-                }
-                else if (erreur.IndexOf("404") > -1)
-                {
-                    resultat = "Endpoint introuvable.";
-                }
-                else
-                {
-                    resultat = "Erreur Inconnue.\n" + e.Status;
-                }
-               
-
             }
-            allDone.Set();
+            catch (Exception)
+            { }
+
+            return ret;
         }
     }
 }

@@ -46,6 +46,7 @@ namespace arelv1.Pages
             }
 
             getSalles(null,null);
+            UpdateLayout();
 
         }
 
@@ -69,17 +70,18 @@ namespace arelv1.Pages
             UpdateLayout();
         }
 
-        private void getSalles(object sender, RoutedEventArgs e)
+        private async void getSalles(object sender, RoutedEventArgs e)
         {
             string campusXML;
 
             //On récupère d'abord la liste des campus dispo, fraîche de l'API 
-            if (API.isOnline())
+            Boolean isOnline = await API.IsOnlineAsync();
+            if (isOnline)
             {
                 salleGrid.Visibility = Visibility.Visible;
                 NoInternetSplash.Visibility = Visibility.Collapsed;
 
-                campusXML = API.getInfo("/api/campus/sites");
+                campusXML = await API.GetInfoAsync("/api/campus/sites");
                 ArelAPI.DataStorage.saveData("campuses", campusXML);
 
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
@@ -104,19 +106,20 @@ namespace arelv1.Pages
                 if (SelectedComboBoxOption == null)
                     SelectedComboBoxOption = campusList[0];
 
+                this.Bindings.Update();
                 UpdateLayout();
                 
             }
             else //Aucun intérêt à voir les salles dispos si on a pas internet pour avoir des datas à jour, on affiche le splash d'erreur
             {
-                API.renewAccessToken();
+                //API.renewAccessToken();
                 salleGrid.Visibility = Visibility.Collapsed;
                 NoInternetSplash.Visibility = Visibility.Visible;
                 UpdateLayout();
             }
         }
 
-        private void writeSalle(object sender, SelectionChangedEventArgs e)
+        private async void writeSalle(object sender, SelectionChangedEventArgs e)
         {
             //On vide la liste des salles qu'on a 
             salleList.Clear();
@@ -132,7 +135,7 @@ namespace arelv1.Pages
 
             if( xmlSalles == null || xmlSalles == "" || xmlSalles == "\r\n")
             {
-                xmlSalles = API.getInfo("/api/campus/rooms?siteId=" + c.getId());
+                xmlSalles = await API.GetInfoAsync("/api/campus/rooms?siteId=" + c.getId());
 
                 //On sauvegarde les salles pour que la recherche ne retape pas dans l'API à chaque fois
                 ArelAPI.DataStorage.saveData("salles" + c.getId(), xmlSalles);

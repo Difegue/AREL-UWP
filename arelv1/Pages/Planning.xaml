@@ -55,25 +55,18 @@
                 <RowDefinition Height="481*"/>
                 <RowDefinition Height="303*"/>
             </Grid.RowDefinitions>
-
-            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
+            <!-- Foreground="{StaticResource SystemControlBackgroundAccentBrush}"-->
+            <TextBlock  Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
                             Margin="10,5,0,10"  TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
-        	    👌👺👉 Emploi du Temps AREL
+        	    Vendredi 31 Février
             </TextBlock>
 
 
             <StackPanel Grid.Row="1" Grid.Column="0" x:Name="FirstGrid" Grid.RowSpan="2" Margin="0,0,0,20">
-                <Grid>
-                    <FontIcon  Glyph="&#xE184;" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
-                        <FontIcon.RenderTransform>
-                            <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
-                        </FontIcon.RenderTransform>
-                    </FontIcon>
-                    <TextBlock  FontSize="25" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20"  TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    <Run Text="Les cours de la journée"/>
-                    </TextBlock>
-                </Grid>
-
+                <TextBlock  FontSize="25" HorizontalAlignment="Center" CharacterSpacing="-20" Margin="0,8,0,10"  TextWrapping="Wrap" FontWeight="SemiLight" Grid.ColumnSpan="2" >
+        	            Planning d'aujourd'hui
+                </TextBlock>
+                
                 <Grid x:Name="grid"  Margin="0,0,10,10" BorderThickness="2,0" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="25"/>
@@ -133,16 +126,11 @@
             </StackPanel>
 
             <StackPanel x:Name="SecondGrid" Grid.RowSpan="2" Margin="0,0,0,20">
-                <Grid>
-                    <FontIcon  Glyph="&#xE787;" HorizontalAlignment="Left" Margin="10,18,0,0" RenderTransformOrigin="0.5,0.5" VerticalAlignment="Top">
-                        <FontIcon.RenderTransform>
-                            <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
-                        </FontIcon.RenderTransform>
-                    </FontIcon>
-                    <TextBlock  FontSize="25" HorizontalAlignment="Left" CharacterSpacing="-70" Margin="40,8,15,20"  TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat">
-        	    <Run Text="Les cours de demain !"/>
-                    </TextBlock>
-                </Grid>
+                
+                <TextBlock  FontSize="25" HorizontalAlignment="Center" CharacterSpacing="-20" Margin="0,8,0,10"  TextWrapping="Wrap" FontWeight="SemiLight" Grid.ColumnSpan="2" >
+        	        Planning de demain
+                </TextBlock>
+                
 
                 <Grid x:Name="grid2"  Margin="0,0,10,10" BorderThickness="2,0" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>

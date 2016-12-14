@@ -103,7 +103,7 @@ namespace arelv1.Pages
             SpinnerSync.IsActive = true;
 
             //update manuelle: On chope les cours des 2 dernières + des 2 prochaines semaines
-            API.updateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.getUserFullName(ArelAPI.DataStorage.getData("user"), "Mon Planning AREL"));
+            API.UpdateWindowsCalendar(DateTime.Now.AddDays(-14).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(14).ToString("yyyy-MM-dd"), API.GetUserFullName(ArelAPI.DataStorage.getData("user"), "Mon Planning AREL"));
 
             //On montre le calendrier
             await Windows.ApplicationModel.Appointments.AppointmentManager.ShowTimeFrameAsync(DateTime.Now, new TimeSpan(125, 0, 0));

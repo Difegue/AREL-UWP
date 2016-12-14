@@ -44,7 +44,7 @@ namespace arelv1
         /// seront utilisés par exemple au moment du lancement de l'application pour l'ouverture d'un fichier spécifique.
         /// </summary>
         /// <param name="e">Détails concernant la requête et le processus de lancement.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -75,11 +75,14 @@ namespace arelv1
                     // puis configurez la nouvelle page en transmettant les informations requises en tant que
                     // paramètre
 
-                    if (localSettings.Values["token"] != null && localSettings.Values["refresh"] != null && localSettings.Values["stayConnect"] != null)
+                    if (localSettings.Values["token"] != null && localSettings.Values["stayConnect"] != null)
                     {
-                        if (!API.isOnline()) //On récupère un nouveau jeton d'accès pour cette session si l'ancien est mort
-                        { 
-                            if (API.renewAccessToken()) //Si ça marche, on va à l'accueil
+                        Boolean isOnline = await API.IsOnlineAsync();
+                        if (!isOnline) //On récupère un nouveau jeton d'accès pour cette session si l'ancien est mort
+                        {
+
+                            bool isReLogged = await API.RenewAccessTokenAsync();
+                            if (isReLogged) //Si ça marche, on va à l'accueil
                                 rootFrame.Navigate(typeof(acceuil), e.Arguments);
                             else //Sinon, on renvoie à la mainpage 
                                 rootFrame.Navigate(typeof(MainPage), e.Arguments);
@@ -121,7 +124,7 @@ namespace arelv1
         }
 
         //When launched through a notification, we do absolutely fucking nothing different
-        protected override void OnActivated(IActivatedEventArgs args)
+        protected override async void OnActivated(IActivatedEventArgs args)
         {
             ToastNotificationActivatedEventArgs e = args as ToastNotificationActivatedEventArgs;
 
@@ -146,11 +149,13 @@ namespace arelv1
                 // puis configurez la nouvelle page en transmettant les informations requises en tant que
                 // paramètre
 
-                if (localSettings.Values["token"] != null && localSettings.Values["refresh"] != null && localSettings.Values["stayConnect"] != null)
+                if (localSettings.Values["token"] != null && localSettings.Values["stayConnect"] != null)
                 {
-                    if (!API.isOnline()) //On récupère un nouveau jeton d'accès pour cette session si l'ancien est mort
+                    bool isOnline = await API.IsOnlineAsync();
+                    if (!isOnline) //On récupère un nouveau jeton d'accès pour cette session si l'ancien est mort
                     {
-                        if (API.renewAccessToken()) //Si ça marche, on va à l'accueil
+                        bool isReLogged = await API.RenewAccessTokenAsync();
+                        if (isReLogged) //Si ça marche, on va à l'accueil
                             rootFrame.Navigate(typeof(acceuil), null);
                         else //Sinon, on renvoie à la mainpage 
                             rootFrame.Navigate(typeof(MainPage), null);
