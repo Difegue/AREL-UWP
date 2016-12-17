@@ -40,7 +40,7 @@
             <StackPanel>
                 <StackPanel>
 
-                    <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" Margin="10,5,0,0"  FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap">
+                    <TextBlock HorizontalAlignment="Left" Margin="10,5,0,0"  Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="Wrap">
                         Disponibilité des Salles</TextBlock>
 
                     <Grid HorizontalAlignment="Right" Margin="0,7,20,20" x:Name="ComboBoxes">
@@ -69,10 +69,14 @@
                     <GridView.ItemTemplate >
                         <DataTemplate x:DataType="local:Salle">
                             <StackPanel Orientation="Horizontal" Margin="6" Width="200">
-                                <SymbolIcon Symbol="{x:Bind dispo, Converter={StaticResource DisponibleConverter}}" Margin="3,0,12,0" 
+
+                                <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="{x:Bind dispo, Converter={StaticResource DisponibleConverter}}" Margin="3,0,12,0" 
                                             Foreground="{x:Bind dispo, Converter={StaticResource DisponibleConverter}}" />
+                                
+                                <!--<SymbolIcon Symbol="{x:Bind dispo, Converter={StaticResource DisponibleConverter}}" Margin="3,0,12,0" 
+                                            Foreground="{x:Bind dispo, Converter={StaticResource DisponibleConverter}}" />-->
                                 <StackPanel>
-                                    <TextBlock Text="{x:Bind nom}"  FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat"/>
+                                    <TextBlock Text="{x:Bind nom}" Style="{StaticResource BaseTextBlockStyle}"/>
                                     <TextBlock Text="{x:Bind desc}" FontStyle="Italic"/>
                                     <Grid>
                                         <TextBlock Text="Capacité:" FontSize="12"/>
@@ -91,7 +95,7 @@
                             <CompositeTransform ScaleX="3" ScaleY="3"/>
                         </SymbolIcon.RenderTransform>
                     </SymbolIcon>
-                    <TextBlock  FontSize="26" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" TextWrapping="Wrap" HorizontalAlignment="Center" TextAlignment="Center">
                     Impossible de se connecter à l'API AREL.</TextBlock>
                     
 

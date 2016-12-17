@@ -57,18 +57,18 @@
                 <RowDefinition Height="303*"/>
             </Grid.RowDefinitions>
             <!-- Foreground="{StaticResource SystemControlBackgroundAccentBrush}"-->
-            <TextBlock  Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour" FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
-                            Margin="10,5,0,10"  TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
+            <TextBlock  Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour"  HorizontalAlignment="Left" Style="{StaticResource SubheaderTextBlockStyle}"
+                            Margin="10,5,0,10"  TextWrapping="Wrap" >
         	    Vendredi 31 Février
             </TextBlock>
 
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2" x:Name="LoadingIndicator" >
                 <ProgressRing Margin="0,20" Height="100" Width="100" IsActive="True" />
-                <TextBlock HorizontalAlignment="Center">Calcul de gros chiffres...</TextBlock>
+                <TextBlock HorizontalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}">Calcul de gros chiffres...</TextBlock>
             </StackPanel>
             
             <StackPanel Grid.Row="1" Grid.Column="0" x:Name="FirstGrid" Grid.RowSpan="2" Margin="0,0,0,20">
-                <TextBlock  FontSize="25" HorizontalAlignment="Center" CharacterSpacing="-20" Margin="0,8,0,10"  TextWrapping="Wrap" FontWeight="SemiLight" Grid.ColumnSpan="2" >
+                <TextBlock  HorizontalAlignment="Center"  Margin="0,8,0,10"  TextWrapping="Wrap"  Grid.ColumnSpan="2" Style="{StaticResource TitleTextBlockStyle}" >
         	            Planning d'aujourd'hui
                 </TextBlock>
                 
@@ -131,8 +131,8 @@
             </StackPanel>
 
             <StackPanel x:Name="SecondGrid" Grid.RowSpan="2" Margin="0,0,0,20">
-                
-                <TextBlock  FontSize="25" HorizontalAlignment="Center" CharacterSpacing="-20" Margin="0,8,0,10"  TextWrapping="Wrap" FontWeight="SemiLight" Grid.ColumnSpan="2" >
+
+                <TextBlock HorizontalAlignment="Center" Margin="0,8,0,10"  TextWrapping="Wrap" Grid.ColumnSpan="2" Style="{StaticResource TitleTextBlockStyle}">
         	        Planning de demain
                 </TextBlock>
                 

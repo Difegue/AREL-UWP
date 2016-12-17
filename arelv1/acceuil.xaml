@@ -33,25 +33,25 @@
 
                     <!-- hamburger avec logo arel -->
                     <Grid>
-                        <RadioButton Click="HamburgerButton_Click" Foreground="White" Style="{StaticResource NavRadioButtonStyle}" Tag="&#xE700;"/>
-                        <TextBlock x:Name="nomUser" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0" Foreground="White" >
-                            Utilisateur Anonyme</TextBlock>
+                        <Button x:Name="HamburgerButton" Grid.Row="0" Style="{StaticResource MenuItemButtonStyle}" Tag="&#xE700;" Foreground="White" Click="HamburgerButton_Click" Width="220" 
+                                Content="Utilisateur Anonyme"/>
+                        
                     </Grid>
 
                 </StackPanel>
 
                 <StackPanel x:Name="NavigationMenu" Orientation="Vertical" Grid.Row="1" >
 
-                    <RadioButton x:Name="AgendaBouton" GroupName="Group1" Checked="agendaClick" Content="Planning"  Foreground="White" Tag="&#xEC92;" 
+                    <RadioButton x:Name="AgendaBouton" GroupName="Group1" Checked="agendaClick" Content="Planning"  Foreground="White" Tag="&#xE787;" Width="220" 
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
-                    <RadioButton x:Name="SallesBouton" GroupName="Group1" Checked="sallesClick" Content="Salles Libres" Foreground="White" Tag="&#xE211;"
+                    <RadioButton x:Name="SallesBouton" GroupName="Group1" Checked="sallesClick" Content="Salles Libres" Foreground="White" Tag="&#xEBC6;" Width="220"
                             Style="{StaticResource NavRadioButtonStyle}" />
 
-                    <RadioButton x:Name="NotesBouton" GroupName="Group1" Checked="noteClick" Content="Notes"  Foreground="White" Tag="&#xE7BE;"
+                    <RadioButton x:Name="NotesBouton" GroupName="Group1" Checked="noteClick" Content="Notes"  Foreground="White" Tag="&#xE7BE;" Width="220"
                                  Style="{StaticResource NavRadioButtonStyle}" />
 
-                    <RadioButton x:Name="AbsencesBouton" GroupName="Group1" Checked="absenceClick" Content="Absences"  Foreground="White" Tag="&#xE1E0;"
+                    <RadioButton x:Name="AbsencesBouton" GroupName="Group1" Checked="absenceClick" Content="Absences"  Foreground="White" Tag="&#xEE57;" Width="220"
                                  Style="{StaticResource NavRadioButtonStyle}"/>
 
 
@@ -59,12 +59,12 @@
 
                 <StackPanel Grid.Row="2">
 
-                    <RadioButton Margin="0,0,0,0" x:Name="SettingsBouton" GroupName="Group1" Checked="settingsClick" Content="Paramètres" Foreground="White" Tag="&#xE115;"
+                    <RadioButton Margin="0,0,0,0" x:Name="SettingsBouton" GroupName="Group1" Checked="settingsClick" Content="Paramètres" Foreground="White" Tag="&#xE115;" Width="220"
                             Style="{StaticResource NavRadioButtonStyle}" />
 
 
-                    <RadioButton Margin="0,0,0,0" x:Name="DecoBouton" GroupName="Group1" Checked="decoClick" Content="Déconnexion" Foreground="White" Tag="&#xE7E8;"
-                            Style="{StaticResource NavRadioButtonStyle}" />
+                    <Button Margin="0,0,0,0" x:Name="DecoBouton" Click="decoClick" Content="Déconnexion" Foreground="White" Tag="&#xE7E8;" Width="220"
+                            Style="{StaticResource MenuItemButtonStyle}" />
                 </StackPanel>
 
             </Grid>

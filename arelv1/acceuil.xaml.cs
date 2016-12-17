@@ -53,7 +53,7 @@ namespace arelv1
 
                 //Récup du nom de l'utilisateur pour affichage
                 string userName = API.GetUserFullName(ArelAPI.DataStorage.getData("user"), "Utilisateur d'AREL");
-                nomUser.Text = userName;
+                HamburgerButton.Content = userName;
 
                 UpdateLayout();
             }
@@ -133,7 +133,10 @@ namespace arelv1
                 if (!ArelAPI.DataStorage.isTestModeEnabled() && localSettings.Values["stayConnect"] != null)
                 {
                     var vault = new Windows.Security.Credentials.PasswordVault();
-                    vault.Remove(vault.Retrieve("ARELUWP_User", API.GetUserLogin(ArelAPI.DataStorage.getData("user"))));
+                    string login = API.GetUserLogin(ArelAPI.DataStorage.getData("user"));
+
+                    if (login != "user") //Suppression du password enregistré si il existe
+                        vault.Remove(vault.Retrieve("ARELUWP_User", login));
 
                     localSettings.Values["stayConnect"] = null;
                 }

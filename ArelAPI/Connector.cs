@@ -206,6 +206,11 @@ namespace ArelAPI
 
             var vault = new Windows.Security.Credentials.PasswordVault();
             string login = GetUserLogin(ArelAPI.DataStorage.getData("user"));
+
+            //si le login est le string de fallback, on a pas d'user enregistré => échec
+            if (login == "user")
+                return false;
+
             PasswordCredential passwd = vault.Retrieve("ARELUWP_User", login);
 
             bool result = await LoginARELUser(login, passwd.Password);
@@ -233,7 +238,12 @@ namespace ArelAPI
                 System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
                 string data = await GetInfo("/api/me");
                 doc.LoadXml(data); //On essaie de charger un call bidon, si on obtient un XML correct (et pas "Accès Refusé") on est OK
-                return true;
+
+                //On peut aussi avoir un xml d'erreur spécifiant que le token est invalide, auquel cas on retourne false
+                if (data.Contains("invalid_token"))
+                    return false;
+                else
+                    return true;
             }
             catch (System.Xml.XmlException) //Une exception sera lancée si notre jeton est invalide
             {

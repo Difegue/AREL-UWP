@@ -11,8 +11,8 @@
 
         <StackPanel>
 
-            <TextBlock FontSize="36" HorizontalAlignment="Left" CharacterSpacing="-30" 
-        		    Margin="10,5,0,20" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Regular.otf#Montserrat">
+            <TextBlock HorizontalAlignment="Left" 
+        		    Margin="10,5,0,20" TextWrapping="Wrap" Style="{StaticResource SubheaderTextBlockStyle}">
         		  Paramètres
             </TextBlock>
 
@@ -24,13 +24,16 @@
                                 <CompositeTransform ScaleY="1.5" ScaleX="1.5"/>
                             </SymbolIcon.RenderTransform>
                         </SymbolIcon>
-                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" >
-        	    <Run Text="Synchronisation Calendrier"/>
+                    <TextBlock  HorizontalAlignment="Left" Style="{StaticResource TitleTextBlockStyle}"
+                                    Margin="60,10,0,0" TextWrapping="Wrap"  >
+        	            Synchronisation Calendrier
                         </TextBlock>
                     </Grid>
 
-                    <TextBlock Margin="20,15,0,0" FontSize="15" TextWrapping="Wrap">Vous pouvez utiliser cette application pour synchroniser votre Calendrier Windows 10 avec votre planning AREL.<LineBreak/>La synchronisation peut être effectuée automatiquement ou manuellement.</TextBlock>
+                    <TextBlock Margin="20,15,0,0" Style="{StaticResource BodyTextBlockStyle}" TextWrapping="Wrap">
+                        Vous pouvez utiliser cette application pour synchroniser votre Calendrier Windows 10 avec votre planning AREL.
+                        <LineBreak/>La synchronisation peut être effectuée automatiquement ou manuellement.
+                    </TextBlock>
 
                     <Grid>
                         <Button Margin="20,15,0,0" x:Name="SyncNow" Click="ManualSync">Synchroniser</Button>
@@ -38,8 +41,8 @@
                     </Grid>
                     <ToggleSwitch Margin="20,15,0,0" x:Name="BackgroundSyncSwitch" Header="Synchro. automatique" Toggled="AutoSync" />
 
-                    <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Une première synchronisation sera effectuée à l'activation de la synchro automatique.
-<LineBreak/>L'application Calendrier s'ouvrira automatiquement lorsqu'elle sera terminée.</TextBlock>
+                <TextBlock  Margin="20,0,0,0" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap" >Une première synchronisation sera effectuée à l'activation de la synchro automatique.
+                    <LineBreak/>L'application Calendrier s'ouvrira automatiquement lorsqu'elle sera terminée.</TextBlock>
 
                 </StackPanel>
 
@@ -54,15 +57,15 @@
                         </FontIcon>
 
 
-                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                    Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" >
-        	    <Run Text="Thème de l'application"/>
+                    <TextBlock  HorizontalAlignment="Left" Style="{StaticResource TitleTextBlockStyle}"
+                                    Margin="60,10,0,0" TextWrapping="Wrap"  >
+        	            Thème de l'application
                         </TextBlock>
                     </Grid>
 
                     <ToggleSwitch Margin="20,15,0,0" x:Name="ThemeSwitch" Header="Activer le thème sombre" Toggled="changeTheme" />
 
-                <TextBlock  Margin="20,0,0,0" FontSize="12" TextWrapping="Wrap" >Les changements de thème seront appliqués au prochain démarrage de l'appli.</TextBlock>
+                <TextBlock  Margin="20,0,0,0" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="Wrap" >Les changements de thème seront appliqués au prochain démarrage de l'appli.</TextBlock>
 
             </StackPanel>
 
@@ -75,15 +78,15 @@
                         </FontIcon>
 
 
-                        <TextBlock  FontSize="28" HorizontalAlignment="Left" CharacterSpacing="-70" 
-                                        Margin="50,8,0,0" TextWrapping="Wrap" FontFamily="ms-appx:/Assets/Montserrat-Light.otf#Montserrat" >
+                    <TextBlock  HorizontalAlignment="Left" Style="{StaticResource TitleTextBlockStyle}"
+                                    Margin="60,10,0,0" TextWrapping="Wrap"  >
         	            AREL Windows 10
                     </TextBlock>
                         
                         
                     </Grid>
 
-                <TextBlock Margin="20,10,0,0" >Version 0.8.5</TextBlock>
+                <TextBlock Margin="20,10,0,0" >Version 0.8.6</TextBlock>
                 <TextBlock  Margin="20,-10,0,0" FontSize="12" TextWrapping="Wrap" >
                     
                     <LineBreak/><LineBreak/>

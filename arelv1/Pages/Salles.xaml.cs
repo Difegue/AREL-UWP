@@ -186,12 +186,12 @@ namespace arelv1.Pages
         public object Convert(object value, Type targetType,
             object parameter, string language)
         {
-            if (targetType == typeof(Symbol))
+            if (targetType == typeof(string))
             {
                 if ((bool)value)
-                    return Symbol.Emoji2;
+                    return "\uEC61";
                 else
-                    return Symbol.Cancel;
+                    return "\uEB90";
             }
 
             if (targetType == typeof(Brush))

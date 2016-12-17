@@ -180,6 +180,11 @@ namespace arelv1
 
             ArelAPI.DataStorage.disableTestMode();
             ArelAPI.DataStorage.clearData(); //On wipe les données vu qu'on est arrivé sur un écran de connexion
+            
+            localSettings.Values["stayConnect"] = null;
+            localSettings.Values["token"] = null;
+            localSettings.Values["refresh"] = null;
+
 
             if (ArelAPI.DataStorage.isset("erreurRefresh") && ArelAPI.DataStorage.getData("erreurRefresh")!="") //Si le refresh token a échoué, on indique pourquoi l'utilisateur n'est plus connecté en lui redemandant son login
             {

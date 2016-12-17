@@ -95,9 +95,6 @@
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="arelv1_StoreKey.pfx" />
     <None Include="arelv1_TemporaryKey.pfx" />
-    <Content Include="Assets\Montserrat-Regular.otf" />
-    <Content Include="Assets\Montserrat-Light.otf" />
-    <Content Include="Assets\Montserrat-UltraLight.otf" />
     <None Include="project.json" />
     <PRIResource Include="TestData.resw" />
     <PRIResource Include="Resources.resw" />
