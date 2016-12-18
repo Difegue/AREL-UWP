@@ -135,10 +135,21 @@ namespace arelv1.Pages
 
             if( xmlSalles == null || xmlSalles == "" || xmlSalles == "\r\n")
             {
-                xmlSalles = await API.GetInfoAsync("/api/campus/rooms?siteId=" + c.getId());
+                Boolean isOnline = await API.IsOnlineAsync();
+                if (isOnline)
+                {
+                    xmlSalles = await API.GetInfoAsync("/api/campus/rooms?siteId=" + c.getId());
+                    //On sauvegarde les salles pour que la recherche ne retape pas dans l'API à chaque fois
+                    ArelAPI.DataStorage.saveData("salles" + c.getId(), xmlSalles);
+                }
+                else
+                {
+                    salleGrid.Visibility = Visibility.Collapsed;
+                    NoInternetSplash.Visibility = Visibility.Visible;
+                    UpdateLayout();
+                }
 
-                //On sauvegarde les salles pour que la recherche ne retape pas dans l'API à chaque fois
-                ArelAPI.DataStorage.saveData("salles" + c.getId(), xmlSalles);
+                
             }
 
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml

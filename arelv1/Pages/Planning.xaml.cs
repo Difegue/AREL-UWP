@@ -71,14 +71,15 @@ namespace arelv1.Pages
 
             if (isOnline)
             {
-            //now = now.AddDays(daysExtra);
+                //now = now.AddDays(daysExtra);
 
                 string xmlToday = await API.GetInfoAsync("/api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd"));
                 string xmlTomorrow = await API.GetInfoAsync("/api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd"));
 
                 ArelAPI.DataStorage.saveData("planningToday", xmlToday);
                 ArelAPI.DataStorage.saveData("planningTomorrow", xmlTomorrow);
-
+            }        
+           
                 drawPlanning(grid);
                 drawPlanning(grid2);
                 await writePlanning(ArelAPI.DataStorage.getData("planningToday"), grid);
@@ -89,7 +90,8 @@ namespace arelv1.Pages
                 LoadingIndicator.Visibility = Visibility.Collapsed;
 
                 UpdateLayout();
-            }
+            
+
 
         }
 
@@ -166,7 +168,7 @@ namespace arelv1.Pages
             if (isOnline)
             {
                 string xmlr = await API.GetInfoAsync("/api/rels/" + idRel);
-                matiere = API.getRelName(xmlr, matiere);
+                matiere = API.getRelName(xmlr, matiere)+"("+matiere+")";
 
                 string xmlj = await API.GetInfoAsync("/api/users/" + idProf);
                 profName = API.GetUserFullName(xmlj, profName);

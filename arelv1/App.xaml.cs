@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -81,11 +82,18 @@ namespace arelv1
                         if (!isOnline) //On récupère un nouveau jeton d'accès pour cette session si l'ancien est mort
                         {
 
-                            bool isReLogged = await API.RenewAccessTokenAsync();
-                            if (isReLogged) //Si ça marche, on va à l'accueil
+                            //Si on est juste sans internet, on peut assumer que l'utilisateur est toujours login, et passer sur l'acceuil en mode offline.
+                            if (!NetworkInterface.GetIsNetworkAvailable())
                                 rootFrame.Navigate(typeof(acceuil), e.Arguments);
-                            else //Sinon, on renvoie à la mainpage 
-                                rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                            else
+                            {
+                                bool isReLogged = await API.RenewAccessTokenAsync();
+                                if (isReLogged) //Si ça marche, on va à l'accueil
+                                    rootFrame.Navigate(typeof(acceuil), e.Arguments);
+                                else //Sinon, on renvoie à la mainpage 
+                                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                            }
+                            
                         }
                         else
                             rootFrame.Navigate(typeof(acceuil), e.Arguments);

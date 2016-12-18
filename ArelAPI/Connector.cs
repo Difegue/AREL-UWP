@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -229,6 +230,10 @@ namespace ArelAPI
 
         private async Task<bool> IsOnline()
         {
+
+            //On regarde si on a un accès internet d'abord
+            if (!NetworkInterface.GetIsNetworkAvailable())
+                return false;
 
             if (DataStorage.isTestModeEnabled()) //Pas de connexion à l'API nécessaire en test mode
                 return true;
