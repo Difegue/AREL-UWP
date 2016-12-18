@@ -49,6 +49,7 @@ namespace arelv1
             {
                 //màj des données de l'utilisateur
                 string infoUser = await API.GetInfoAsync("/api/me");
+
                 ArelAPI.DataStorage.saveData("user", infoUser);
 
                 //Récup du nom de l'utilisateur pour affichage

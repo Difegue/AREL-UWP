@@ -32,7 +32,7 @@
             </Grid.RowDefinitions>
 
             <!-- logo -->
-            <Viewbox   Grid.Column="1" Grid.Row="0" Width="225" Height="225" Margin="0,30,0,0">
+            <Viewbox  x:Name="ArelLogo" Grid.Column="1" Grid.Row="0" Width="225" Height="225" Margin="0,30,0,0" Visibility="Visible">
                 <Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Name="Calque_1" Width="225" Height="225" Canvas.Left="0" Canvas.Top="0">
                     <Canvas.RenderTransform>
                         <TranslateTransform X="0" Y="0"/>
@@ -55,7 +55,108 @@
                         </Canvas>
                     </Canvas>
                 </Canvas>
+            </Viewbox>
 
+            <Viewbox  x:Name="XmasLogo" Grid.Column="1" Grid.Row="0" Width="225" Height="225" Margin="0,30,0,0" Visibility="Collapsed">
+                <Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Name="svg2" Width="476.19049" Height="500">
+                    <Canvas.RenderTransform>
+                        <TranslateTransform X="0" Y="0"/>
+                    </Canvas.RenderTransform>
+                    <Canvas.Resources/>
+                    <!--Unknown tag: metadata-->
+                    <!--Unknown tag: sodipodi:namedview-->
+                    <Canvas Name="g51">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="1.4271186 0 0 1.4271186 -17.125427 422.93558"/>
+                        </Canvas.RenderTransform>
+                    </Canvas>
+                    <Canvas Name="g9" Opacity="0.2">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -142.85714"/>
+                        </Canvas.RenderTransform>
+                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path111" Fill="#FF231F20" Data="m 52 50 c 0 2.209 -1.791 4 -4 4 l -32 0 c -2.209 0 -4 -1.791 -4 -4 l 0 -32 c 0 -2.209 1.791 -4 4 -4 l 32 0 c 2.209 0 4 1.791 4 4 l 0 32 z"/>
+                    </Canvas>
+                    <Canvas Name="g13">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -142.85714"/>
+                        </Canvas.RenderTransform>
+                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path115" Fill="#FF2F4050" Data="m 52 48 c 0 2.209 -1.791 4 -4 4 l -32 0 c -2.209 0 -4 -1.791 -4 -4 l 0 -32 c 0 -2.209 1.791 -4 4 -4 l 32 0 c 2.209 0 4 1.791 4 4 l 0 32 z"/>
+                    </Canvas>
+                    <Canvas Name="g31" Opacity="1">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="2.6469982 0 0 2.6469982 -425.93484 -426.34926"/>
+                        </Canvas.RenderTransform>
+                        <Canvas Name="g53" Opacity="1">
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path171" Fill="#FFFFFFFF" Data="m 248.908 175.052 c 0 8.375 0.723 16.239 -0.129 23.929 -3.175 28.672 -13.566 54.169 -34.751 74.502 -6.385 6.128 -13.407 11.458 -20.995 16.06 -4.076 2.472 -7.117 1.765 -9.822 -2.049 -3.769 -5.315 -7.544 -10.608 -9.219 -17.038 -1.199 -4.604 -0.057 -7.712 4.644 -10.091 34.932 -17.68 59.056 -44.376 68.388 -83.171 0.113 -0.469 0.366 -0.908 0.592 -1.342 0.061 -0.119 0.258 -0.17 1.292 -0.8 z"/>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path19" Fill="#FFFFFFFF" Data="m 321.96 283.899 c -11.653 -5.132 -21.952 -12.412 -31.352 -20.904 -20.982 -18.957 -34.364 -42.134 -38.226 -70.44 -0.747 -5.471 -0.572 -10.96 -0.635 -16.449 -0.031 -2.725 1.16 -4.505 3.878 -4.969 7.432 -1.267 14.873 -1.855 22.264 0.289 4.264 1.237 6.023 3.794 5.737 8.504 -2.355 38.849 8.56 72.946 36.704 100.707 0.808 0.797 1.991 1.216 2.999 1.811 -0.456 0.483 -0.912 0.967 -1.369 1.451 z"/>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path116" Fill="#FFFFFFFF" Data="m 192.092 293.085 c 7.989 -5.997 16.531 -10.317 25.476 -13.857 34.23 -13.547 67.828 -13.12 100.574 4.777 5.411 2.957 5.929 4.41 3.359 9.951 -2.448 5.279 -4.815 10.632 -8.87 14.961 -4.518 4.822 -7.047 5.149 -12.499 1.491 -22.174 -14.879 -46.564 -22.607 -73.301 -22.353 -10.329 0.098 -20.545 1.582 -30.483 4.623 -1.194 0.366 -2.368 1.289 -4.256 0.407 z"/>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path113" Fill="#FFFFFFFF" Data="m 200.241 235.199 c -10.089 -0.071 -18.145 -8.072 -18.207 -18.081 -0.063 -10.15 8.207 -18.308 18.546 -18.294 10.348 0.014 18.395 8.048 18.437 18.407 0.04 10.026 -8.336 18.042 -18.776 17.968 z"/>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path157" Fill="#FFFFFFFF" Data="m 328.173 220.972 c 0.015 10.518 -7.805 18.302 -18.307 18.225 -10.252 -0.076 -17.934 -7.813 -17.972 -18.103 -0.038 -10.418 7.949 -18.367 18.358 -18.27 10.24 0.095 17.907 7.86 17.921 18.148 z"/>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path117" Fill="#FFFFFFFF" Data="m 251.97 295.814 c 10.437 -0.068 18.389 7.438 18.599 17.555 0.206 9.951 -8.379 18.723 -18.267 18.667 -9.954 -0.057 -18.265 -8.25 -18.301 -18.042 -0.039 -10.011 7.972 -18.115 17.969 -18.18 z"/>
+                        </Canvas>
+                    </Canvas>
+                    <Canvas Name="g17" Opacity="0.2">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -142.85714"/>
+                        </Canvas.RenderTransform>
+                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="24" Canvas.Top="14" Width="4" Height="40" Name="rect19" Fill="#FF231F20"/>
+                    </Canvas>
+                    <Canvas Name="g21" Opacity="0.2">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -90.869939"/>
+                        </Canvas.RenderTransform>
+                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="12" Canvas.Top="30" Width="40" Height="4" Name="rect23" Fill="#FF231F20"/>
+                    </Canvas>
+                    <Canvas Name="g25">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -142.85714"/>
+                        </Canvas.RenderTransform>
+                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="24" Canvas.Top="12" Width="4" Height="40" Name="rect27" Fill="{StaticResource SystemControlBackgroundAccentBrush}"/>
+                    </Canvas>
+                    <Canvas Name="g29">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -90.869939"/>
+                        </Canvas.RenderTransform>
+                        <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="12" Canvas.Top="28" Width="40" Height="4" Name="rect31" Fill="{StaticResource SystemControlBackgroundAccentBrush}"/>
+                    </Canvas>
+                    <Canvas Name="g33" Opacity="0.2">
+                        <Canvas.RenderTransform>
+                            <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -90.869939"/>
+                        </Canvas.RenderTransform>
+                        <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path35" Fill="#FF231F20" Data="m 36.033 22.033 c -1.254 -1.254 -2.899 -1.882 -4.543 -1.882 -1.644 0 -3.288 0.627 -4.543 1.882 -1.83 1.83 -1.99 4.549 -1.944 7.547 -0.63 -0.291 -4.858 -2.38 -5.276 -6.186 -0.09 -0.823 -0.835 -1.415 -1.655 -1.327 -0.823 0.091 -1.417 0.832 -1.327 1.655 0.392 3.565 2.86 5.949 4.796 7.301 -2.237 0.087 -4.222 0.492 -5.659 1.929 -2.509 2.509 -2.509 6.577 0 9.086 1.254 1.255 2.899 1.882 4.543 1.882 1.644 0 3.288 -0.627 4.543 -1.882 1.721 -1.72 1.966 -4.225 1.951 -7.01 0.102 0.108 0.216 0.207 0.352 0.283 0.047 0.026 4.647 2.655 4.647 6.773 0 0.829 0.671 1.5 1.5 1.5 0.829 0 1.5 -0.671 1.5 -1.5 0 -4.851 -4.008 -7.978 -5.576 -9.015 2.657 -0.006 5.037 -0.296 6.692 -1.95 2.508 -2.51 2.508 -6.577 -10e-4 -9.086 z M 22.846 39.916 c -0.647 0.647 -1.507 1.003 -2.422 1.003 -0.915 0 -1.775 -0.356 -2.422 -1.003 -1.335 -1.335 -1.335 -3.508 0 -4.843 C 18.765 34.311 20.114 34 22.66 34 c 0.408 0 0.823 0.007 1.243 0.016 0.057 2.611 0.021 4.822 -1.057 5.9 z M 33.911 28.997 c -0.762 0.762 -2.111 1.073 -4.657 1.073 -0.408 0 -0.823 -0.007 -1.243 -0.016 -0.057 -2.611 -0.021 -4.822 1.057 -5.9 0.647 -0.647 1.507 -1.003 2.422 -1.003 0.915 0 1.775 0.356 2.422 1.003 1.334 1.335 1.334 3.508 -10e-4 4.843 z"/>
+                    </Canvas>
+                    <Canvas Name="g4172">
+                        <Canvas Name="g37">
+                            <Canvas.RenderTransform>
+                                <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -165.25166"/>
+                            </Canvas.RenderTransform>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path39" Fill="{StaticResource SystemControlBackgroundAccentBrush}" Data="m 31.49 27.39907 c 0.915 0 1.775 0.356 2.422 1.003 1.335 1.335 1.335 3.508 0 4.843 -0.762 0.762 -2.111 1.073 -4.657 1.073 -0.408 0 -0.823 -0.007 -1.243 -0.016 -0.057 -2.611 -0.021 -4.822 1.057 -5.9 0.646 -0.647 1.506 -1.003 2.421 -1.003 m 0 -3 c -1.644 0 -3.288 0.627 -4.543 1.882 -2.509 2.509 -1.882 6.684 -1.882 10.967 1.428 0 2.844 0.07 4.19 0.07 2.692 0 5.105 -0.279 6.778 -1.951 2.509 -2.509 2.509 -6.577 0 -9.086 -1.255 -1.255 -2.899 -1.882 -4.543 -1.882 l 0 0 z"/>
+                        </Canvas>
+                        <Canvas Name="g41">
+                            <Canvas.RenderTransform>
+                                <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -90.869939"/>
+                            </Canvas.RenderTransform>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path43" Fill="{StaticResource SystemControlBackgroundAccentBrush}" Data="m 22.66 32 c 0.408 0 0.823 0.007 1.243 0.016 0.057 2.612 0.021 4.822 -1.057 5.9 -0.647 0.647 -1.507 1.003 -2.422 1.003 -0.915 0 -1.775 -0.356 -2.422 -1.003 -1.335 -1.335 -1.335 -3.508 0 -4.843 C 18.765 32.311 20.114 32 22.66 32 m 0 -3 c -2.692 0 -5.105 0.279 -6.778 1.951 -2.509 2.509 -2.509 6.577 0 9.086 1.254 1.254 2.899 1.882 4.543 1.882 1.644 0 3.288 -0.627 4.543 -1.882 C 27.477 37.528 26.85 33.353 26.85 29.07 25.422 29.07 24.006 29 22.66 29 l 0 0 z"/>
+                        </Canvas>
+                        <Canvas Name="g45">
+                            <Canvas.RenderTransform>
+                                <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -90.869939"/>
+                            </Canvas.RenderTransform>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path47" Fill="{StaticResource SystemControlBackgroundAccentBrush}" Data="m 33.417 41.583 c -0.828 0 -1.5 -0.672 -1.5 -1.5 0 -4.118 -4.601 -6.747 -4.647 -6.772 -0.721 -0.405 -0.98 -1.317 -0.578 -2.04 0.402 -0.722 1.312 -0.983 2.035 -0.583 0.253 0.141 6.19 3.496 6.19 9.396 0 0.827 -0.672 1.499 -1.5 1.499 z"/>
+                        </Canvas>
+                        <Canvas Name="g49">
+                            <Canvas.RenderTransform>
+                                <MatrixTransform Matrix="11.904762 0 0 11.904762 -142.85714 -90.869939"/>
+                            </Canvas.RenderTransform>
+                            <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path51" Fill="{StaticResource SystemControlBackgroundAccentBrush}" Data="m 24.502 30.5 c -0.192 0 -0.389 -0.037 -0.578 -0.116 -0.267 -0.111 -6.534 -2.798 -7.18 -8.662 -0.091 -0.823 0.504 -1.564 1.327 -1.655 0.821 -0.089 1.564 0.504 1.655 1.327 0.453 4.126 5.307 6.202 5.355 6.223 0.764 0.319 1.124 1.198 0.805 1.963 -0.24 0.574 -0.797 0.92 -1.384 0.92 z"/>
+                        </Canvas>
+                    </Canvas>
+                    <Canvas Name="Layer_2">
+                        <Canvas.RenderTransform>
+                            <TranslateTransform X="-4.9491562" Y="437.32202"/>
+                        </Canvas.RenderTransform>
+                    </Canvas>
+                </Canvas>
             </Viewbox>
 
             <!-- texte -->

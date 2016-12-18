@@ -185,6 +185,11 @@ namespace arelv1
             localSettings.Values["token"] = null;
             localSettings.Values["refresh"] = null;
 
+            if (DateTime.Now.DayOfYear > 335) //Pour le mois de décembre en gros
+            { 
+                ArelLogo.Visibility = Visibility.Collapsed;
+                XmasLogo.Visibility = Visibility.Visible;
+            }
 
             if (ArelAPI.DataStorage.isset("erreurRefresh") && ArelAPI.DataStorage.getData("erreurRefresh")!="") //Si le refresh token a échoué, on indique pourquoi l'utilisateur n'est plus connecté en lui redemandant son login
             {
