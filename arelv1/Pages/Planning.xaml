@@ -33,8 +33,8 @@
                     <VisualState.Setters>
                         <Setter Target="FirstGrid.Margin" Value="0,0,10,10"/>
                         <Setter Target="SecondGrid.Margin" Value="0,0,10,0"/>
-                        <Setter Target="c1.Width" Value="220"/>
-                        <Setter Target="c2.Width" Value="220"/>
+                        <Setter Target="c1.Width" Value="300"/>
+                        <Setter Target="c2.Width" Value="300"/>
                         <Setter Target="FirstGrid.(Grid.ColumnSpan)" Value="2"/>
                         <Setter Target="SecondGrid.(Grid.Column)" Value="0"/>
                         <Setter Target="SecondGrid.(Grid.ColumnSpan)" Value="2"/>

@@ -30,19 +30,19 @@ namespace arelv1.Pages
         {
             this.InitializeComponent();
 
-            dateJour.Text = getDayStr(now, 0);
+            dateJour.Text = GetDayStr(now, 0);
 
             FirstGrid.Visibility = Visibility.Collapsed;
             SecondGrid.Visibility = Visibility.Collapsed;
 
-            updatePlanning(); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
+            UpdatePlanningAsync(); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
 
             
 
         }
 
         //Crée un joli string avec la date + un offset de jour
-        private string getDayStr(DateTime dt, int daysToAdd)
+        private string GetDayStr(DateTime dt, int daysToAdd)
         {
 
             dt = dt.AddDays(daysToAdd);
@@ -65,7 +65,7 @@ namespace arelv1.Pages
          * Les fonctions ci-dessous concernent le dessin de l'EDT sur des élements XAML Grid.
          */
 
-        private async void updatePlanning()
+        private async void UpdatePlanningAsync()
         {
             Boolean isOnline = await API.IsOnlineAsync();
 
@@ -80,10 +80,10 @@ namespace arelv1.Pages
                 ArelAPI.DataStorage.saveData("planningTomorrow", xmlTomorrow);
             }        
            
-                drawPlanning(grid);
-                drawPlanning(grid2);
-                await writePlanning(ArelAPI.DataStorage.getData("planningToday"), grid);
-                await writePlanning(ArelAPI.DataStorage.getData("planningTomorrow"), grid2);
+                DrawPlanning(grid);
+                DrawPlanning(grid2);
+                await WritePlanningAsync(ArelAPI.DataStorage.getData("planningToday"), grid);
+                await WritePlanningAsync(ArelAPI.DataStorage.getData("planningTomorrow"), grid2);
 
                 FirstGrid.Visibility = Visibility.Visible;
                 SecondGrid.Visibility = Visibility.Visible;
@@ -98,31 +98,17 @@ namespace arelv1.Pages
         /*
          * Récupère depuis un XML de l'API les informations des cours, et les écrit dans la grille de journée spécifiée.  
          */
-        private async Task<bool> writePlanning(string xml, Grid planningGrid)
+        private async Task<bool> WritePlanningAsync(string xml, Grid planningGrid)
         {
 
-            string week = "";
-            string week1 = "";
-            DateTime lundi;
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
             doc.LoadXml(xml);//chargement de la variable
-
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.Attributes)
-            {
-                if (node.Name == "week")
-                {
-                    week = node.InnerText;
-                    week1 = week.Substring(0, 2);
-                }
-            }
-
-            lundi = weekToDate(Convert.ToInt32(week1), 2016, "lundi");
 
             var tasks = new List<Task>();
 
             foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds en parallèle
             {
-                tasks.Add(computeCours(node, lundi, planningGrid)); 
+                tasks.Add(ComputeCoursAsync(node, planningGrid)); 
             }
 
             //LA VITESSE
@@ -132,12 +118,13 @@ namespace arelv1.Pages
         }
 
         //Récupère les données du noeud XML du cours et appelle ajoutCours pour le dessiner à l'écran
-        private async Task<bool> computeCours(System.Xml.XmlNode node, DateTime lundi, Grid planningGrid)
+        private async Task<bool> ComputeCoursAsync(System.Xml.XmlNode node, Grid planningGrid)
         {
 
             string prof = "";
             string salle = "";
             string matiere = "";
+            string matiere2 = "";
             string debut = "";
             string fin = "";
             string couleur = "";
@@ -168,14 +155,15 @@ namespace arelv1.Pages
             if (isOnline)
             {
                 string xmlr = await API.GetInfoAsync("/api/rels/" + idRel);
-                matiere = API.getRelName(xmlr, matiere)+"("+matiere+")";
+                matiere2 = API.getRelName(xmlr, matiere);
+                matiere = "(" + matiere + ")";
 
                 string xmlj = await API.GetInfoAsync("/api/users/" + idProf);
                 profName = API.GetUserFullName(xmlj, profName);
             }
 
             if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")
-                ajoutCours(profName, debut, fin, matiere, couleur, lundi, salle, planningGrid);
+                AddCours(matiere2, matiere, prof, salle, debut, fin, couleur, planningGrid);
 
             return true;
 
@@ -184,17 +172,16 @@ namespace arelv1.Pages
         /*
          * Ajoute le cours détaillé à la grille de planning spécifiée.
          * Il y a actuellement deux grilles sur la page, une pour chaque jour.
+         * 4 lignes dispos par cours (un peu crado dans l'implémentation mais bon)
          */
-        private void ajoutCours(string prof, string heureDebut, string heureFin, string matière, string couleur, DateTime premierJour, string salle, Grid planningGrid)
+        private void AddCours(string line1, string line2, string line3, string line4, string heureDebut, string heureFin, string couleur, Grid planningGrid)
         {
             DateTime now = DateTime.Now;
 
             DateTime dt = Convert.ToDateTime(heureDebut);
             DateTime dt2 = Convert.ToDateTime(heureFin);
-
-            int col = dt.Day - premierJour.Day + 1;
-            if (col < 0 && now.Month == premierJour.Month)
-                col = col + DateTime.DaysInMonth(dt.Year, dt.Month - 1);
+            
+            int col = (int) dt.DayOfWeek - 1;
 
             int ligneDeb = ((dt.Hour - 8) * 4) + 1;
             int ligneFin = ((dt2.Hour - 8) * 4);
@@ -203,53 +190,28 @@ namespace arelv1.Pages
                 ligneDeb += (dt.Minute / 15);
                 ligneFin += (dt2.Minute / 15);
 
-                //ecrire(ligneDeb.ToString()+" - "+ ligneFin.ToString());
-
-                TextBlock matBlock = new TextBlock();
-                matBlock.Text = matière;
-                matBlock.FontSize = 12;
-                matBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                matBlock.Foreground = new SolidColorBrush(Colors.Black);
-
-
-
-                TextBlock profBlock = new TextBlock();
-                profBlock.Text = prof;
-                profBlock.FontSize = 12;
-                profBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                profBlock.Foreground = new SolidColorBrush(Colors.Black);
-
-                TextBlock salleBlock = new TextBlock();
-                salleBlock.Text = salle;
-                salleBlock.FontSize = 12;
-                salleBlock.HorizontalAlignment = HorizontalAlignment.Center;
-                salleBlock.Foreground = new SolidColorBrush(Colors.Black);
+                TextBlock block1 = CreateCoursTextBlock(line1);
+                TextBlock block2 = CreateCoursTextBlock(line2);
+                TextBlock block3 = CreateCoursTextBlock(line3);
+                TextBlock block4 = CreateCoursTextBlock(line4);
 
                 for (int i = ligneDeb; i <= ligneFin; i++)
                 {
                     StackPanel macase = new StackPanel();
 
                     if (i == ligneDeb)
-                    {
-                        macase.Children.Add(matBlock);
-                    }
+                        macase.Children.Add(block1);
 
                     if (i == ligneDeb + 1)
-                    {
-                        macase.Children.Add(profBlock);
-                    }
+                        macase.Children.Add(block2);
 
                     if (i == ligneDeb + 2)
-                    {
-                        macase.Children.Add(salleBlock);
-                    }
+                        macase.Children.Add(block3);
+
+                    if (i == ligneDeb + 3)
+                        macase.Children.Add(block4);
 
                     macase.Background = HexToColor(couleur);
-
-                    //bugfix chelou pour les fins de mois - il arrive que le calcul de col parte séverement dans les négatifs 
-                    //comme c'est du vieux code ici j'ai aucune motivation de regarder au-delà
-                    if (col < 0)
-                        col = 1;
 
                     planningGrid.Children.Add(macase);
                     Grid.SetColumn(macase, col);
@@ -259,10 +221,21 @@ namespace arelv1.Pages
 
         }
 
+        private TextBlock CreateCoursTextBlock(string text)
+        {
+            return new TextBlock()
+            {
+                Text = text,
+                FontSize = 12,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Foreground = new SolidColorBrush(Colors.Black)
+            };
+        }
+
         /*
          * Dessine sur la grille spécifiée le squelette du planning (heures et lignes) 
          */
-        private void drawPlanning(Grid planningGrid)
+        private void DrawPlanning(Grid planningGrid)
         {
 
             for (int j = 1; j < 41; j++)
@@ -297,43 +270,6 @@ namespace arelv1.Pages
             }
 
         }
-
-        //-------------------- convertisseur n° semaine en date --------------------------------------
-
-        public DateTime weekToDate(int week, int year, string day)
-        {
-            //Jour int ISO
-            Dictionary<string, int> dicDays = new Dictionary<string, int>()
-            {
-                {"lundi", 1 },
-                {"mardi", 2 },
-                {"mercredi", 3},
-                {"jeudi", 4 },
-                {"vendredi", 5 },
-                {"samedi", 6 },
-                {"dimanche", 7 }
-            };
-
-
-
-
-            DateTime value = new DateTime(year, 1, 1).AddDays(7 * week);
-
-            int daysToAdd = dicDays[day.ToLower()];
-
-            // On contrôle si l'année commence après jeudi si oui on décale d'une semaine.
-            if ((int)new DateTime(value.Year, 1, 1).DayOfWeek < 5)
-            {
-                daysToAdd -= (int)value.DayOfWeek + 7;
-            }
-            else
-            {
-                daysToAdd -= (int)value.DayOfWeek;
-            }
-
-            return value.AddDays(daysToAdd);
-        }
-
 
         //-------------------- convertisseur hexa -> rgb ---------------------------------------------
 
