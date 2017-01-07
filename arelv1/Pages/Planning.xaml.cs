@@ -190,7 +190,7 @@ namespace arelv1.Pages
                 matiere = "(" + matiere + ")";
 
                 string xmlj = await API.GetInfoAsync("/api/users/" + idProf);
-                profName = API.GetUserFullName(xmlj, profName);
+                prof = API.GetUserFullName(xmlj, profName);
             }
 
             if (prof != "" && matiere != "" && debut != "" && fin != "" && couleur != "" && salle != "")

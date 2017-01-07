@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="13459Difegue.AREL-colevirtuelledelEISTI" Publisher="CN=Vincent" Version="0.8.7.0" />
+  <Identity Name="13459Difegue.AREL-colevirtuelledelEISTI" Publisher="CN=Vincent" Version="0.8.8.0" />
   <mp:PhoneIdentity PhoneProductId="bb5f7131-4cd6-4b8e-bffa-2b89fd853834" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>AREL - École virtuelle de l'EISTI</DisplayName>
