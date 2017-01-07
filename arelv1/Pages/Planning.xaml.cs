@@ -34,6 +34,7 @@ namespace arelv1.Pages
 
             FirstGrid.Visibility = Visibility.Collapsed;
             SecondGrid.Visibility = Visibility.Collapsed;
+            ThirdGrid.Visibility = Visibility.Collapsed;
 
             UpdatePlanningAsync(); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
 
@@ -75,18 +76,27 @@ namespace arelv1.Pages
 
                 string xmlToday = await API.GetInfoAsync("/api/planning/slots?start=" + now.ToString("yyyy-MM-dd") + "&end=" + now.AddDays(1).ToString("yyyy-MM-dd"));
                 string xmlTomorrow = await API.GetInfoAsync("/api/planning/slots?start=" + now.AddDays(1).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(2).ToString("yyyy-MM-dd"));
+                string xmlAfterTomorrow= await API.GetInfoAsync("/api/planning/slots?start=" + now.AddDays(2).ToString("yyyy-MM-dd") + "&end=" + now.AddDays(3).ToString("yyyy-MM-dd"));
+
 
                 ArelAPI.DataStorage.saveData("planningToday", xmlToday);
                 ArelAPI.DataStorage.saveData("planningTomorrow", xmlTomorrow);
+                ArelAPI.DataStorage.saveData("planningAfterTomorrow", xmlAfterTomorrow);
             }        
            
                 DrawPlanning(grid);
                 DrawPlanning(grid2);
+                DrawPlanning(grid3);
                 await WritePlanningAsync(ArelAPI.DataStorage.getData("planningToday"), grid);
                 await WritePlanningAsync(ArelAPI.DataStorage.getData("planningTomorrow"), grid2);
+                await WritePlanningAsync(ArelAPI.DataStorage.getData("planningAfterTomorrow"), grid3);
 
                 FirstGrid.Visibility = Visibility.Visible;
                 SecondGrid.Visibility = Visibility.Visible;
+                ThirdGrid.Visibility = Visibility.Visible;
+
+                ThirdDay.Text = "Planning du " + now.AddDays(2).ToString("dd/MM/yy");
+
                 LoadingIndicator.Visibility = Visibility.Collapsed;
 
                 UpdateLayout();
@@ -171,7 +181,7 @@ namespace arelv1.Pages
 
         /*
          * Ajoute le cours détaillé à la grille de planning spécifiée.
-         * Il y a actuellement deux grilles sur la page, une pour chaque jour.
+         * Il y a actuellement trois grilles sur la page, une pour chaque jour.
          * 4 lignes dispos par cours (un peu crado dans l'implémentation mais bon)
          */
         private void AddCours(string line1, string line2, string line3, string line4, string heureDebut, string heureFin, string couleur, Grid planningGrid)
@@ -181,11 +191,11 @@ namespace arelv1.Pages
             DateTime dt = Convert.ToDateTime(heureDebut);
             DateTime dt2 = Convert.ToDateTime(heureFin);
             
-            int col = (int) dt.DayOfWeek - 1;
+            //int col = (int) dt.DayOfWeek - 1;
 
             int ligneDeb = ((dt.Hour - 8) * 4) + 1;
             int ligneFin = ((dt2.Hour - 8) * 4);
-            if (ligneDeb > 0 && col < 6)
+            if (ligneDeb > 0)
             {
                 ligneDeb += (dt.Minute / 15);
                 ligneFin += (dt2.Minute / 15);
@@ -214,7 +224,7 @@ namespace arelv1.Pages
                     macase.Background = HexToColor(couleur);
 
                     planningGrid.Children.Add(macase);
-                    Grid.SetColumn(macase, col);
+                    Grid.SetColumn(macase, 1);
                     Grid.SetRow(macase, i);
                 }
             }
@@ -238,7 +248,7 @@ namespace arelv1.Pages
         private void DrawPlanning(Grid planningGrid)
         {
 
-            for (int j = 1; j < 41; j++)
+            for (int j = 1; j < 45; j++)
             {
                 TextBlock heure = new TextBlock();
                 heure.FontSize = 13;

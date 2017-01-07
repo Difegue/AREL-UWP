@@ -79,6 +79,7 @@ namespace arelv1.Pages
             if (isOnline)
             {
                 salleGrid.Visibility = Visibility.Visible;
+                ComboBoxes.Visibility = Visibility.Visible;
                 NoInternetSplash.Visibility = Visibility.Collapsed;
 
                 campusXML = await API.GetInfoAsync("/api/campus/sites");
@@ -115,6 +116,7 @@ namespace arelv1.Pages
                 //API.renewAccessToken();
                 salleGrid.Visibility = Visibility.Collapsed;
                 NoInternetSplash.Visibility = Visibility.Visible;
+                ComboBoxes.Visibility = Visibility.Collapsed;
                 UpdateLayout();
             }
         }
@@ -146,6 +148,7 @@ namespace arelv1.Pages
                 {
                     salleGrid.Visibility = Visibility.Collapsed;
                     NoInternetSplash.Visibility = Visibility.Visible;
+                    ComboBoxes.Visibility = Visibility.Collapsed;
                     UpdateLayout();
                 }
 

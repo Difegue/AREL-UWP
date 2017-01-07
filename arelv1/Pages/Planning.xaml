@@ -12,6 +12,25 @@
     <ScrollViewer>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
+                <VisualState x:Name="UltraWideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1200" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainGrid.ColumnDefinitions[0].MaxWidth" Value="500"/>
+                        <Setter Target="MainGrid.ColumnDefinitions[1].MaxWidth" Value="500"/>
+                        <Setter Target="MainGrid.ColumnDefinitions[2].MaxWidth" Value="500"/>
+                        <Setter Target="c1.Width" Value="300"/>
+                        <Setter Target="c2.Width" Value="300"/>
+                        <Setter Target="c3.Width" Value="300"/>
+                        <Setter Target="FirstGrid.Margin" Value="0,0,10,0"/>
+                        <Setter Target="FirstGrid.Padding" Value="0,0,20,0"/>
+                        <Setter Target="SecondGrid.Padding" Value="0,0,20,0"/>
+                        <Setter Target="SecondGrid.(Grid.Column)" Value="1"/>
+                        <Setter Target="SecondGrid.(Grid.Row)" Value="0"/>
+                        <Setter Target="ThirdGrid.Visibility" Value="Visible"/>
+                    </VisualState.Setters>
+                </VisualState>
                 <VisualState x:Name="WideState">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="700" />
@@ -19,11 +38,13 @@
                     <VisualState.Setters>
                         <Setter Target="MainGrid.ColumnDefinitions[0].MaxWidth" Value="400"/>
                         <Setter Target="MainGrid.ColumnDefinitions[1].MaxWidth" Value="400"/>
+                        <Setter Target="MainGrid.ColumnDefinitions[2].MaxWidth" Value="0"/>
                         <Setter Target="c1.Width" Value="260"/>
                         <Setter Target="c2.Width" Value="260"/>
-                        <Setter Target="FirstGrid.Margin" Value="0,0,10,0"/>
+                        <Setter Target="FirstGrid.Padding" Value="0,0,30,0"/>
                         <Setter Target="SecondGrid.(Grid.Column)" Value="1"/>
-                        <Setter Target="SecondGrid.(Grid.Row)" Value="1"/>
+                        <Setter Target="SecondGrid.(Grid.Row)" Value="0"/>
+                        <Setter Target="ThirdGrid.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="NarrowState">
@@ -31,43 +52,48 @@
                         <AdaptiveTrigger MinWindowWidth="0" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="FirstGrid.Margin" Value="0,0,10,10"/>
+                        <Setter Target="FirstGrid.Margin" Value="0,0,10,30"/>
                         <Setter Target="SecondGrid.Margin" Value="0,0,10,0"/>
+                        <Setter Target="MainGrid.ColumnDefinitions[2].MaxWidth" Value="0"/>
                         <Setter Target="c1.Width" Value="300"/>
                         <Setter Target="c2.Width" Value="300"/>
                         <Setter Target="FirstGrid.(Grid.ColumnSpan)" Value="2"/>
                         <Setter Target="SecondGrid.(Grid.Column)" Value="0"/>
                         <Setter Target="SecondGrid.(Grid.ColumnSpan)" Value="2"/>
-                        <Setter Target="SecondGrid.(Grid.Row)" Value="2"/>
+                        <Setter Target="SecondGrid.(Grid.Row)" Value="1"/>
+                        <Setter Target="ThirdGrid.Visibility" Value="Collapsed"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid BorderThickness="0" BorderBrush="Black" x:Name="MainGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" >
+
+        <StackPanel  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <TextBlock x:Name="dateJour"  HorizontalAlignment="Left" Style="{StaticResource SubheaderTextBlockStyle}"
+                            Margin="10,5,0,10"  TextWrapping="Wrap" >
+        	    Vendredi 31 Février
+            </TextBlock>
+
+            <Grid BorderThickness="0" BorderBrush="Black" x:Name="MainGrid" HorizontalAlignment="Center" >
 
             <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition MaxHeight="60" Height="60*"/>
-                <RowDefinition MinHeight="680" Height="236*"/>
-                <RowDefinition Height="481*"/>
-                <RowDefinition Height="303*"/>
+                <RowDefinition Height="710"/>
+                <RowDefinition Height="680*"/>
             </Grid.RowDefinitions>
             <!-- Foreground="{StaticResource SystemControlBackgroundAccentBrush}"-->
-            <TextBlock  Grid.Row="0" Grid.ColumnSpan="2" x:Name="dateJour"  HorizontalAlignment="Left" Style="{StaticResource SubheaderTextBlockStyle}"
-                            Margin="10,5,0,10"  TextWrapping="Wrap" >
-        	    Vendredi 31 Février
-            </TextBlock>
+            
 
-            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" x:Name="LoadingIndicator" >
+            <StackPanel Grid.Row="0" Grid.ColumnSpan="3" x:Name="LoadingIndicator" >
                 <ProgressRing Margin="0,20" Height="100" Width="100" IsActive="True" />
                 <TextBlock HorizontalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}">Calcul de gros chiffres...</TextBlock>
             </StackPanel>
-            
-            <StackPanel Grid.Row="1" Grid.Column="0" x:Name="FirstGrid" Grid.RowSpan="2" Margin="0,0,0,20">
+
+            <StackPanel x:Name="FirstGrid" Grid.Row="0" Grid.Column="0"  Grid.RowSpan="2" Margin="0,0,0,20"  >
                 <TextBlock  HorizontalAlignment="Center"  Margin="0,8,0,10"  TextWrapping="Wrap"  Grid.ColumnSpan="2" Style="{StaticResource TitleTextBlockStyle}" >
         	            Planning d'aujourd'hui
                 </TextBlock>
@@ -124,13 +150,16 @@
                         <RowDefinition Height="15" />
 
                         <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
                         <RowDefinition Height="30" />
 
-                    </Grid.RowDefinitions>
+                        </Grid.RowDefinitions>
                 </Grid>
             </StackPanel>
 
-            <StackPanel x:Name="SecondGrid" Grid.RowSpan="2" Margin="0,0,0,20">
+            <StackPanel x:Name="SecondGrid" Grid.Row="0" Grid.RowSpan="2" Margin="0,0,0,20">
 
                 <TextBlock HorizontalAlignment="Center" Margin="0,8,0,10"  TextWrapping="Wrap" Grid.ColumnSpan="2" Style="{StaticResource TitleTextBlockStyle}">
         	        Planning de demain
@@ -189,12 +218,85 @@
                         <RowDefinition Height="15" />
 
                         <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="30" />
+
+                        </Grid.RowDefinitions>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel x:Name="ThirdGrid" Grid.RowSpan="2"  Grid.Row="0" Grid.Column ="2" Margin="0,0,0,20">
+
+                <TextBlock HorizontalAlignment="Center" x:Name="ThirdDay" Margin="0,8,0,10"  TextWrapping="Wrap" Grid.ColumnSpan="2" Style="{StaticResource TitleTextBlockStyle}">
+        	     
+                </TextBlock>
+
+
+                <Grid x:Name="grid3"  Margin="0,0,10,10" BorderThickness="2,0" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition x:Name="c3"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
+                        <RowDefinition Height="15" />
                         <RowDefinition Height="30" />
 
                     </Grid.RowDefinitions>
                 </Grid>
             </StackPanel>
-        
+
         </Grid>
+        
+        </StackPanel>
     </ScrollViewer>
 </Page>
