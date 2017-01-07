@@ -34,7 +34,6 @@ namespace arelv1.Pages
 
             FirstGrid.Visibility = Visibility.Collapsed;
             SecondGrid.Visibility = Visibility.Collapsed;
-            ThirdGrid.Visibility = Visibility.Collapsed;
 
             UpdatePlanningAsync(); //Stocke le planning du jour dans la clé "planning" de l'appli si on a internet
 
@@ -93,7 +92,9 @@ namespace arelv1.Pages
 
                 FirstGrid.Visibility = Visibility.Visible;
                 SecondGrid.Visibility = Visibility.Visible;
-                ThirdGrid.Visibility = Visibility.Visible;
+
+                ThirdGrid.Padding = new Thickness(0); 
+                //Trick: comme la visibilité est overridée par le visualstatemanager du XAML, on joue sur le padding à la place pour cacher la grille pendant le loading.
 
                 ThirdDay.Text = "Planning du " + now.AddDays(2).ToString("dd/MM/yy");
 
@@ -114,16 +115,36 @@ namespace arelv1.Pages
             System.Xml.XmlDocument doc = new System.Xml.XmlDocument();//creation d'une instance xml
             doc.LoadXml(xml);//chargement de la variable
 
-            var tasks = new List<Task>();
-
-            foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds en parallèle
+            if (doc.DocumentElement.HasChildNodes)
             {
-                tasks.Add(ComputeCoursAsync(node, planningGrid)); 
+                var tasks = new List<Task>();
+
+                foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)//on parcours tout les noeuds en parallèle
+                {
+                    tasks.Add(ComputeCoursAsync(node, planningGrid));
+                }
+
+                //LA VITESSE
+                await Task.WhenAll(tasks);
             }
+            else
+            {
+                StackPanel caseNoCours = new StackPanel();
+                caseNoCours.Background = new SolidColorBrush((Color)this.Resources["SystemAccentColor"]);
 
-            //LA VITESSE
-            await Task.WhenAll(tasks);
+                TextBlock block = new TextBlock()
+                {
+                    Text = "\n \n \n \n \n \n \n \n \n \n \n  Pas de cours ¯\\_(ツ)_/¯",
+                    FontSize = 20,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Foreground = new SolidColorBrush(Colors.White)
+                };
 
+                caseNoCours.Children.Add(block);
+                planningGrid.Children.Add(caseNoCours);
+                Grid.SetColumn(caseNoCours, 1);
+                Grid.SetRowSpan(caseNoCours, 45);
+            }
             return true;
         }
 
